@@ -58,6 +58,12 @@ class User(models.Model):
             owned_restaurants.append(restaurant.name)
         return owned_restaurants
 
+    @property
+    def map_link(self):
+        map_link = f"{self.street_number}+{self.street}+{self.city}"
+        map_link.replace(" ", "+")
+        return map_link
+
     def save(self, *args, **kwargs):
         self.slug = slugify(self.username)
 

@@ -26,6 +26,10 @@ class Restaurant(models.Model):
 
         return sum(total_ratings) / len(total_ratings)
 
+    def generate_map_link(self):
+        self.map_link = f"{self.street_number}+{self.street}+{self.city}"
+        self.map_link.replace(" ", "+")
+
     def save(self, *args, **kwargs):
         self.slug = slugify(self.ID)
 

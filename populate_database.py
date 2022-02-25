@@ -401,8 +401,8 @@ def populate():
 if __name__ == "__main__":
     print("Starting Rango population script")
     populate()
-    print("Printing Users")
-    print(user_client.objects.all())
-    print(Restaurant.objects.all())
-
+    for u in user_client.objects.all():
+        print(f"Created user {u}")
+    for r in Restaurant.objects.all():
+        print(f"Created restaurant {r}")
     print("Population finished")

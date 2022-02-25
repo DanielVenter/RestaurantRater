@@ -1,6 +1,5 @@
 from django.db import models
 from django.template.defaultfilters import slugify
-from django.contrib.auth.models import User
 
 
 class Restaurant(models.Model):
@@ -9,12 +8,12 @@ class Restaurant(models.Model):
     street = models.CharField(max_length=128)
     city = models.CharField(max_length=128)
     map_link = models.CharField(max_length=256)
-    ratings = models.ManyToManyField(User, related_name="rates")
+    ratings = models.ManyToManyField("user_client", related_name="rates")
     description = models.CharField(max_length=1500)
-    img1 = models.ImageField()
-    img2 = models.ImageField()
-    img3 = models.ImageField()
-    ID = models.CharField(max_length=128, primary_key=True)
+    img1 = models.ImageField(upload_to=f"media/{name}/")
+    img2 = models.ImageField(upload_to=f"media/{name}/")
+    img3 = models.ImageField(upload_to=f"media/{name}/")
+    restaurant_id = models.CharField(max_length=128, primary_key=True)
     comments = models.JSONField()
 
     @property
@@ -30,14 +29,11 @@ class Restaurant(models.Model):
         self.map_link = f"{self.street_number}+{self.street}+{self.city}"
         self.map_link.replace(" ", "+")
 
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.ID)
-
     def __str__(self):
-        return self.ID
+        return self.restaurant_id
 
 
-class User(models.Model):
+class user_client(models.Model):
     username = models.CharField(max_length=128, primary_key=True)
     liked_restaurants = models.ManyToManyField(Restaurant, related_name="likes")
     street_number = models.PositiveIntegerField()
@@ -54,7 +50,7 @@ class User(models.Model):
     @property
     def owned_restaurants_list(self):
         owned_restaurants = []
-        for restaurant in User.owned_restaurants.all():
+        for restaurant in user_client.owned_restaurants.all():
             owned_restaurants.append(restaurant.name)
         return owned_restaurants
 
@@ -64,10 +60,8 @@ class User(models.Model):
         map_link.replace(" ", "+")
         return map_link
 
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.username)
-
     def __str__(self):
         return self.username
 
-# Create your models here.
+
+

@@ -9,12 +9,12 @@ class Restaurant(models.Model):
     street = models.CharField(max_length=128)
     city = models.CharField(max_length=128)
     map_link = models.CharField(max_length=256)
-    ratings = models.ManyToManyField(User)
+    ratings = models.ManyToManyField(User, related_name="rates")
     description = models.CharField(max_length=1500)
     img1 = models.ImageField()
     img2 = models.ImageField()
     img3 = models.ImageField()
-    ID = models.CharField(primary_key=True)
+    ID = models.CharField(max_length=128, primary_key=True)
     comments = models.JSONField()
 
     @property
@@ -32,9 +32,10 @@ class Restaurant(models.Model):
     def __str__(self):
         return self.ID
 
+
 class User(models.Model):
-    username = models.CharField(primary_key=True)
-    liked_restaurants = models.ManyToManyField(Restaurant)
+    username = models.CharField(max_length=128, primary_key=True)
+    liked_restaurants = models.ManyToManyField(Restaurant, related_name="likes")
     street_number = models.PositiveIntegerField()
     street = models.CharField(max_length=128)
     city = models.CharField(max_length=128)
@@ -44,7 +45,7 @@ class User(models.Model):
     name = models.CharField(max_length=128)
     surname = models.CharField(max_length=128)
     owner_status = models.BooleanField(default=False)
-    owned_restaurants = models.ManyToManyField(Restaurant)
+    owned_restaurants = models.ManyToManyField(Restaurant, related_name="owns")
 
     @property
     def owned_restaurants_list(self):

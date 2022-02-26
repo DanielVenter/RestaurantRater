@@ -9,8 +9,9 @@ from rango.models import user_client, Restaurant
 
 
 def add_restaurant(name, street_number, street, city, description, restaurant_id, comments):
-    r = Restaurant.objects.get_or_create(name=name, restaurant_id=restaurant_id, street_number=street_number, street=street,
-                                     city=city, description=description, comments=comments)[0]
+    r = Restaurant.objects.get_or_create(name=name, restaurant_id=restaurant_id, street_number=street_number,
+                                         street=street,
+                                         city=city, description=description, comments=comments)[0]
     r.generate_map_link()
     r.save()
     return r
@@ -23,7 +24,6 @@ def add_user(username, street_number, street, city, liked_restaurants, rated_res
                                           rated_restaurants=rated_restaurants, password=password, email=email,
                                           name=name, surname=surname, owner_status=owner_status)[0]
     u.save()
-    return u
 
     # Adds ratings
     for restaurant in rated_restaurants.keys():
@@ -38,27 +38,30 @@ def add_user(username, street_number, street, city, liked_restaurants, rated_res
         for restaurant in owned_restaurants:
             owns(name, restaurant)
 
+    return u
+
 
 def rates(user, restaurant):
     user_obj = user_client.objects.get(name=user)
-    restaurant_obj = Restaurant.objects.get(id=restaurant)
-    restaurant_obj.ratings.add(user_obj)
+    restaurant_obj = Restaurant.objects.get(restaurant_id=restaurant)
+    user_obj.rates.add(restaurant_obj)
+    restaurant_obj.ratings.append(user_obj.rated_restaurants[restaurant_obj.restaurant_id])
 
 
 def owns(user, restaurant):
     user_obj = user_client.objects.get(name=user)
-    restaurant_obj = Restaurant.objects.get(id=restaurant)
+    restaurant_obj = Restaurant.objects.get(restaurant_id=restaurant)
     user_obj.owned_restaurants.add(restaurant_obj)
 
 
 def likes(user, restaurant):
     user_obj = user_client.objects.get(name=user)
-    restaurant_obj = Restaurant.objects.get(id=restaurant)
+    restaurant_obj = Restaurant.objects.get(restaurant_id=restaurant)
     user_obj.liked_restaurants.add(restaurant_obj)
 
 
 def image_directory(restaurant, img1, img2, img3):
-    restaurant_obj = Restaurant.objects.get(id=restaurant)
+    restaurant_obj = Restaurant.objects.get(restaurant_id=restaurant)
     restaurant_obj.img1 = img1
     restaurant_obj.img2 = img2
     restaurant_obj.img3 = img3

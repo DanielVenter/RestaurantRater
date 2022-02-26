@@ -8,22 +8,17 @@ class Restaurant(models.Model):
     street = models.CharField(max_length=128)
     city = models.CharField(max_length=128)
     map_link = models.CharField(max_length=256)
-    ratings = models.ManyToManyField("user_client", related_name="rates")
+    ratings = models.JSONField(default=[])
     description = models.CharField(max_length=1500)
     img1 = models.ImageField(upload_to=f"media/{name}/")
     img2 = models.ImageField(upload_to=f"media/{name}/")
     img3 = models.ImageField(upload_to=f"media/{name}/")
     restaurant_id = models.CharField(max_length=128, primary_key=True)
-    comments = models.JSONField()
+    comments = models.JSONField(default={})
 
     @property
     def rating(self):
-        total_ratings = []
-        for user in self.ratings.all():
-            score = user.rated_restaurants[self.name]
-            total_ratings.append(score)
-
-        return sum(total_ratings) / len(total_ratings)
+        return sum(self.ratings) / len(self.ratings)
 
     def generate_map_link(self):
         self.map_link = f"{self.street_number}+{self.street}+{self.city}"
@@ -39,7 +34,8 @@ class user_client(models.Model):
     street_number = models.PositiveIntegerField()
     street = models.CharField(max_length=128)
     city = models.CharField(max_length=128)
-    rated_restaurants = models.JSONField()
+    rated_restaurants = models.JSONField(default={})
+    rates = models.ManyToManyField(Restaurant, related_name="rates")
     password = models.CharField(max_length=24)
     email = models.EmailField()
     name = models.CharField(max_length=128)

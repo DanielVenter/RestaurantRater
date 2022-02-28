@@ -1,4 +1,7 @@
+import os
+
 from django.db import models
+current_dir = os.getcwd()
 from django.template.defaultfilters import slugify
 
 
@@ -10,9 +13,9 @@ class Restaurant(models.Model):
     map_link = models.CharField(max_length=256)
     ratings = models.JSONField(default=[])
     description = models.CharField(max_length=1500)
-    img1 = models.ImageField(upload_to=f"media/{name}/")
-    img2 = models.ImageField(upload_to=f"media/{name}/")
-    img3 = models.ImageField(upload_to=f"media/{name}/")
+    img1 = models.ImageField(upload_to=f"{current_dir}\\media\\")
+    img2 = models.ImageField(upload_to=f"{current_dir}\\media\\")
+    img3 = models.ImageField(upload_to=f"{current_dir}\\media\\")
     restaurant_id = models.CharField(max_length=128, primary_key=True)
     comments = models.JSONField(default={})
 

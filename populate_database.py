@@ -1,8 +1,10 @@
 import os
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'RestaurantRater.settings')
+current_dir = os.getcwd()
 
 import django
+from django.core.files import File
 
 django.setup()
 from rango.models import user_client, Restaurant
@@ -13,7 +15,15 @@ def add_restaurant(name, street_number, street, city, description, restaurant_id
                                          street=street,
                                          city=city, description=description, comments=comments)[0]
     r.generate_map_link()
+    images = os.listdir(f"{current_dir}\\PopulateData\\images\\{restaurant_id}")
+    r.img1.save(f"{name}\\img1.jpg",
+                File(open(f"{current_dir}\\PopulateData\\images\\{restaurant_id}\\{images[0]}", "rb")))
+    r.img2.save(f"{name}\\img2.jpg",
+                File(open(f"{current_dir}\\PopulateData\\images\\{restaurant_id}\\{images[1]}", "rb")))
+    r.img3.save(f"{name}\\img3.jpg",
+                File(open(f"{current_dir}\\PopulateData\\images\\{restaurant_id}\\{images[2]}", "rb")))
     r.save()
+
     return r
 
 
@@ -60,13 +70,6 @@ def likes(user, restaurant):
     user_obj.liked_restaurants.add(restaurant_obj)
 
 
-def image_directory(restaurant, img1, img2, img3):
-    restaurant_obj = Restaurant.objects.get(restaurant_id=restaurant)
-    restaurant_obj.img1 = img1
-    restaurant_obj.img2 = img2
-    restaurant_obj.img3 = img3
-
-
 def populate():
     restaurant_data = [
         # Alchemilla - 1
@@ -98,13 +101,13 @@ def populate():
          "description": "Comfort food done right",
          "id": "JK",
          "comments": {
-             "Thom.O": """I've enjoyed eating here in the past but £40 for rice, an egg, a chicken leg, 
-            some cucumber and 3 chickpea fritters is excessive. There is just no attempt to compete at all with the 
+             "Thom.O": """I've enjoyed eating here in the past but £40 for rice, an egg, a chicken leg,
+            some cucumber and 3 chickpea fritters is excessive. There is just no attempt to compete at all with the
             great curry houses et al of Glasgow.""",
-             "Andy.P": """Fantastic, food was authentic in flavour. The small restaurant has a great vibe 
+             "Andy.P": """Fantastic, food was authentic in flavour. The small restaurant has a great vibe
             and the staff were friendly. Good prices. What a gem of a place.""",
-             "Danny.M": """Have had some good meals from here but also some pretty disappointing ones. Takeaway this 
-            evening was overpriced, small in proportion and a let-down across the board. You would hope for more 
+             "Danny.M": """Have had some good meals from here but also some pretty disappointing ones. Takeaway this
+            evening was overpriced, small in proportion and a let-down across the board. You would hope for more
             consistency. """
          }
          },
@@ -115,7 +118,13 @@ def populate():
          "city": "Glasgow",
          "description": "Korean-style fast food in Glasgow’s West End.",
          "id": "KC",
-         "comments": {}
+         "comments": {"Nicola.H": """My wife and I tried this tonight after hearing good things and got the Korean 
+         Chicken burger, bibimbap and tofu. The food was generally tasty their crispy chicken and sauce was good!""",
+                      "Michael.G": """Working in Glasgow, went 3 times in a week. What more can I say. Outstanding""",
+                      "Andy.P": """Portion sizes are much smaller now - it is a depressing story for many such 
+                        places. Two months ago, their portions were generous and now they are absolutely the 
+                        opposite- I won’t be back """
+                      }
          },
         # Ox and Finch - 4
         {"name": "Ox and Finch",
@@ -124,7 +133,13 @@ def populate():
          "city": "Glasgow",
          "description": "The small plates trend is done very well at this slick Sauchiehall Street restaurant.",
          "id": "OnF",
-         "comments": {}
+         "comments": {"Michael.G": """The food served at Ox and Finch, Glasgow is immensely delicious, of the right 
+         portion and reasonably priced. You must not give amiss to this place. The service is just superb and there 
+         is a variety of meat, vegetables to choose from. You will surely enjoy your meal as I did.""",
+                      "Andy.P": """I just love this place and visit on every occasion I'm in Glasgow. The food and 
+                      wines are 1st class foods done extremely well. I've been going here for 6+years and I have 
+                      never once felt disappointed. Staff and venue are great,will help you with any diet query,
+                      same goes for the wines for matching foods."""}
          },
         # Bilson Eleven - 5
         {"name": "Bilson Eleven",
@@ -133,7 +148,13 @@ def populate():
          "city": "Glasgow",
          "description": "A five- or even eight-course fine-dining odyssey.",
          "id": "BE",
-         "comments": {}
+         "comments": {"Thom.O": """What an unbelievable night that was last night at this restaurant. The food, 
+         the service and the wine was absolutely sublime. Just an absolutely unbelievable experience and I certainly 
+         would recommend this place to anyone who loves their wine and their fine dining experiences.""",
+                      "Michael.G": """Our favourite restaurant in Glasgow . Thank you Nick for a absolute creative 
+                      menu visually , sensory & fabulously tasting. Mark,  your front of house was all that we come 
+                      to expect, informative, interesting and totally  engrossed in your knowledge of the wines & the 
+                      menu, thanks gents"""}
          },
         # Cail Bruich - 6
         {"name": "Cail Bruich",
@@ -142,7 +163,18 @@ def populate():
          "city": "Glasgow",
          "description": "Très bon Franco-Scottish cooking.",
          "id": "CB",
-         "comments": {}
+         "comments": {"Jeremy.S": """This was our first visit to Cail Bruich. Food and service was excellent, 
+         what you'd expect from a Michelin star restaurant. Staff are very knowledgeable about the dishes they serve. 
+         We had the chefs tasting menu and was great. Very disappointed by the manner in which a dessert was served, 
+         far from Michelin standard or any acceptable standard. This was dealt with at the time with a manager.""",
+                      "Matt.W": """Came here for my birthday. I had the tasting menu with wines to match. The wines 
+                      did not pair well with the food at all and were particularly expensive and very small measures 
+                      (£72 for four very small glasses). You could drive home from this meal without being over the 
+                      limit. I've eaten in some wonderful Michelin Starred restaurants and some great AA Rosette 
+                      places. This is neither. The restaurant was cold when I visited and the champagne was the worst 
+                      I have ever had anywhere. I don't often leave bad reviews but this was a meal for two that cost 
+                      close to £500 and wasn't worth it at all. I've spent more in other places but always felt that 
+                      I got value for money. I wouldn't go back again."""}
          },
         # Hanoi Bike Shop -7
         {"name": "The Hanoi Bike Shop",
@@ -151,7 +183,16 @@ def populate():
          "city": "Glasgow",
          "description": "A fresh, casual, canteen-style Vietnamese restaurant.",
          "id": "HBS",
-         "comments": {}
+         "comments": {"Matt.W": """We arrived at the Hanoi Bike Shop with much anticipation, joined by our Vietnamese 
+         friend. The decor is superb, beautifully decorated. Ordered the spring rolls - delish, followed by a beef 
+         pho, average, and my wife got the red duck curry - excellent. I asked for a Vietnamese iced coffee with 
+         condensed milk and got a classic iced coffee - disappointed. Our food arrived quickly and the service was 
+         good.""",
+                      "Mark.E": """Nice cosy interior with an upstairs seating. The shop is easy to find thanks to 
+                      the bright signs. The decor of the shop is very nicely done. However the food is quite 
+                      disappointing, from an Asian’s point of view. The pho was very disappointing, the portion was 
+                      big and all but the taste and correct pho noodles was not satisfactory. They have a lot of side 
+                      dishes to eat with their drinks, maybe it’s better for it’s drinks instead of a dinner."""}
          },
         # The Gannet - 8
         {"name": "The Gannet",
@@ -266,7 +307,7 @@ def populate():
          "street": "Duke St",
          "city": "Glasgow",
          "liked_restaurants": ["ALC", "PDC", "B6", "GL"],
-         "rated_restaurants": {"ALC": 4, "JK": 3, "BE": 2, "ST": 1, "PDC": 4, "N16": 2, "SB": 1, "B6": 4, "GL": 5,
+         "rated_restaurants": {"ALC": 4, "JK": 3, "BE": 5, "ST": 3, "PDC": 4, "N16": 2, "SB": 1, "B6": 4, "GL": 5,
                                "TG": 2, "HBS": 3},
          "password": "Thom123",
          "email": "thom@gmail.com",
@@ -281,7 +322,7 @@ def populate():
          "street": "Duke St",
          "city": "Glasgow",
          "liked_restaurants": ["ALC"],
-         "rated_restaurants": {"ALC": 4, "JK": 2, "KC": 4, "OnF": 2, "BE": 1, "ST": 1, "PDC": 3},
+         "rated_restaurants": {"ALC": 4, "JK": 2, "KC": 4, "OnF": 5, "BE": 4, "ST": 2, "PDC": 3},
          "password": "Matt123",
          "email": "matt@gmail.com",
          "name": "Michael",
@@ -295,7 +336,7 @@ def populate():
          "street": "Great Western Rd",
          "city": "Glasgow",
          "liked_restaurants": ["FM"],
-         "rated_restaurants": {"KC": 3, "OnF": 2, "BE": 1, "ST": 2, "PDC": 4, "CB": 3, "FM": 2, "TG": 1, "HBS": 2},
+         "rated_restaurants": {"KC": 3, "OnF": 5, "BE": 4, "ST": 2, "PDC": 4, "CB": 3, "FM": 2, "TG": 1, "HBS": 2},
          "password": "Andy123",
          "email": "andy@gmail.com",
          "name": "Andy",
@@ -324,7 +365,7 @@ def populate():
          "street": "Great Western Rd",
          "city": "Glasgow",
          "liked_restaurants": ["SB"],
-         "rated_restaurants": {"ST": 2, "PDC": 4, "N16": 2, "SB": 5, "B6": 2, "GL": 1, "CB": 1, "FM": 3, "HBS": 2},
+         "rated_restaurants": {"ST": 2, "PDC": 4, "N16": 2, "SB": 5, "B6": 2, "GL": 1, "CB": 4, "FM": 3, "HBS": 2},
          "password": "Jem123",
          "email": "jeremy@gmail.com",
          "name": "Jeremy",
@@ -388,6 +429,7 @@ def populate():
          "surname": "Macpherson",
          "owner_status": True,
          "owned_restaurants": ["GL", "CB", "FM", "TG", "HBS"]
+
          }]
 
     for user in user_data:

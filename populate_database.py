@@ -7,7 +7,7 @@ import django
 from django.core.files import File
 
 django.setup()
-from rango.models import user_client, Restaurant
+from RestaurantRaterApp.models import user_client, Restaurant
 
 
 def add_restaurant(name: str, street_number: int, street: str, city: str, description: str, restaurant_id: str, comments: dict):

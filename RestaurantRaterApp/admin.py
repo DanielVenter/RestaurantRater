@@ -1,5 +1,5 @@
 from django.contrib import admin
-from rango.models import user_client, Restaurant
+from RestaurantRaterApp.models import user_client, Restaurant
 
 
 class user_client_Admin(admin.ModelAdmin):

@@ -1,6 +1,8 @@
 import os
 
 from django.db import models
+# copied from ae1 rango project to simulate user authentication (for testing only)
+from django.contrib.auth.models import User
 
 current_dir = os.getcwd()
 
@@ -63,3 +65,12 @@ class user_client(models.Model):
 
     def __str__(self):
         return self.username
+
+# copied from ae1 rango project to simulate user authentication (for testing only)
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    website = models.URLField(blank=True)
+    picture = models.ImageField(upload_to='profile_images', blank=True)
+
+    def __str__(self):
+        return self.user.username

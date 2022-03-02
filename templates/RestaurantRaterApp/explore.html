@@ -1,0 +1,27 @@
+{% extends 'RestaurantRaterApp/base.html' %}
+{% load static %}
+
+{% block title_block %}
+	Home
+{% endblock %}
+
+{% block explore_button %}
+	<a class="nav-link active bg-info text-body border-0" aria-current="page" href="{% url 'RestaurantRaterApp:explore' %}">Explore</a>
+{% endblock %}
+
+{% block body_block %}
+	<h1>TEST PAGE</h1>
+		<div>
+			{% if user.is_authenticated %}
+				user is authenticated
+			{% else %}
+				user is not authenticated
+			{% endif %}
+			<br />
+			<strong>{{ boldmessage }}</strong>
+		</div>
+
+		<div>
+			<img src="{% static 'images/logo.png' %}" alt="Picture of Rango" class="mw-100" />
+		</div>
+{% endblock %}

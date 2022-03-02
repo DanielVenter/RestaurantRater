@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html>
+
+	<head>
+
+        <!-- bootstrap stylesheet -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+              rel="stylesheet"
+              integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+              crossorigin="anonymous">
+        <link href="sticky-footer-navbar.css" rel="stylesheet">
+
+        <!-- page title -->
+		<title>
+			{% block title_block %}
+				Restaurant Rater
+			{% endblock %}
+		</title>
+
+	</head>
+
+	<body class="d-flex flex-column vh-100">
+
+		<div class="container-fluid p-4">
+
+            <!-- header -->
+            <div class="row">
+
+                <div class="col-md-8">
+                    <img src="{% static 'images/logo.png' %}" alt="Restaurant Rater logo" class="mw-100" />
+                </div>
+
+                <div class="col-md-2 offset-2 d-flex justify-content-center align-items-center flex-column">
+                    {% block top_right_buttons_block %}
+                        {% if user.is_authenticated %}
+							<a class="btn btn-warning" href="{% url 'RestaurantRaterApp:logout' %}" role="button">Log Out</a>
+                        {% else %}
+                            <a class="btn btn-warning" href="{% url 'RestaurantRaterApp:signup' %}" role="button">Sign Up</a>
+                            <p />
+                            <p class="text-center">or</p>
+                            <a class="btn btn-warning" href="{% url 'RestaurantRaterApp:login' %}" role="button">Log In</a>
+                        {% endif %}
+                    {% endblock %}
+                </div>
+
+            </div>
+
+            <!-- tabs -->
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    {% block home_button %}
+                        <a class="nav-link text-body" href="{% url 'RestaurantRaterApp:home' %}">Home</a>
+                    {% endblock %}
+                </li>
+                <li class="nav-item">
+                    {% block explore_button %}
+                        <a class="nav-link text-body" href="{% url 'RestaurantRaterApp:explore' %}">Explore</a>
+                    {% endblock %}
+                </li>
+                <li class="nav-item">
+                    {% block favourites_button %}
+                        <a class="nav-link text-body" href="{% url 'RestaurantRaterApp:favourites' %}">Favourites</a>
+                    {% endblock %}
+                </li>
+                <li class="nav-item">
+                    {% block profile_button %}
+                        <a class="nav-link text-body" href="{% url 'RestaurantRaterApp:profile' %}">My Profile</a>
+                    {% endblock %}
+                </li>
+            </ul>
+
+            <!-- page content -->
+            <div class="row justify-content-center bg-info p-4 gy-1">
+                {% block body_block %}
+                {% endblock %}
+            </div>
+
+            <!-- footer -->
+			<div class="row justify-content-center bg-info">
+				<div class="bg-white h-10">
+					<p />
+				</div>
+                <div class="container-fluid bg-info p-1">
+                    <p />
+                    <p class="text-center">Need to report something to an administrator? Email "restaurantRaterAdmin@gmail.com"!</p>
+                </div>
+            </div>
+
+		</div>
+
+        <!-- bootstrap javascript -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+                crossorigin="anonymous"></script>
+
+	</body>
+
+</html>

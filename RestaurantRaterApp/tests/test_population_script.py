@@ -81,8 +81,8 @@ class PopulationScriptTests(TestCase):
 
         restaurant_ids = ["ALC", "JK", "KC", "OnF", "BE", "CB", "HBS", "TG", "FM", "ST", "PDC", "N16", "SB", "B6", "GL"]
 
-        for id in restaurant_ids:
-            self.assertIsNotNone(Restaurant.objects.get(restaurant_id=id))
+        for restaurant_id in restaurant_ids:
+            self.assertIsNotNone(Restaurant.objects.get(restaurant_id=restaurant_id))
 
     def test_correct_users_created(self):
         msg = "population script does not create all users."

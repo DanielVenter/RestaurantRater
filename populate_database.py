@@ -9,7 +9,7 @@ from django.core.files import File
 django.setup()
 from RestaurantRaterApp.models import user_client, Restaurant
 
-
+# Clears media folder to prevent memory issues
 def clear():
     media_dir = f"{current_dir}/media"
     for folder in os.listdir(media_dir):

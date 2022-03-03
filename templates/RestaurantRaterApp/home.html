@@ -20,8 +20,36 @@
 			<br />
 			<strong>{{ boldmessage }}</strong>
 		</div>
-
-		<div>
-			<img src="{% static 'images/logo.png' %}" alt="Picture of Rango" class="mw-100" />
-		</div>
+        <div>
+            <table  class="table table-striped table-info table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Rating</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><img src="{% static 'images/heart.svg' %}" alt="Arrow bullet point"/></td>
+                        <td>Bumblebee Bistro</td>
+                        <td>A cheery little bistro for all you busy bees! The number one lunch break hotspot, our bistro looks out over the botanical gardens...</td>
+                        <td>5</td>
+                    </tr>
+                    <tr>
+                        <td><img src="{% static 'images/heart.svg' %}" alt="Arrow bullet point"/></td>
+                        <td>Munchies</td>
+                        <td>Got the munchies? We've got you covered. Comfort food cooked just the way you like it, and all the classics polished to perfecti...</td>
+                        <td>5</td>
+                    </tr>
+                    <tr>
+                        <td><img src="{% static 'images/heart.svg' %}" alt="Arrow bullet point"/></td>
+                        <td>Pandora's Palace</td>
+                        <td>Find the dessert you deserve at Pandora's Palace. A Perth Road staple since 1977, Pandora's Palace is a treat for all the family...</td>
+                        <td>5</td>
+                    </tr>
+              </tbody>
+            </table>
+        </div>
 {% endblock %}

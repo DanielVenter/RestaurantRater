@@ -1,7 +1,7 @@
 from django.test import TestCase
 from RestaurantRaterApp.models import user_client, Restaurant
 from populate_database import populate
-
+API_KEY = "AIzaSyAxJa_f1f5FhqyY_JhZ42JBijy4dXNgGQA"
 
 class UserModelTests(TestCase):
     def setUp(self):
@@ -19,7 +19,7 @@ class UserModelTests(TestCase):
     def test_map_link(self):
         msg = "user_client's map link does not work accordingly."
 
-        self.assertEqual(self.user.map_link, "21+Beith+Street+Glasgow", msg)
+        self.assertEqual(self.user.map_link, f"www.google.com/maps/embed/v1/place?key={API_KEY}&q=21+Beith+Street,Glasgow", msg)
 
     #Tests if user_client's owned_restaurants method returns a list of the corresponding size
     def test_owned_restaurants_list_len(self):
@@ -59,7 +59,7 @@ class RestaurantModelTests(TestCase):
     def test_restaurant_map_link(self):
         msg = "restaurant's map link does not work accordingly."
 
-        self.assertEqual(self.restaurant.map_link, "1126+Argyle+Street+Glasgow", msg)
+        self.assertEqual(self.restaurant.map_link, f"www.google.com/maps/embed/v1/place?key={API_KEY}&q=1126+Argyle+Street,Glasgow", msg)
 
     #Tests if Restaurant's rating property computes the rating correctly.
     def test_restaurant_rating(self):

@@ -9,7 +9,7 @@ class UserModelTests(TestCase):
         self.user2 = user_client.objects.get(name="Nicola")
 
     def test_user_str(self):
-        msg = "user_client's string representation does not work accordingly."
+        msg = "user_client's string representation does not work accordingly"
 
         self.assertEqual(str(self.user), "Mark.E", msg)
 
@@ -19,18 +19,18 @@ class UserModelTests(TestCase):
         self.assertEqual(self.user.map_link, "21+Beith+Street+Glasgow", msg)
 
     def test_owned_restaurants_list_len(self):
-        msg = "user_client's owned restaurants list does not work accordingly."
+        msg = "user_client's owned restaurants list does not work accordingly"
 
         self.assertEqual(len(self.user.owned_restaurants_list), 0, msg)
         self.assertEqual(len(self.user2.owned_restaurants_list), 5, msg)
     
     def test_owned_restaurants_list_order(self):
-        msg = "user_client's owned restaurants list does not work accordingly."
+        msg = "user_client's owned restaurants list does not work accordingly"
 
         self.assertEqual(self.user2.owned_restaurants_list[0],"B6" , msg)
     
     def test_owned_restaurants_list_correct_list(self):
-        msg = "user_client's owned restaurants list does not work accordingly."
+        msg = "user_client's owned restaurants list does not work accordingly"
         list = ["B6", "SB", "N16", "PDC", "ST"] 
 
         for elt in list:
@@ -43,7 +43,7 @@ class RestaurantModelTests(TestCase):
         self.restaurant = Restaurant.objects.get(name="Alchemilla")
     
     def test_restaurant_str(self):
-        msg = "restaurant's string representation does not work accordingly."
+        msg = "restaurant's string representation does not work accordingly"
 
         self.assertEqual(str(self.restaurant), "ALC", msg)
 

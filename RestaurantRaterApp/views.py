@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from RestaurantRaterApp.forms import UserProfileForm, UserForm
+from forms import UserProfileForm, UserForm
+from models import Restaurant
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
@@ -8,8 +9,15 @@ from django.contrib.auth.decorators import login_required
 from datetime import datetime
 
 def home(request):
-    context_dict = {'boldmessage' : 'home'}
+    restaurants_list = Restaurant.objects.all()
+    restaurants_list.sort(reverse=True, key = lambda x: x.rating)
+    restaurants_list = restaurants_list[:10]
+
+    context_dict = {"restaurants_list":restaurants_list,
+                    "boldmessage":"Check out the Restaurant Rater top ten!",}
+
     return render(request, 'RestaurantRaterApp/home.html', context=context_dict)
+
 
 def explore(request):
     context_dict = {'boldmessage': 'explore'}

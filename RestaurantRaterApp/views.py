@@ -14,21 +14,21 @@ def home(request):
     restaurants_list.sort(reverse=True, key = lambda x: x.rating)
 
     context_dict = {"restaurants_list":restaurants_list[:10],
-                    "boldmessage":"Check out the Restaurant Rater top ten!",}
+                    "titlemessage":"Check out the Restaurant Rater top ten!",}
 
     return render(request, 'RestaurantRaterApp/home.html', context=context_dict)
 
 
 def explore(request):
-    context_dict = {'boldmessage': 'explore'}
+    context_dict = {'titlemessage': 'explore'}
     return render(request, 'RestaurantRaterApp/explore.html', context=context_dict)
 
 def favourites(request):
-    context_dict = {'boldmessage': 'favourites'}
+    context_dict = {'titlemessage': 'favourites'}
     return render(request, 'RestaurantRaterApp/favourites.html', context=context_dict)
 
 def profile(request):
-    context_dict = {'boldmessage': 'profile'}
+    context_dict = {'titlemessage': 'profile'}
     return render(request, 'RestaurantRaterApp/profile.html', context=context_dict)
 
 def signup(request):

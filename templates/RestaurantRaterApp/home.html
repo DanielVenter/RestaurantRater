@@ -1,5 +1,6 @@
 {% extends 'RestaurantRaterApp/base.html' %}
 {% load static %}
+{% load restaurant_rater_tags %}
 
 {% block title_block %}
 	Home
@@ -10,18 +11,9 @@
 {% endblock %}
 
 {% block body_block %}
-	<h1>TEST PAGE</h1>
-		<div>
-			{% if user.is_authenticated %}
-				user is authenticated
-			{% else %}
-				user is not authenticated
-			{% endif %}
-			<br />
-			<strong>{{ boldmessage }}</strong>
-		</div>
-        <div>
-            <table  class="table table-striped table-info table-hover">
+    <div>
+        {% if restaurants_list %}
+            <table  class="table table-secondary table-hover">
                 <thead>
                     <tr>
                         <th scope="col"></th>
@@ -31,25 +23,32 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><img src="{% static 'images/heart.svg' %}" alt="Arrow bullet point"/></td>
-                        <td>Bumblebee Bistro</td>
-                        <td>A cheery little bistro for all you busy bees! The number one lunch break hotspot, our bistro looks out over the botanical gardens...</td>
-                        <td>5</td>
-                    </tr>
-                    <tr>
-                        <td><img src="{% static 'images/heart.svg' %}" alt="Arrow bullet point"/></td>
-                        <td>Munchies</td>
-                        <td>Got the munchies? We've got you covered. Comfort food cooked just the way you like it, and all the classics polished to perfecti...</td>
-                        <td>5</td>
-                    </tr>
-                    <tr>
-                        <td><img src="{% static 'images/heart.svg' %}" alt="Arrow bullet point"/></td>
-                        <td>Pandora's Palace</td>
-                        <td>Find the dessert you deserve at Pandora's Palace. A Perth Road staple since 1977, Pandora's Palace is a treat for all the family...</td>
-                        <td>5</td>
-                    </tr>
-              </tbody>
+                    {% for restaurant in restaurants_list %}
+                        {% if forloop.counter|modulo:2 == 0 %}
+						    <tr class="table-info">
+                        {% else %}
+                            <tr class="table-warning">
+                        {% endif %}
+                            <td><img src="{% static 'images/arrow_bullet.svg' %}" alt="Arrow bullet point"/></td>
+                            <td>{{ restaurant.name }}</td>
+                            <td>{{ restaurant.description }}</td>
+                            <td>
+                                {% for i in '12345'|make_list %}
+                                    {% if restaurant.rating > forloop.counter %}
+                                        <img src="{% static 'images/star_fill.svg' %}" alt="Filled star"/>
+                                    {% elif restaurant.rating > forloop.counter|subtract:0.5 %}
+                                        <img src="{% static 'images/star_half_fill.svg' %}" alt="Half filled star"/>
+                                    {% else %}
+                                        <img src="{% static 'images/star.svg' %}" alt="Unfilled star"/>
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                        </tr>
+					{% endfor %}
+                </tbody>
             </table>
-        </div>
+        {% else %}
+            <strong>Our records currently don't contain any restaurants!</strong><br />
+        {% endif %}
+    </div>
 {% endblock %}

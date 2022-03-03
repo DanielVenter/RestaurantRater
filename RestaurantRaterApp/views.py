@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from forms import UserProfileForm, UserForm
-from models import Restaurant
+from RestaurantRaterApp.forms import UserProfileForm, UserForm
+from RestaurantRaterApp.models import Restaurant
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout

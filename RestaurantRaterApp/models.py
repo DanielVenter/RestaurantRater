@@ -3,6 +3,7 @@ import os
 from django.db import models
 
 current_dir = os.getcwd()
+API_KEY = "AIzaSyAxJa_f1f5FhqyY_JhZ42JBijy4dXNgGQA"
 
 
 class Restaurant(models.Model):
@@ -19,13 +20,15 @@ class Restaurant(models.Model):
     comments = models.JSONField(default=dict)
 
     @property
+    # Average rating that gets displayed to users.
     def rating(self):
         return round(sum(self.ratings) / len(self.ratings), 2)
 
     @property
     # Map Link used for Google API
     def map_link(self):
-        map_link = f"{self.street_number}+{self.street.replace(' ', '+')}+{self.city}"
+        map_address = f"{self.street_number}+{self.street.replace(' ', '+')},{self.city}"
+        map_link = f"www.google.com/maps/embed/v1/place?key={API_KEY}&q={map_address}"
         return map_link
 
     def __str__(self):
@@ -58,7 +61,8 @@ class user_client(models.Model):
     @property
     # MapLink used for Google APIs
     def map_link(self):
-        map_link = f"{self.street_number}+{self.street.replace(' ', '+')}+{self.city}"
+        map_address = f"{self.street_number}+{self.street.replace(' ', '+')},{self.city}"
+        map_link = f"www.google.com/maps/embed/v1/place?key={API_KEY}&q={map_address}"
         return map_link
 
     def __str__(self):

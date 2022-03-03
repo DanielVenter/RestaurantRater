@@ -20,7 +20,9 @@ def home(request):
 
 
 def explore(request):
-    context_dict = {'titlemessage': 'explore'}
+    restaurants_list = list(Restaurant.objects.all())
+    context_dict = {"restaurants_list":restaurants_list,
+                    "titlemessage": "Explore the Restaurant Rater records!"}
     return render(request, 'RestaurantRaterApp/explore.html', context=context_dict)
 
 def favourites(request):

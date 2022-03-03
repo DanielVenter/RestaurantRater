@@ -1,0 +1,49 @@
+{% load static %}
+{% load restaurant_rater_tags %}
+
+<div>
+    {% if restaurants_list %}
+        <table  class="table table-secondary table-hover">
+            <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Rating</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for restaurant in r_list %}
+
+                    <!-- alternate cyan and yellow rows -->
+                    {% if forloop.counter|modulo:2 == 0 %}
+                        <tr class="table-info">
+                    {% else %}
+                        <tr class="table-warning">
+                    {% endif %}
+
+                    <td><img src="{% static 'images/arrow_bullet.svg' %}" alt="Arrow bullet point"/></td>
+                    <td>{{ restaurant.name }}</td>
+                    <td>{{ restaurant.description }}</td>
+
+                    <!-- generate star rating graphic from decimal number -->
+                    <td>
+                        {% for i in '12345'|make_list %}
+                            {% if restaurant.rating > forloop.counter %}
+                                <img src="{% static 'images/star_fill.svg' %}" alt="Filled star"/>
+                            {% elif restaurant.rating > forloop.counter|subtract:0.5 %}
+                                <img src="{% static 'images/star_half_fill.svg' %}" alt="Half filled star"/>
+                            {% else %}
+                                <img src="{% static 'images/star.svg' %}" alt="Unfilled star"/>
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <strong>Our records currently don't contain any restaurants!</strong><br />
+    {% endif %}
+</div>

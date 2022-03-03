@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from RestaurantRaterApp.forms import UserProfileForm, UserForm
-from RestaurantRaterApp.models import Restaurant
+from RestaurantRaterApp.models import Restaurant, user_client
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
@@ -25,12 +25,16 @@ def explore(request):
                     "titlemessage": "Explore the Restaurant Rater records!"}
     return render(request, 'RestaurantRaterApp/explore.html', context=context_dict)
 
+@login_required
 def favourites(request):
-    context_dict = {'titlemessage': 'favourites'}
+    restaurants_list = list(Restaurant.objects.all())
+    context_dict = {"restaurants_list": restaurants_list,
+                    "titlemessage": "View your favourite restaurants!"}
     return render(request, 'RestaurantRaterApp/favourites.html', context=context_dict)
 
+@login_required
 def profile(request):
-    context_dict = {'titlemessage': 'profile'}
+    context_dict = {}
     return render(request, 'RestaurantRaterApp/profile.html', context=context_dict)
 
 def signup(request):

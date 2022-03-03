@@ -10,18 +10,5 @@
 {% endblock %}
 
 {% block body_block %}
-	<h1>TEST PAGE</h1>
-		<div>
-			{% if user.is_authenticated %}
-				user is authenticated
-			{% else %}
-				user is not authenticated
-			{% endif %}
-			<br />
-			<strong>{{ boldmessage }}</strong>
-		</div>
-
-		<div>
-			<img src="{% static 'images/logo.png' %}" alt="Picture of Rango" class="mw-100" />
-		</div>
+	profile page text
 {% endblock %}

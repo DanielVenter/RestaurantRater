@@ -22,7 +22,17 @@
                         <tr class="table-warning">
                     {% endif %}
 
-                    <td><img src="{% static 'images/arrow_bullet.svg' %}" alt="Arrow bullet point"/></td>
+                    <!-- show favourites status if logged in -->
+                    {% if user.is_authenticated %}
+                        {% if restaurant in user.liked_restaurants %}
+                            <td><img src="{% static 'images/heart_fill.svg' %}" alt="Filled heart"/></td>
+                        {% else %}
+                            <td><img src="{% static 'images/heart.svg' %}" alt="Unfilled heart"/></td>
+                        {% endif %}
+                    {% else %}
+                        <td><img src="{% static 'images/arrow_bullet.svg' %}" alt="Arrow bullet point"/></td>
+                    {% endif %}
+
                     <td>{{ restaurant.name }}</td>
                     <td>{{ restaurant.description }}</td>
 

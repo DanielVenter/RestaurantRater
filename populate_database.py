@@ -9,8 +9,18 @@ from django.core.files import File
 django.setup()
 from RestaurantRaterApp.models import user_client, Restaurant
 
+# Clears media folder to prevent memory issues
+def clear():
+    media_dir = f"{current_dir}/media"
+    for folder in os.listdir(media_dir):
+        for file in os.listdir(f"{media_dir}/{folder}"):
+            os.remove(f"{media_dir}/{folder}/{file}")
+        os.rmdir(f"{media_dir}/{folder}")
+    print("Media Folder Cleared")
 
-def add_restaurant(name: str, street_number: int, street: str, city: str, description: str, restaurant_id: str, comments: dict):
+
+def add_restaurant(name: str, street_number: int, street: str, city: str, description: str, restaurant_id: str,
+                   comments: dict):
     r = Restaurant.objects.get_or_create(name=name, restaurant_id=restaurant_id, street_number=street_number,
                                          street=street,
                                          city=city, description=description, comments=comments)[0]
@@ -26,7 +36,8 @@ def add_restaurant(name: str, street_number: int, street: str, city: str, descri
     return r
 
 
-def add_user(username: str, street_number: int, street: str, city: str, liked_restaurants: list, rated_restaurants: dict, password: str, email: str, name: str,
+def add_user(username: str, street_number: int, street: str, city: str, liked_restaurants: list,
+             rated_restaurants: dict, password: str, email: str, name: str,
              surname: str,
              owner_status=False, owned_restaurants=[]):
     u = user_client.objects.get_or_create(username=username, street_number=street_number, street=street, city=city,
@@ -528,6 +539,7 @@ def populate():
 
 if __name__ == "__main__":
     print("Starting Rango population script")
+    clear()
     populate()
     for u in user_client.objects.all():
         print(f"Created user {u}")

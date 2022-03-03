@@ -9,9 +9,11 @@ from django.contrib.auth.decorators import login_required
 from datetime import datetime
 
 def home(request):
-    restaurants_list = Restaurant.objects.order_by('-rating')[:10]
+    restaurants_list = list(Restaurant.objects.all())
 
-    context_dict = {"restaurants_list":restaurants_list,
+    restaurants_list.sort(reverse=True, key = lambda x: x.rating)
+
+    context_dict = {"restaurants_list":restaurants_list[:10],
                     "boldmessage":"Check out the Restaurant Rater top ten!",}
 
     return render(request, 'RestaurantRaterApp/home.html', context=context_dict)

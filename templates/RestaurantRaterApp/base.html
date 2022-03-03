@@ -61,12 +61,16 @@
                 </li>
                 <li class="nav-item">
                     {% block favourites_button %}
-                        <a class="nav-link text-body" href="{% url 'RestaurantRaterApp:favourites' %}">Favourites</a>
+                        {% if user.is_authenticated %}
+                            <a class="nav-link text-body" href="{% url 'RestaurantRaterApp:favourites' %}">Favourites</a>
+                        {% endif %}
                     {% endblock %}
                 </li>
                 <li class="nav-item">
                     {% block profile_button %}
-                        <a class="nav-link text-body" href="{% url 'RestaurantRaterApp:profile' %}">My Profile</a>
+                        {% if user.is_authenticated %}
+                            <a class="nav-link text-body" href="{% url 'RestaurantRaterApp:profile' %}">My Profile</a>
+                        {% endif %}
                     {% endblock %}
                 </li>
             </ul>

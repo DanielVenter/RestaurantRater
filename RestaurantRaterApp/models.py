@@ -1,4 +1,6 @@
 import os
+import requests
+import urllib.parse
 
 from django.db import models
 
@@ -30,6 +32,8 @@ class Restaurant(models.Model):
         map_address = f"{self.street_number}+{self.street.replace(' ', '+')},{self.city}"
         map_link = f"www.google.com/maps/embed/v1/place?key={API_KEY}&q={map_address}"
         return map_link
+
+
 
     def __str__(self):
         return self.restaurant_id
@@ -64,6 +68,27 @@ class user_client(models.Model):
         map_address = f"{self.street_number}+{self.street.replace(' ', '+')},{self.city}"
         map_link = f"www.google.com/maps/embed/v1/place?key={API_KEY}&q={map_address}"
         return map_link
+
+    @property
+    # Generates distances to all the restaurants around them
+    def distances_dict(self):
+        distances = {}
+        user = user_client.objects.get(username=self.username)
+        start = f"{user.street_number} {user.street} {user.city}"
+        for restaurant in Restaurant.objects.all():
+            end = f"{restaurant.street_number} {restaurant.street} {restaurant.city}"
+            url = f"https://maps.googleapis.com/maps/api/distancematrix/json?origins={urllib.parse.quote(start)}&destinations={urllib.parse.quote(end)}&departure_time=now&key={API_KEY}"
+
+            payload = {}
+            headers = {}
+
+            response = requests.request("GET", url, headers=headers, data=payload)
+
+            data = eval(response.text)
+            distance = float(data["rows"][0]["elements"][0]["distance"]["text"].split(" ")[0])
+            distances[restaurant.restaurant_id] = distance
+
+        return distances
 
     def __str__(self):
         return self.username

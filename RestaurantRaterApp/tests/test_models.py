@@ -42,6 +42,11 @@ class UserModelTests(TestCase):
         for restaurant_id in restaurant_ids:
             self.assertTrue(restaurant_id in self.user2.owned_restaurants_list, msg)
 
+    #Tests distances_dictionary
+    def test_user_dict(self):
+        msg = "user distance dict not generated correctly"
+        self.assertEqual(self.user.distances_dict, {'ALC': 1.6, 'JK': 0.9, 'KC': 0.9, 'OnF': 1.5, 'BE': 8.1, 'CB': 1.8, 'HBS': 1.1, 'TG': 1.6, 'FM': 1.6, 'ST': 1.8, 'PDC': 0.7, 'N16': 0.6, 'SB': 1.2, 'B6': 3.6, 'GL': 1.2}, msg)
+
 
 class RestaurantModelTests(TestCase):
     def setUp(self):
@@ -55,14 +60,16 @@ class RestaurantModelTests(TestCase):
 
         self.assertEqual(str(self.restaurant), "ALC", msg)
 
-    #Tests if Restaurant's map_link property returns the correct link
-    def test_restaurant_map_link(self):
-        msg = "restaurant's map link does not work accordingly."
-
-        self.assertEqual(self.restaurant.map_link, "1126+Argyle+Street+Glasgow", msg)
+    # #Tests if Restaurant's map_link property returns the correct link
+    # def test_restaurant_map_link(self):
+    #     msg = "restaurant's map link does not work accordingly."
+    #
+    #     self.assertEqual(self.restaurant.map_link, "1126+Argyle+Street+Glasgow", msg)
 
     #Tests if Restaurant's rating property computes the rating correctly.
     def test_restaurant_rating(self):
         msg = "restaurant's rating method does not work accordingly."
 
         self.assertEqual(self.restaurant.rating, 4.29, msg)
+
+

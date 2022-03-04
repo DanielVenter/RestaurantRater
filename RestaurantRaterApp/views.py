@@ -18,6 +18,19 @@ def home(request):
 
     return render(request, 'RestaurantRaterApp/home.html', context=context_dict)
 
+def show_restaurant(request, restaurant_id):
+    context_dict = {}
+    try:
+        
+        restaurant = Restaurant.objects.get(restaurant_id=restaurant_id)
+
+        context_dict['restaurant'] = restaurant
+    except Restaurant.DoesNotExist:
+  
+        context_dict['restaurant'] = None
+
+       
+    return render(request, 'restaurantraterapp/restaurant.html', context=context_dict)
 
 def explore(request):
     restaurants_list = list(Restaurant.objects.all())
@@ -27,8 +40,11 @@ def explore(request):
 
 @login_required
 def favourites(request):
-    restaurants_list = list(Restaurant.objects.all())
-    context_dict = {"restaurants_list": restaurants_list,
+    
+    this_user=request.user
+    favorites = list(this_user.liked_restaurants.all())
+    
+    context_dict = {"restaurants_list": favorites,
                     "titlemessage": "View your favourite restaurants!"}
     return render(request, 'RestaurantRaterApp/favourites.html', context=context_dict)
 
@@ -70,7 +86,7 @@ def user_login(request):
                 login(request, user)
                 return redirect(reverse('RestaurantRaterApp:home'))
             else:
-                return HttpResponse("Your Rango account is disabled.")
+                return HttpResponse("Your RestaurantRaterApp account is disabled.")
         else:
             print(f"Invalid login details: {username}, {password}")
             return HttpResponse("Invalid login details supplied.")

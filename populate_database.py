@@ -330,7 +330,7 @@ def populate():
          "street_number": 10,
          "street": "Whitehall Street",
          "city": "Glasgow",
-         "description": """A new venture from the team behind Six by Nico, which donates 100% of its profits to the "
+         "description": """A new venture from the team behind Six by Nico, which donates 100% of its profits to the
                         Beatson Cancer Charity.""",
          "id": "B6",
          "comments": {"Jeff.D": """Had the vegetarian tasting menu and it was so good. Super friendly staff in a 

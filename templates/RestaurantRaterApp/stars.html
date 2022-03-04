@@ -1,0 +1,13 @@
+{% load static %}
+{% load restaurant_rater_tags %}
+
+<!-- generate star rating graphic from decimal number -->
+{% for i in '12345'|make_list %}
+    {% if rating > forloop.counter %}
+        <img src="{% static 'images/star_fill.svg' %}" alt="Filled star"/>
+    {% elif rating > forloop.counter|subtract:0.5 %}
+        <img src="{% static 'images/star_half_fill.svg' %}" alt="Half filled star"/>
+    {% else %}
+        <img src="{% static 'images/star.svg' %}" alt="Unfilled star"/>
+    {% endif %}
+{% endfor %}

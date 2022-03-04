@@ -28,9 +28,8 @@ def show_restaurant(request, restaurant_id):
     except Restaurant.DoesNotExist:
   
         context_dict['restaurant'] = None
-
        
-    return render(request, 'restaurantraterapp/restaurant.html', context=context_dict)
+    return render(request, 'RestaurantRaterApp/restaurant.html', context=context_dict)
 
 def explore(request):
     restaurants_list = list(Restaurant.objects.all())

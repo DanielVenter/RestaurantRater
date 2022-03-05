@@ -81,7 +81,9 @@
             <!-- page content -->
             <div class="row justify-content-center bg-info p-4 gy-1">
                 {% block header_block %}
-                    <h1 class="text-center">{{ titlemessage }}</h1>
+                    {% if titlemessage %}
+                        <h1 class="text-center">{{ titlemessage }}</h1>
+                    {% endif %}
                 {% endblock %}
                 {% block body_block %}
                 {% endblock %}

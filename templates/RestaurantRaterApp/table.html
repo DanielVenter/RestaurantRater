@@ -3,7 +3,7 @@
 
 <div>
     {% if restaurants_list %}
-        <table  class="table table-secondary table-hover">
+        <table class="table table-secondary table-hover">
             <thead>
                 <tr>
                     <th scope="col"></th>
@@ -16,14 +16,14 @@
                 {% for restaurant in r_list %}
 
                     <!-- alternate cyan and yellow rows -->
-                    {% if forloop.counter|modulo:2 == 0 %}
-                        <tr class="table-info">
-                    {% else %}
-                        <tr class="table-warning">
-                    {% endif %}
+                    <tr class="{% get_row_colour forloop.counter %}">
 
                     <!-- show favourites status if logged in -->
-                    <td>{% include 'RestaurantRaterApp/arrow_or_heart.html' with restaurant=restaurant %}</td>
+                    <td>
+                        <a href="{% url 'RestaurantRaterApp:show_restaurant' restaurant.restaurant_id %}" class="text-decoration-none text-body">
+                            {% include 'RestaurantRaterApp/arrow_or_heart.html' with restaurant=restaurant %}
+                        </a>
+                    </td>
 
                     <td><a href="{% url 'RestaurantRaterApp:show_restaurant' restaurant.restaurant_id %}" class="text-decoration-none text-body">{{ restaurant.name }}</a></td>
                     <td><a href="{% url 'RestaurantRaterApp:show_restaurant' restaurant.restaurant_id %}" class="text-decoration-none text-body">{{ restaurant.description }}</a></td>

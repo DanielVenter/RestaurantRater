@@ -47,6 +47,7 @@ def favourites(request):
     context_dict = {"restaurants_list": favorites,
                     "titlemessage": "View your favourite restaurants!"}
     return render(request, 'RestaurantRaterApp/favourites.html', context=context_dict)
+
 @login_required
 def add_restaurant(request):
     form = RestaurantForm()
@@ -64,8 +65,9 @@ def add_restaurant(request):
     else:
       
         print(form.errors)
-   .
+
     return render(request, 'restaurantraterapp/add_restaurant.html', {'form': form})
+
 @login_required
 def profile(request):
     context_dict = {}
@@ -73,12 +75,11 @@ def profile(request):
     this_user=request.user
     favorites = list(this_user.liked_restaurants.all())
     
-    
     context_dict['restaurants_list']=favorites
-    restaurants = Restaurant.objects.get(comment[username]=this_user.username)
+    restaurants = Restaurant.objects.get(comment[username]==this_user.username)
     for restaurant in restaurants:
         for com in restaurant.comment:
-            if com = this_user.username
+            if com == this_user.username:
                 comments.append(restaurant.comment[com] )
     context_dict['comments']= comments   
     

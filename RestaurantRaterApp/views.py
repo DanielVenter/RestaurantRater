@@ -25,6 +25,7 @@ def show_restaurant(request, restaurant_id):
         restaurant = Restaurant.objects.get(restaurant_id=restaurant_id)
 
         context_dict['restaurant'] = restaurant
+        context_dict['reviews']=restaurant.comments
     except Restaurant.DoesNotExist:
   
         context_dict['restaurant'] = None

@@ -46,16 +46,39 @@ def favourites(request):
     context_dict = {"restaurants_list": favorites,
                     "titlemessage": "View your favourite restaurants!"}
     return render(request, 'RestaurantRaterApp/favourites.html', context=context_dict)
-
+@login_required
+def add_restaurant(request):
+    form = RestaurantForm()
+   
+    if request.method == 'POST':
+        form = RestaurantForm(request.POST)
+        
+        if form.is_valid():
+       
+            restaurant=form.save(commit=True)
+            print(restaurant,restaurant.id)
+           
+        return redirect('/restaurantraterapp/')
+    else:
+      
+        print(form.errors)
+   .
+    return render(request, 'restaurantraterapp/add_restaurant.html', {'form': form})
 @login_required
 def profile(request):
     context_dict = {}
 
     this_user=request.user
     favorites = list(this_user.liked_restaurants.all())
-    context_dict['restaurants_list']=favorites
     
-    #restaurant = Restaurant.objects.get(restaurant_id=restaurant_id)
+    
+    context_dict['restaurants_list']=favorites
+    restaurants = Restaurant.objects.get(comment[username]=this_user.username)
+    for restaurant in restaurants:
+        for com in restaurant.comment:
+            if com = this_user.username
+                comments.append(restaurant.comment[com] )
+    context_dict['comments']= comments   
     
     return render(request, 'RestaurantRaterApp/profile.html', context=context_dict)
 

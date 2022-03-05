@@ -14,7 +14,7 @@ class Restaurant(models.Model):
     street = models.CharField(max_length=128)
     city = models.CharField(max_length=128)
     ratings = models.JSONField(default=list)
-    description = models.CharField(max_length=1500)
+    description = models.CharField(max_length=240)
     img1 = models.ImageField(upload_to=f"{current_dir}\\media\\")
     img2 = models.ImageField(upload_to=f"{current_dir}\\media\\")
     img3 = models.ImageField(upload_to=f"{current_dir}\\media\\")
@@ -32,8 +32,6 @@ class Restaurant(models.Model):
         map_address = f"{self.street_number}+{self.street.replace(' ', '+')},{self.city}"
         map_link = f"www.google.com/maps/embed/v1/place?key={API_KEY}&q={map_address}"
         return map_link
-
-
 
     def __str__(self):
         return self.restaurant_id
@@ -70,7 +68,7 @@ class user_client(models.Model):
         return map_link
 
     @property
-    # Generates distances to all the restaurants around them
+    # Generate distances to all the restaurants around them
     def distances_dict(self):
         distances = {}
         user = user_client.objects.get(username=self.username)

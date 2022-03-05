@@ -1,0 +1,19 @@
+{% extends 'RestaurantRaterApp/base.html' %}
+{% load static %}
+{% load restaurant_rater_tags %}
+
+{% block title_block %}
+	{% if restaurant %}
+		{{ restaurant.name }}
+	{% else %}
+		Unknown Restaurant
+	{% endif %}
+{% endblock %}
+
+{% block body_block %}
+    {% if restaurant %}
+        this is the page for {{ restaurant.name }}
+	{% else %}
+		Unknown Category
+	{% endif %}
+{% endblock %}

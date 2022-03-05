@@ -1,0 +1,15 @@
+{% load static %}
+{% load restaurant_rater_tags %}
+
+<!-- show favourites status if logged in -->
+{% if user.is_authenticated %}
+    {% if restaurant %} <!--- in user.liked_restaurants --->
+        <img src="{% static 'images/heart_fill.svg' %}" alt="Filled heart"/>
+    {% else %}
+        <img src="{% static 'images/heart.svg' %}" alt="Unfilled heart"/>
+    {% endif %}
+{% else %}
+    <a href="{% url 'RestaurantRaterApp:show_restaurant' restaurant.restaurant_id %}" class="text-decoration-none text-body">
+        <img src="{% static 'images/arrow_bullet.svg' %}" alt="Arrow bullet point"/>
+    </a>
+{% endif %}

@@ -23,30 +23,16 @@
                     {% endif %}
 
                     <!-- show favourites status if logged in -->
-                    {% if user.is_authenticated %}
-                        {% if restaurant in user.liked_restaurants %}
-                            <td><img src="{% static 'images/heart_fill.svg' %}" alt="Filled heart"/></td>
-                        {% else %}
-                            <td><img src="{% static 'images/heart.svg' %}" alt="Unfilled heart"/></td>
-                        {% endif %}
-                    {% else %}
-                        <td><img src="{% static 'images/arrow_bullet.svg' %}" alt="Arrow bullet point"/></td>
-                    {% endif %}
+                    <td>{% include 'RestaurantRaterApp/arrow_or_heart.html' with restaurant=restaurant %}</td>
 
-                    <td>{{ restaurant.name }}</td>
-                    <td>{{ restaurant.description }}</td>
+                    <td><a href="{% url 'RestaurantRaterApp:show_restaurant' restaurant.restaurant_id %}" class="text-decoration-none text-body">{{ restaurant.name }}</a></td>
+                    <td><a href="{% url 'RestaurantRaterApp:show_restaurant' restaurant.restaurant_id %}" class="text-decoration-none text-body">{{ restaurant.description }}</a></td>
 
                     <!-- generate star rating graphic from decimal number -->
                     <td>
-                        {% for i in '12345'|make_list %}
-                            {% if restaurant.rating > forloop.counter %}
-                                <img src="{% static 'images/star_fill.svg' %}" alt="Filled star"/>
-                            {% elif restaurant.rating > forloop.counter|subtract:0.5 %}
-                                <img src="{% static 'images/star_half_fill.svg' %}" alt="Half filled star"/>
-                            {% else %}
-                                <img src="{% static 'images/star.svg' %}" alt="Unfilled star"/>
-                            {% endif %}
-                        {% endfor %}
+                        <a href="{% url 'RestaurantRaterApp:show_restaurant' restaurant.restaurant_id %}" class="text-decoration-none text-body">
+                            {% include 'RestaurantRaterApp/stars.html' with rating=restaurant.rating %}
+                        </a>
                     </td>
                 </tr>
 

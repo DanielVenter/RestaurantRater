@@ -11,5 +11,5 @@ urlpatterns = [
     path('signup/', views.signup, name='signup'),
     path('login/', views.user_login, name='login'),
     path('logout/', views.user_logout, name='logout'),
-    path('<slug:restaurant_name_slug>/',views.show_restaurant, name='show_restaurant'),    
+    path('<slug:restaurant_id>/',views.show_restaurant, name='show_restaurant'),
 ]

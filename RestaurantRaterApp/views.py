@@ -57,6 +57,7 @@ def add_restaurant(request):
        
             restaurant=form.save(commit=True)
             print(restaurant,restaurant.id)
+            request.user.owner_status=True
            
         return redirect('/restaurantraterapp/')
     else:

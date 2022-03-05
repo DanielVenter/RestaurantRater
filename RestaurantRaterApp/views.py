@@ -51,6 +51,13 @@ def favourites(request):
 @login_required
 def profile(request):
     context_dict = {}
+
+    this_user=request.user
+    favorites = list(this_user.liked_restaurants.all())
+    context_dict['restaurants_list']=favorites
+    
+    #restaurant = Restaurant.objects.get(restaurant_id=restaurant_id)
+    
     return render(request, 'RestaurantRaterApp/profile.html', context=context_dict)
 
 def signup(request):

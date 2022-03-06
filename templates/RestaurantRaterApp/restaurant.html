@@ -107,16 +107,22 @@
             </div>
 
             <!--- favourite and review buttons --->
-            <div class="d-grid gap-2 d-md-flex justify-content-md-around">
-                {% if restaurant %} <!--- TODO: in user.liked_restaurants --->
-                    <!--- TODO: remove from favourites --->
-                    <a class="btn btn-warning" href="{% url 'RestaurantRaterApp:show_restaurant' restaurant.restaurant_id %}" role="button">Remove from favourites</a>
-                {% else %}
-                    <!--- TODO: add to favourites --->
-                    <a class="btn btn-warning" href="{% url 'RestaurantRaterApp:show_restaurant' restaurant.restaurant_id %}" role="button">Add to favourites</a>
-                {% endif %}
-                <a class="btn btn-warning" href="{% url 'RestaurantRaterApp:review' restaurant.restaurant_id %}" role="button">Leave a review</a>
-            </div>
+            {% if user.is_authenticated %}
+                <div class="d-grid gap-2 d-md-flex justify-content-md-around">
+                    {% if restaurant %} <!--- TODO: in user.liked_restaurants --->
+                        <!--- TODO: remove from favourites --->
+                        <a class="btn btn-warning" href="{% url 'RestaurantRaterApp:show_restaurant' restaurant.restaurant_id %}" role="button">Remove from favourites</a>
+                    {% else %}
+                        <!--- TODO: add to favourites --->
+                        <a class="btn btn-warning" href="{% url 'RestaurantRaterApp:show_restaurant' restaurant.restaurant_id %}" role="button">Add to favourites</a>
+                    {% endif %}
+                    <a class="btn btn-warning" href="{% url 'RestaurantRaterApp:review' restaurant.restaurant_id %}" role="button">Leave a review</a>
+                </div>
+            {% else %}
+                <div class="p-3 text-center">
+                    <h5>You'll need to log in or sign up to leave a review!</h5>
+                </div>
+            {% endif %}
 
         </div>
 	{% else %}

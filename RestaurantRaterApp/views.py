@@ -4,7 +4,7 @@ from RestaurantRaterApp.forms import UserProfileForm, UserForm
 from RestaurantRaterApp.models import Restaurant, user_client
 from django.shortcuts import redirect
 from django.urls import reverse
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout,update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 
@@ -102,6 +102,42 @@ def profile(request):
     context_dict['comments']= users_comments
     
     return render(request, 'RestaurantRaterApp/profile.html', context=context_dict)
+def edit_profile(request):
+    if request.method == 'POST':
+        edit_form = EditForm(request.POST,instance=request.user)
+        
+        if edit_form.is_valid() :
+           edit_form.save()
+           return redirect('RestaurantRaterApp/profile')
+         
+           
+           
+        else:
+            
+            return redirect('RestaurantRaterApp/edit_profile')
+    else:
+        edit_form = EditForm()
+        
+    context_dict = {'edit_form': edit_form }
+    return render(request, 'RestaurantRaterApp/edit_profile.html', context_dict)
+def change_password(request):
+    if request.method == 'POST':
+        password_form = PasswordChangeForm(data=request.POST,user=request.user)
+        
+        if password_form.is_valid() :
+            password_form.save()
+            update_session_auth_hash(request,password_form.user)
+            return redirect('restaurantraterapp/profile')
+           
+        else:
+            
+            return redirect('RestaurantRaterApp/change_password')
+    else:
+        password_form = PasswordChangeForm(user=request.user)
+        
+    context_dict = {'password_form': password_form }
+    return render(request, 'RestaurantRaterApp/change_password.html', context_dict)
+    
 
 def signup(request):
     registered = False
@@ -147,3 +183,26 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect(reverse('RestaurantRaterApp:home'))
+        
+def get_server_side_cookie(request, cookie, default_val=None):
+    val = request.session.get(cookie)
+    if not val:
+        val = default_val
+    return val
+
+
+def visitor_cookie_handler(request):
+    visits = int(get_server_side_cookie(request, 'visits', '1'))
+    last_visit_cookie = get_server_side_cookie(request,
+                                               'last_visit',
+                                               str(datetime.now()))
+    last_visit_time = datetime.strptime(last_visit_cookie[:-7],
+                                        '%Y-%m-%d %H:%M:%S')
+
+    if (datetime.now() - last_visit_time).days > 0:
+        visits += 1
+        request.session['last_visit'] = str(datetime.now())
+    else:
+        request.session['last_visit'] = last_visit_cookie
+
+    request.session['visits'] = visits

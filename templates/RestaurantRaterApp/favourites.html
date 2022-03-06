@@ -6,9 +6,13 @@
 {% endblock %}
 
 {% block favourites_button %}
-	<a class="nav-link active bg-info text-body border-0" aria-current="page" href="{% url 'RestaurantRaterApp:favourites' %}">Favourites</a>
+	<a class="nav-link active bg-info text-body border-0" aria-current="page" href="{% url 'RestaurantRaterApp:favourites' sort %}">Favourites</a>
+{% endblock %}
+
+{% block header_block %}
+    {% include 'RestaurantRaterApp/sort_header.html' with sort=sort title=titlemessage url="RestaurantRaterApp:favourites" opts=sort_opts  %}
 {% endblock %}
 
 {% block body_block %}
-	{% include 'RestaurantRaterApp/table.html' with r_list=restaurants_list %}
+    {% include 'RestaurantRaterApp/table.html' with r_list=restaurants_list %}
 {% endblock %}

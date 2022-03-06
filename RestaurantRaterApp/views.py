@@ -32,21 +32,38 @@ def show_restaurant(request, restaurant_id):
        
     return render(request, 'RestaurantRaterApp/restaurant.html', context=context_dict)
 
-def explore(request):
+def explore(request, sort):
     restaurants_list = list(Restaurant.objects.all())
-    context_dict = {"restaurants_list":restaurants_list,
-                    "titlemessage": "Explore the Restaurant Rater records!"}
+    sort_options = sort_by(restaurants_list, sort)
+
+    context_dict = {"restaurants_list": restaurants_list,
+                    "titlemessage": "Explore the Restaurant Rater records!",
+                    "sort": sort,
+                    "sort_opts":sort_options}
     return render(request, 'RestaurantRaterApp/explore.html', context=context_dict)
 
 @login_required
-def favourites(request):
-    
+def favourites(request, sort):
     this_user=request.user
-    favorites = list(this_user.liked_restaurants.all())
+    favourites = list(Restaurant.objects.all()) #TODO: list(this_user.liked_restaurants.all())
+    sort_options = sort_by(favourites, sort)
     
-    context_dict = {"restaurants_list": favorites,
-                    "titlemessage": "View your favourite restaurants!"}
+    context_dict = {"restaurants_list": favourites,
+                    "titlemessage": "View your favourite restaurants!",
+                    "sort": sort,
+                    "sort_opts":sort_options}
     return render(request, 'RestaurantRaterApp/favourites.html', context=context_dict)
+
+#helper function for explore and favourites views
+def sort_by(list, sort):
+    if sort == "alphabetical":
+        list.sort(key = lambda x: x.name)
+    elif sort == "distance":
+        #TODO: sort by distance from user
+        pass
+    elif sort == "rating":
+        list.sort(reverse=True, key = lambda x: x.rating)
+    return ["alphabetical", "distance", "rating"]
 
 @login_required
 def add_restaurant(request):

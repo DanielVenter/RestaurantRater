@@ -5,8 +5,8 @@ app_name = 'RestaurantRaterApp'
 
 urlpatterns = [
     path('', views.home, name='home'),
-    path('explore/', views.explore, name='explore'),
-    path('favourites/', views.favourites, name='favourites'),
+    path('explore/<slug:sort>/', views.explore, name='explore'),
+    path('favourites/<slug:sort>/', views.favourites, name='favourites'),
     path('profile/', views.profile, name='profile'),
     path('signup/', views.signup, name='signup'),
     path('login/', views.user_login, name='login'),

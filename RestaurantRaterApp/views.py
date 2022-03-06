@@ -64,6 +64,29 @@ def sort_by(list, sort):
     elif sort == "rating":
         list.sort(reverse=True, key = lambda x: x.rating)
     return ["alphabetical", "distance", "rating"]
+    
+ @login_required
+def add_review(request, restaurant_id):
+    try:
+        restaurant = Restaurant.objects.get(restaurant_id=restaurant_id)
+    except Restaurant.DoesNotExist:
+        restaurant = None
+    
+    if restaurant is None:
+        return redirect('/restaurantraterapp/')
+    form = ReviewForm()
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            if restaurant:
+                form.save(commit=False)
+                
+                return redirect(reverse('restaurantraterapp:show_restaurant',kwargs={'restaurant_id':  restaurant_id}))
+    else:
+        print(form.errors)
+    context_dict = {'form': form, 'restaurant': restaurant}
+    return render(request, 'restaurantraterapp/add_review.html', context=context_dict)
+   
 
 @login_required
 def add_restaurant(request):

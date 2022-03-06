@@ -4,10 +4,10 @@
 <!-- show favourites status if logged in -->
 {% if user.is_authenticated %}
     {% if restaurant %} <!--- TODO: in user.liked_restaurants --->
-        <img src="{% static 'images/heart_fill.svg' %}" alt="Filled heart"/>
+        <img src="{% static 'images/heart_fill.svg' %}" class="h-75 mx-auto d-block" alt="Filled heart"/>
     {% else %}
-        <img src="{% static 'images/heart.svg' %}" alt="Unfilled heart"/>
+        <img src="{% static 'images/heart.svg' %}" class="h-75" alt="Unfilled heart"/>
     {% endif %}
 {% else %}
-    <img src="{% static 'images/arrow_bullet.svg' %}" alt="Arrow bullet point"/>
+    <img src="{% static 'images/arrow_bullet.svg' %}" class="h-75" alt="Arrow bullet point"/>
 {% endif %}

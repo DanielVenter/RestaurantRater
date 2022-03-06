@@ -88,17 +88,18 @@ def add_restaurant(request):
 @login_required
 def profile(request):
     context_dict = {}
-
     this_user=request.user
-    favorites = list(this_user.liked_restaurants.all())
-    
-    context_dict['restaurants_list']=favorites
-    restaurants = Restaurant.objects.get(comment[username]==this_user.username)
+
+    owned = list(Restaurant.objects.all()) #TODO: list(this_user.owned_restaurants.all())
+    context_dict['restaurants_list']=owned
+
+    restaurants = list(Restaurant.objects.all())
+    users_comments = {}
     for restaurant in restaurants:
-        for com in restaurant.comment:
+        for com in restaurant.comments:
             if com == this_user.username:
-                comments.append(restaurant.comment[com] )
-    context_dict['comments']= comments   
+                users_comments[restaurant.comments[com]]
+    context_dict['comments']= users_comments
     
     return render(request, 'RestaurantRaterApp/profile.html', context=context_dict)
 

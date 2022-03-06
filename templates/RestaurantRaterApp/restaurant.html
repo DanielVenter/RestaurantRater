@@ -15,14 +15,14 @@
         <div class="col-md-7 p-1-2">
 
             <!--- name and rating header --->
-            <div class="row justify-content-center align-items-center">
-                <div class="col-md-1">
+            <div class="d-grid gap-2 d-flex mb-2 mx-1">
+                <div class="col-1 flex-fill">
                     {% include 'RestaurantRaterApp/arrow_or_heart.html' with restaurant=restaurant %}
                 </div>
-                <div class="col-md-6">
+                <div class="col-6 flex-fill">
                     <h1>{{ restaurant.name }}</h1>
                 </div>
-                <div class="col-md-5">
+                <div class="col-5 flex-fill">
                     {% include 'RestaurantRaterApp/stars.html' with rating=restaurant.rating %}
                 </div>
             </div>

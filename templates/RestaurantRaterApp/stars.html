@@ -4,10 +4,10 @@
 <!-- generate star rating graphic from decimal number -->
 {% for i in '12345'|make_list %}
     {% if rating > forloop.counter %}
-        <img src="{% static 'images/star_fill.svg' %}" alt="Filled star"/>
+        <img src="{% static 'images/star_fill.svg' %}" class="h-50" alt="Filled star"/>
     {% elif rating > forloop.counter|subtract:0.5 %}
-        <img src="{% static 'images/star_half_fill.svg' %}" alt="Half filled star"/>
+        <img src="{% static 'images/star_half_fill.svg' %}" class="h-50" alt="Half filled star"/>
     {% else %}
-        <img src="{% static 'images/star.svg' %}" alt="Unfilled star"/>
+        <img src="{% static 'images/star.svg' %}" class="h-50" alt="Unfilled star"/>
     {% endif %}
 {% endfor %}

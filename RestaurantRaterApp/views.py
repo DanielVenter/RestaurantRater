@@ -65,7 +65,7 @@ def sort_by(list, sort):
         list.sort(reverse=True, key = lambda x: x.rating)
     return ["alphabetical", "distance", "rating"]
     
- @login_required
+@login_required
 def add_review(request, restaurant_id):
     try:
         restaurant = Restaurant.objects.get(restaurant_id=restaurant_id)

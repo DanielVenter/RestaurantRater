@@ -3,6 +3,7 @@ import requests
 import urllib.parse
 
 from django.db import models
+from django_resized import ResizedImageField
 
 current_dir = os.getcwd()
 API_KEY = "AIzaSyAxJa_f1f5FhqyY_JhZ42JBijy4dXNgGQA"
@@ -15,9 +16,9 @@ class Restaurant(models.Model):
     city = models.CharField(max_length=128)
     ratings = models.JSONField(default=list)
     description = models.CharField(max_length=240)
-    img1 = models.ImageField(upload_to=f"{current_dir}\\media\\")
-    img2 = models.ImageField(upload_to=f"{current_dir}\\media\\")
-    img3 = models.ImageField(upload_to=f"{current_dir}\\media\\")
+    img1 = ResizedImageField(size=[225, 225], upload_to=f"{current_dir}\\media\\")
+    img2 = ResizedImageField(size=[225, 225], upload_to=f"{current_dir}\\media\\")
+    img3 = ResizedImageField(size=[225, 225], upload_to=f"{current_dir}\\media\\")
     restaurant_id = models.CharField(max_length=128, primary_key=True)
     comments = models.JSONField(default=dict)
 

@@ -125,6 +125,7 @@ def profile(request):
     context_dict['comments']= users_comments
     
     return render(request, 'RestaurantRaterApp/profile.html', context=context_dict)
+
 def edit_profile(request):
     if request.method == 'POST':
         edit_form = EditForm(request.POST,instance=request.user)
@@ -143,6 +144,7 @@ def edit_profile(request):
         
     context_dict = {'edit_form': edit_form }
     return render(request, 'RestaurantRaterApp/edit_profile.html', context_dict)
+
 def change_password(request):
     if request.method == 'POST':
         password_form = PasswordChangeForm(data=request.POST,user=request.user)

@@ -10,7 +10,18 @@ django.setup()
 from RestaurantRaterApp.models import user_client, Restaurant
 
 
-def add_restaurant(name: str, street_number: int, street: str, city: str, description: str, restaurant_id: str, comments: dict):
+# Clears media folder to prevent memory issues
+def clear():
+    media_dir = f"{current_dir}/media"
+    for folder in os.listdir(media_dir):
+        for file in os.listdir(f"{media_dir}/{folder}"):
+            os.remove(f"{media_dir}/{folder}/{file}")
+        os.rmdir(f"{media_dir}/{folder}")
+    print("Media Folder Cleared")
+
+
+def add_restaurant(name: str, street_number: int, street: str, city: str, description: str, restaurant_id: str,
+                   comments: dict):
     r = Restaurant.objects.get_or_create(name=name, restaurant_id=restaurant_id, street_number=street_number,
                                          street=street,
                                          city=city, description=description, comments=comments)[0]
@@ -26,7 +37,8 @@ def add_restaurant(name: str, street_number: int, street: str, city: str, descri
     return r
 
 
-def add_user(username: str, street_number: int, street: str, city: str, liked_restaurants: list, rated_restaurants: dict, password: str, email: str, name: str,
+def add_user(username: str, street_number: int, street: str, city: str, liked_restaurants: list,
+             rated_restaurants: dict, password: str, email: str, name: str,
              surname: str,
              owner_status=False, owned_restaurants=[]):
     u = user_client.objects.get_or_create(username=username, street_number=street_number, street=street, city=city,
@@ -319,7 +331,7 @@ def populate():
          "street_number": 10,
          "street": "Whitehall Street",
          "city": "Glasgow",
-         "description": """A new venture from the team behind Six by Nico, which donates 100% of its profits to the "
+         "description": """A new venture from the team behind Six by Nico, which donates 100% of its profits to the
                         Beatson Cancer Charity.""",
          "id": "B6",
          "comments": {"Jeff.D": """Had the vegetarian tasting menu and it was so good. Super friendly staff in a 
@@ -338,7 +350,7 @@ def populate():
         # Glorisa -15
         {"name": "Glorisa",
          "street_number": 1321,
-         "street": "Argyle Street123",
+         "street": "Argyle Street",
          "city": "Glasgow",
          "description": "For fresh Mediterranean flavours from the chef who brought us Alchemilla.",
          "id": "GL",
@@ -351,6 +363,112 @@ def populate():
                       "Jeremy.S": """The venue and staff are nice but the food simply wasn't for me. Not my style and 
                       for me it wasn't tasty."""}
          },
+        # Crabshakk - 16
+        {"name": "Crabshakk",
+         "street_number": 1114,
+         "street": "Argyle Street",
+         "city": "Glasgow",
+         "description": "One of the city’s best seafood restaurants with a daily specials board that’s always worth a gander.",
+         "id": "CS",
+         "comments": {"Andy.P": """Excellent seafood restaurant, it’s a go to for seafood lovers. We had scallops in 
+         brown butter, cockles with samphire then halibut as a main course and few oysters as a “treat” (just 
+         because) Everything was cooked perfectly. I do recommend book a table as it is quite busy. By the time we 
+         were there I saw 2 deliveries of fish and sea food, so always fresh, good quality!""",
+                      "Michael.G": """Food was absolutely amazing, lovely and fresh. The staff were very attentive 
+                      and friendly. A little tight for space at the bar seats but then again we didn't reserve a 
+                      table. Overall a great experience.""",
+                      "Jeremy.S": """Truly exceptional meal, fantastic food and service, the scallops are probably 
+                      the best we've ever had. Will definitely go back. Highly recommended.""",
+                      "Nicola.H": """I had the halibut and my husband had langoustine. Just delicious.  Can't praise 
+                      this place enough. Brilliant food and staff were so friendly and attentive. Had chocolate cake 
+                      for dessert. More like a mousse with banana ice cream. Yum. """,
+                      "Danny.M": """Not just incredibly tasty & fresh food, the service was impeccable. We were 
+                      served by such a happy waitress who was very knowledgeable about the menu which really added to 
+                      our experience at crabshakk. Not the first time, and won’t be the last. """
+                      }
+         },
+        # Stereo - 17
+        {"name": "Stereo",
+         "street_number": 22,
+         "street": "Renfield Lane",
+         "city": "Glasgow",
+         "description": "Bar and gig venue with gig posters for wallpaper, a vegan menu and a leftfield events calendar.",
+         "id": "STO",
+         "comments": {"Matt.W": """Quite possibly the worst bar staff in Glasgow.  We visited Stereo last night with 
+         a few friends.  We had a great night upstairs and then made the mistake of going downstairs. We ordered two 
+         drinks and then realised we couldn't pay with our card.  We had no cash so I went to the cash machine.  
+         While away my wife stayed at the bar.  On my return the bar man only gave us one of the drinks I had 
+         ordered.  When I asked for the other he said they had already given it to us.  They hadn't and it was 
+         nowhere to be seen.  I fail to see why they would have given us one drink we hadn't paid for.  After a long 
+         argument and the intervention on the other bar man who was similarly clueless we had to pay for the drink 
+         they hadn't served us in order to get served and avoid getting kicked out.  Awful customer service from two 
+         complete idiots.""",
+                      "Thom.O": """We used to enjoy Stereo until we made the mistake of visiting last night.  The 
+                      staff downstairs were the worst we have ever experienced in Glasgow.  Rude, clueless idiots.""",
+                      "Rose.S": """Poor service and over priced, if you like eating sawdust sitting on school 
+                      furniture... You might like it.... And don't start me on the staff. One star is too much .. but 
+                      it won't let me give less""",
+                      "Nicola.H": """They kicked me out for being "too pinging" I would say that's debatable. Great 
+                      night ruined by snide grasses. Bar staff friendly""",
+                      }
+         },
+
+        # Gaga - 18
+        {"name": "Gaga",
+         "street_number": 566,
+         "street": "Dumbarton Road",
+         "city": "Glasgow",
+         "description": "South East Asian dishes, delicious cocktails and plenty of soul.",
+         "id": "GG",
+         "comments": {"Michael.G": """Tasty food, very friendly and accommodating staff. Will be back in future. Also 
+         dog friendly!""",
+                      "Jeff.D": """Were in the area, needed somewhere to eat Found this place. Very good. Food was 
+                      tasty, staff nice. When in area again we will stop there again for lunch. It was fairly busy, 
+                      trendy wee place in Partick""",
+                      "Colin": """Absolutely brilliant meal here at GaGa! Service, decor, atmosphere all on point and 
+                      great for the area to have this alongside the Thornwood and other places. Will definitely be 
+                      back!""",
+                      "Danny.M": """What can I say, from the minute I walked in the the door ,Mark was so welcoming, 
+                      the vibes were just perfect and the staff amazing Food 10/10, Staff 12/10 . Can't wait to bring 
+                      the dogs. My new Local x""",
+                      }
+         },
+
+        # Chinaskis - 19
+        {"name": "Chinaskis",
+         "street_number": 239,
+         "street": "North Street",
+         "city": "Glasgow",
+         "description": "Proper sleeves-rolled-up plates and (of course) a formidable drinks selection at a US-style "
+                        "dive.",
+         "id": "CHS",
+         "comments": {"Mark.E": """Best bar in Glasgow! Not cheap but plenty of ambience and decent bar food too. 
+         Outdoor space has been improved with heaters and roofing now.""",
+                      "Jeremy.S": """Great spot to drop by for a drink or two. Nice heated outdoor area if you cant 
+                      get inside. Friendly staff and great atmosphere.""",
+                      "Colin": """Great wee bar with a huge amount of outdoor space. Can recommend their own brews, 
+                      they're decent. Good food too.""",
+                      "Nicola.H": """Amazing pub with fantastic food, on par with many high end restaurants in my 
+                      opinion. Large outdoor area perfect for summer and a cosy candle lit  interior for winter. Only 
+                      downside is a small selection of cider :(""",
+                      }
+         },
+        # The Hug and Pint - 20
+        {"name": "The Hug and Pint",
+         "street_number": 171,
+         "street": "Great Western Road",
+         "city": "Glasgow",
+         "description": "Creative contemporary vegan dining to wolf down before a gig.",
+         "id": "HP",
+         "comments": {"Mark.E": """Zero enforcement of mask wearing at the venue. I have not felt so unsafe since 
+         covid first came to the country. Not even a verbal reminder coming in that masks are mandatory and crammed 
+         full to the point of shoving. Gig was good, won’t be back.""",
+                      "Andy.P": """This place is pitiful. The drinks are way overpriced, considering what the place 
+                      offers. The gig venue is tiny, like the size of two bedrooms. Totally cramped and sounds awful. 
+                      I don't even know if it's legal, the venue seems like a fire hazard. I've pretty much 
+                      blacklisted this place. I'll never go back.""",
+                      }
+         },
 
     ]
     # User data, list of dictionaries
@@ -362,7 +480,7 @@ def populate():
          "city": "Glasgow",
          "liked_restaurants": ["ALC", "SB", "B6"],
          "rated_restaurants": {"ALC": 4, "JK": 2, "ST": 3, "PDC": 2, "N16": 1, "SB": 4, "B6": 5, "GL": 3, "CB": 1,
-                               "FM": 2, "TG": 3, "HBS": 1},
+                               "FM": 2, "TG": 3, "HBS": 1, "CHS": 5, "HP": 1},
          "password": "Mark123",
          "email": "mark@gmail.com",
          "name": "Mark",
@@ -377,7 +495,7 @@ def populate():
          "city": "Glasgow",
          "liked_restaurants": ["ALC", "JK", "HBS"],
          "rated_restaurants": {"ALC": 5, "JK": 5, "KC": 3, "OnF": 1, "SB": 2, "B6": 5, "GL": 1, "CB": 2, "FM": 2,
-                               "TG": 3, "HBS": 4},
+                               "TG": 3, "HBS": 4, "STO": 1},
          "password": "Matt123",
          "email": "matt@gmail.com",
          "name": "Matthew",
@@ -392,7 +510,7 @@ def populate():
          "city": "Glasgow",
          "liked_restaurants": ["ALC", "PDC", "B6", "GL"],
          "rated_restaurants": {"ALC": 4, "JK": 3, "BE": 5, "ST": 3, "PDC": 4, "N16": 2, "SB": 1, "B6": 4, "GL": 5,
-                               "TG": 2, "HBS": 3},
+                               "TG": 2, "HBS": 3, "STO": 2},
          "password": "Thom123",
          "email": "thom@gmail.com",
          "name": "Thomas",
@@ -406,7 +524,7 @@ def populate():
          "street": "Duke St",
          "city": "Glasgow",
          "liked_restaurants": ["ALC"],
-         "rated_restaurants": {"ALC": 4, "JK": 2, "KC": 4, "OnF": 5, "BE": 4, "ST": 2, "PDC": 3},
+         "rated_restaurants": {"ALC": 4, "JK": 2, "KC": 4, "OnF": 5, "BE": 4, "ST": 2, "PDC": 3, "CS": 4, "GG": 5},
          "password": "Matt123",
          "email": "matt@gmail.com",
          "name": "Michael",
@@ -420,7 +538,8 @@ def populate():
          "street": "Great Western Rd",
          "city": "Glasgow",
          "liked_restaurants": ["FM"],
-         "rated_restaurants": {"KC": 3, "OnF": 5, "BE": 4, "ST": 2, "PDC": 4, "CB": 3, "FM": 2, "TG": 1, "HBS": 2},
+         "rated_restaurants": {"KC": 3, "OnF": 5, "BE": 4, "ST": 2, "PDC": 4, "CB": 3, "FM": 2, "TG": 1, "HBS": 2,
+                               "CS": 4, "HP": 1},
          "password": "Andy123",
          "email": "andy@gmail.com",
          "name": "Andy",
@@ -435,7 +554,7 @@ def populate():
          "city": "Glasgow",
          "liked_restaurants": ["ALC", "N16", "B6", "FM"],
          "rated_restaurants": {"ALC": 4, "JK": 4, "ST": 3, "PDC": 2, "N16": 4, "SB": 3, "B6": 4, "GL": 2, "FM": 4,
-                               "TG": 3, "HBS": 2},
+                               "TG": 3, "HBS": 2, "STO": 1},
          "password": "Rose123",
          "email": "rose@gmail.com",
          "name": "Rose",
@@ -449,7 +568,8 @@ def populate():
          "street": "Great Western Rd",
          "city": "Glasgow",
          "liked_restaurants": ["SB"],
-         "rated_restaurants": {"ST": 2, "PDC": 4, "N16": 2, "SB": 5, "B6": 5, "GL": 1, "CB": 4, "FM": 3, "HBS": 2},
+         "rated_restaurants": {"ST": 2, "PDC": 4, "N16": 2, "SB": 5, "B6": 5, "GL": 1, "CB": 4, "FM": 3, "HBS": 2,
+                               "CS": 5, "CHS": 5, "HP": 1},
          "password": "Jem123",
          "email": "jeremy@gmail.com",
          "name": "Jeremy",
@@ -464,7 +584,7 @@ def populate():
          "city": "Glasgow",
          "liked_restaurants": ["ALC", "JK", "B6", "GL", "FM"],
          "rated_restaurants": {"ALC": 5, "JK": 4, "KC": 3, "OnF": 1, "ST": 3, "PDC": 2, "B6": 5, "GL": 4, "CB": 3,
-                               "FM": 4, "TG": 3, "HBS": 3},
+                               "FM": 4, "TG": 3, "HBS": 3, "GG": 4},
          "password": "Jeff123",
          "email": "jeff@gmail.com",
          "name": "Jeff",
@@ -478,13 +598,13 @@ def populate():
          "street": "Cathcard Rd",
          "city": "Glasgow",
          "liked_restaurants": ["PDC", "GL"],
-         "rated_restaurants": {"PDC": 3, "N16": 3, "SB": 3, "B6": 4, "GL": 5},
+         "rated_restaurants": {"PDC": 3, "N16": 3, "SB": 3, "B6": 4, "GL": 5, "GG": 3, "CHS": 4, "HP": 1},
          "password": "Colin123",
          "email": "colin@gmail.com",
          "name": "Colin",
          "surname": "McNair",
          "owner_status": True,
-         "owned_restaurants": ["ALC", "JK", "KC", "OnF", "BE"]
+         "owned_restaurants": ["ALC", "JK", "KC", "OnF", "BE", "CS"]
          },
         # Nicola Hamill - Owner
         {"username": "Nicola.H",
@@ -492,13 +612,13 @@ def populate():
          "street": "Victoria Rd",
          "city": "Glasgow",
          "liked_restaurants": ["ALC"],
-         "rated_restaurants": {"ALC": 4, "JK": 3, "KC": 3, "HBS": 2},
+         "rated_restaurants": {"ALC": 4, "JK": 3, "KC": 3, "HBS": 2, "CS": 5, "STO": 2, "CHS": 4},
          "password": "Nichola123",
          "email": "nichola@gmail.com",
          "name": "Nicola",
          "surname": "Hamill",
          "owner_status": True,
-         "owned_restaurants": ["ST", "PDC", "N16", "SB", "B6"]
+         "owned_restaurants": ["ST", "PDC", "N16", "SB", "B6", "GG", "HP"]
          },
         # Danny Macpherson - Owner
         {"username": "Danny.M",
@@ -506,13 +626,13 @@ def populate():
          "street": "Calder St",
          "city": "Glasgow",
          "liked_restaurants": ["ST", "SB", "GL"],
-         "rated_restaurants": {"ST": 4, "PDC": 3, "N16": 3, "SB": 4, "B6": 5, "GL": 5},
+         "rated_restaurants": {"ST": 4, "PDC": 3, "N16": 3, "SB": 4, "B6": 5, "GL": 5, "CS": 4, "GG": 2},
          "password": "Danny123",
          "email": "danny@gmail.com",
          "name": "Danny",
          "surname": "Macpherson",
          "owner_status": True,
-         "owned_restaurants": ["GL", "CB", "FM", "TG", "HBS"]
+         "owned_restaurants": ["GL", "CB", "FM", "TG", "HBS", "STO", "CHS"]
 
          }]
 
@@ -528,6 +648,7 @@ def populate():
 
 if __name__ == "__main__":
     print("Starting Rango population script")
+    clear()
     populate()
     for u in user_client.objects.all():
         print(f"Created user {u}")

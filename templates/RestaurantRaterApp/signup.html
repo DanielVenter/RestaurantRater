@@ -14,8 +14,9 @@
 		Rango says: <strong>register here!</strong><br />
 		<form id="user_form" method="post" action="{% url 'RestaurantRaterApp:signup' %}" enctype="multipart/form-data">
 			{% csrf_token %}
-			{{ user_form.as_p }}
-			{{ profile_form.as_p }}
+			{{ signup_form.as_p }}
+			<!-- {{ user_form.as_p }} -->
+			<!-- {{ profile_form.as_p }} -->
 			<input type="submit" name="submit" value="Register" />
 		</form>
 	{% endif %}

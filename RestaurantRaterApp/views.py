@@ -168,24 +168,30 @@ def change_password(request):
 def signup(request):
     registered = False
     if request.method == 'POST':
-        user_form = UserForm(request.POST)
-        profile_form = UserProfileForm(request.POST)
-        if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save()
-            user.set_password(user.password)
+        #user_form = UserForm(request.POST)
+        #profile_form = UserProfileForm(request.POST)
+        signup_form = SignUpForm(request.POST)
+        #if user_form.is_valid() and profile_form.is_valid():
+        if signup_form.is_valid():
+            #user = user_form.save()
+            user = signup_form.save()
+            #user.set_password(user.password)
             user.save()
-            prof = profile_form.save(commit=False)
-            prof.user = user
-            if 'picture' in request.FILES:
-                prof.picture = request.FILES['picture']
-            prof.save()
+            #prof = profile_form.save(commit=False)
+            #prof.user = user
+            #if 'picture' in request.FILES:
+            #    prof.picture = request.FILES['picture']
+            #prof.save()
             registered = True
         else:
-            print(user_form.errors, profile_form.errors)
+            #print(user_form.errors, profile_form.errors)
+            print(signup_form.errors)
     else:
-        user_form = UserForm()
-        profile_form = UserProfileForm()
-    context_dict = {'user_form': user_form, 'profile_form': profile_form, 'registered': registered}
+        #user_form = UserForm()
+        #profile_form = UserProfileForm()
+        signup_form = SignUpForm()
+    #context_dict = {'user_form': user_form, 'profile_form': profile_form, 'registered': registered}
+    context_dict = {'signup_form':signup_form, 'registered': registered}
     return render(request, 'RestaurantRaterApp/signup.html', context_dict)
 
 def user_login(request):

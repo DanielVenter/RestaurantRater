@@ -4,6 +4,7 @@ import urllib.parse
 
 from django.db import models
 from django_resized import ResizedImageField
+from django.contrib.auth.models import User
 
 current_dir = os.getcwd()
 API_KEY = "AIzaSyAxJa_f1f5FhqyY_JhZ42JBijy4dXNgGQA"
@@ -39,6 +40,7 @@ class Restaurant(models.Model):
 
 
 class user_client(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     username = models.CharField(max_length=128, primary_key=True)
     liked_restaurants = models.ManyToManyField(Restaurant, related_name="likes")
     street_number = models.PositiveIntegerField()

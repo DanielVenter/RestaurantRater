@@ -626,13 +626,13 @@ def populate():
          "street": "Calder St",
          "city": "Glasgow",
          "liked_restaurants": ["ST", "SB", "GL"],
-         "rated_restaurants": {"ST": 4, "PDC": 3, "N16": 3, "SB": 4, "B6": 5, "GL": 5, "CS": 4, "GG": 2},
+         "rated_restaurants": {"ST": 4, "PDC": 3, "N16": 3, "B6": 5, "GL": 5, "CS": 4, "GG": 2},
          "password": "Danny123",
          "email": "danny@gmail.com",
          "name": "Danny",
          "surname": "Macpherson",
          "owner_status": True,
-         "owned_restaurants": ["GL", "CB", "FM", "TG", "HBS", "STO", "CHS"]
+         "owned_restaurants": ["GL", "CB", "FM", "TG", "HBS", "STO", "CHS", "SB"]
 
          }]
 

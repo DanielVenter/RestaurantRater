@@ -1,12 +1,13 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from RestaurantRaterApp.forms import UserProfileForm, UserForm
+from RestaurantRaterApp.forms import UserProfileForm, UserForm, SignUpForm, EditForm, RestaurantForm, ReviewForm
 from RestaurantRaterApp.models import Restaurant, user_client
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout,update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
+from django.contrib.auth.forms import PasswordChangeForm
 
 def home(request):
     restaurants_list = list(Restaurant.objects.all())

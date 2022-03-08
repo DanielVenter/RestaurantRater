@@ -33,7 +33,7 @@ class Restaurant(models.Model):
     # Map Link used for Google API
     def map_link(self):
         map_address = f"{self.street_number}+{self.street.replace(' ', '+')},{self.city}"
-        map_link = f"www.google.com/maps/embed/v1/place?key={API_KEY}&q={map_address}"
+        map_link = f"https://www.google.com/maps/embed/v1/place?key={API_KEY}&q={map_address}"
         return map_link
 
     def __str__(self):

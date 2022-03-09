@@ -45,8 +45,8 @@ def add_user(username: str, street_number: int, street: str, city: str, liked_re
     user = User.objects.create_user(username=username, email=email, password=password)
     user.save()
 
-    u = user_client.objects.get_or_create(user=user, street_number=street_number, street=street, city=city,
-                                          rated_restaurants=rated_restaurants,owner_status=owner_status)[0]
+    u = user_client.objects.get_or_create(user=user, name=name, surname=surname, street_number=street_number, street=street, city=city,
+                                          rated_restaurants=rated_restaurants, owner_status=owner_status)[0]
     u.save()
 
     # Adds ratings

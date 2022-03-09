@@ -12,7 +12,7 @@
 
 {% block body_block %}
     {% if restaurant %}
-        <div class="col-md-7 p-1-2">
+        <div class="col-md-7 p-3">
 
             <!--- name and rating header --->
             <div class="d-grid gap-2 d-flex mb-2 mx-1">
@@ -78,52 +78,59 @@
 
             </div>
 
+
+
         </div>
-        <div class="col-md-5">
+        <div class="col-md-5 p-0" style="height:750px">
+            <div class="overflow-auto" style="max-height:650px">
 
-            <!--- table of reviews --->
-            <div class="row justify-content-center align-items-center">
-                {% if restaurant.comments %}
-                    <table class="table table-secondary table-hover">
-                        <thead>
-                            <tr>
-                                <th scope="col"></th>
-                                <th scope="col">Reviews</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for commenter, review in restaurant.comments.items %}
-                                <!-- alternate cyan and yellow rows -->
-                                <tr class="{% get_row_colour forloop.counter %}">
-                                    <td>{{ commenter }}</td>
-                                    <td>{{ review }}</td>
+                <!--- table of reviews --->
+                <div class="row mw-100 p-0 m-0" >
+                    {% if restaurant.comments %}
+                        <table class="table table-secondary table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col">Reviews</th>
                                 </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                {% else %}
-                    <strong>Our records currently don't contain any reviews!</strong><br />
-                {% endif %}
-            </div>
-
-            <!--- favourite and review buttons --->
-            {% if user.is_authenticated %}
-                <div class="d-grid gap-2 d-md-flex justify-content-md-around">
-                    {% if restaurant %} <!--- TODO: in user.liked_restaurants --->
-                        <!--- TODO: remove from favourites --->
-                        <a class="btn btn-warning" href="{% url 'RestaurantRaterApp:show_restaurant' restaurant.restaurant_id %}" role="button">Remove from favourites</a>
+                            </thead>
+                            <tbody>
+                                {% for commenter, review in restaurant.comments.items %}
+                                    <!-- alternate cyan and yellow rows -->
+                                    <tr class="{% get_row_colour forloop.counter %}">
+                                        <td>{{ commenter }}</td>
+                                        <td>{{ review }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     {% else %}
-                        <!--- TODO: add to favourites --->
-                        <a class="btn btn-warning" href="{% url 'RestaurantRaterApp:show_restaurant' restaurant.restaurant_id %}" role="button">Add to favourites</a>
+                        <strong>Our records currently don't contain any reviews!</strong><br />
                     {% endif %}
-                    <a class="btn btn-warning" href="{% url 'RestaurantRaterApp:review' restaurant.restaurant_id %}" role="button">Leave a review</a>
                 </div>
-            {% else %}
-                <div class="p-3 text-center">
-                    <h5>You'll need to log in or sign up to leave a review!</h5>
-                </div>
-            {% endif %}
 
+            </div>
+            <div style="max-height:100px">
+
+                <!--- favourite and review buttons --->
+                {% if user.is_authenticated %}
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-around mt-4">
+                        {% if restaurant %} <!--- TODO: in user.liked_restaurants --->
+                            <!--- TODO: remove from favourites --->
+                            <a class="btn btn-warning" href="{% url 'RestaurantRaterApp:show_restaurant' restaurant.restaurant_id %}" role="button">Remove from favourites</a>
+                        {% else %}
+                            <!--- TODO: add to favourites --->
+                            <a class="btn btn-warning" href="{% url 'RestaurantRaterApp:show_restaurant' restaurant.restaurant_id %}" role="button">Add to favourites</a>
+                        {% endif %}
+                        <a class="btn btn-warning" href="{% url 'RestaurantRaterApp:review' restaurant.restaurant_id %}" role="button">Leave a review</a>
+                    </div>
+                {% else %}
+                    <div class="p-3 text-center">
+                        <h5>You'll need to log in or sign up to leave a review!</h5>
+                    </div>
+                {% endif %}
+
+            </div>
         </div>
 	{% else %}
 		Sorry, no restaurant recognised

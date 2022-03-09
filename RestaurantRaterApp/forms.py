@@ -23,7 +23,7 @@ class UserForm(forms.ModelForm):
 class SignUpForm(forms.ModelForm):
     class Meta:
         model = user_client
-        fields = ('city', 'street', 'street_number')
+        fields = ('name', 'surname','city', 'street', 'street_number')
 
 class EditForm(forms.ModelForm):
     username = forms.CharField(required=True)

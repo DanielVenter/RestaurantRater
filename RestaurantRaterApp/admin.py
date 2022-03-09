@@ -4,7 +4,7 @@ from RestaurantRaterApp.models import user_client, Restaurant
 
 class user_client_Admin(admin.ModelAdmin):
     list_display = (
-        'user',"street_number", "street", "city", "rated_restaurants", "owner_status")
+        "user", "name", "surname", "street_number", "street", "city", "rated_restaurants", "owner_status")
 
 
 class restaurant_admin(admin.ModelAdmin):

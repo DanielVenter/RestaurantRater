@@ -7,6 +7,9 @@ from django.db import models
 # copied from ae1 rango project to simulate user authentication (for testing only)
 from django.contrib.auth.models import User
 from django_resized import ResizedImageField
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 current_dir = os.getcwd()
 API_KEY = "AIzaSyAxJa_f1f5FhqyY_JhZ42JBijy4dXNgGQA"
@@ -21,10 +24,8 @@ class Restaurant(models.Model):
     description = models.CharField(max_length=240)
     img1 = ResizedImageField(size=[225, 225], quality=100, crop=["middle", "center"],
                              upload_to=f"{current_dir}\\media\\", force_format='jpeg')
-
     img2 = ResizedImageField(size=[225, 225], quality=100, crop=["middle", "center"],
                              upload_to=f"{current_dir}\\media\\", force_format='jpeg')
-
     img3 = ResizedImageField(size=[225, 225], quality=100, crop=["middle", "center"],
                              upload_to=f"{current_dir}\\media\\", force_format='jpeg')
     restaurant_id = models.CharField(max_length=128, primary_key=True)
@@ -49,7 +50,9 @@ class Restaurant(models.Model):
 class user_client(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     liked_restaurants = models.ManyToManyField(Restaurant, related_name="likes")
-    street_number = models.PositiveIntegerField(blank=True)
+    name = models.CharField(max_length=128)
+    surname = models.CharField(max_length=128)
+    street_number = models.PositiveIntegerField()
     street = models.CharField(max_length=128)
     city = models.CharField(max_length=128)
     rated_restaurants = models.JSONField(default=dict)
@@ -57,13 +60,6 @@ class user_client(models.Model):
     owner_status = models.BooleanField(default=False)
     owned_restaurants = models.ManyToManyField(Restaurant, related_name="owns")
 
-    #@receiver(post_save, sender=User)
-    #def create_user_profile(sender, instance, created, **kwargs):
-    #    if created:
-    #        user_client.objects.create(user=instance)
-    #@receiver(post_save, sender=User)
-    #def save_user_profile(sender, instance, **kwargs):
-    #    instance.user_client.save()
 
     @property
     # List generated for easy checking
@@ -100,15 +96,6 @@ class user_client(models.Model):
             distances[restaurant.restaurant_id] = distance
 
         return distances
-
-    def __str__(self):
-        return self.user.username
-
-# copied from ae1 rango project to simulate user authentication (for testing only)
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    website = models.URLField(blank=True)
-    picture = models.ImageField(upload_to='profile_images', blank=True)
 
     def __str__(self):
         return self.user.username

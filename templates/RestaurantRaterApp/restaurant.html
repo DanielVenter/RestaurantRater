@@ -12,17 +12,17 @@
 
 {% block body_block %}
     {% if restaurant %}
-        <div class="col-md-7 p-3">
+        <div class="col-md-7 p-3 h-100">
 
             <!--- name and rating header --->
             <div class="d-grid gap-2 d-flex mb-2 mx-1">
-                <div class="col-1 flex-fill">
+                <div class="flex-fill">
                     {% include 'RestaurantRaterApp/arrow_or_heart.html' with restaurant=restaurant %}
                 </div>
-                <div class="col-6 flex-fill">
+                <div class="flex-fill">
                     <h1>{{ restaurant.name }}</h1>
                 </div>
-                <div class="col-5 flex-fill">
+                <div class="flex-fill">
                     {% include 'RestaurantRaterApp/stars.html' with rating=restaurant.rating %}
                 </div>
             </div>
@@ -34,46 +34,50 @@
                 </div>
             </div>
 
-            <div class="row d-grid d-md-flex gap-3 justify-content-md-around my-3">
+            <div class="row d-grid d-md-flex justify-content-md-around my-3 h-75 w-100 p-0 overflow-hidden">
 
                 <!--- scrollable images --->
-                <div class="col-md-5">
-                    <div id="restaurantCarousel" class="carousel slide" data-bs-ride="carousel">
-                        <div class="carousel-inner justify-content-center">
-                            <div class="carousel-item active">
-                                <div class="d-flex justify-content-center">
-                                    <img src="{{ MEDIA_URL}}{{ restaurant.name }}/img1.jpg" class="d-block w-100 rounded" alt="{{ restaurant.name }} image 1">
+                <div class="col-md-5 p-0 m-0">
+                    <div class="ratio ratio-1x1">
+                        <div id="restaurantCarousel" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner justify-content-center h-100">
+                                <div class="carousel-item active h-100">
+                                    <div class="d-flex justify-content-center h-100">
+                                        <img src="{{ MEDIA_URL}}{{ restaurant.name }}/img1.jpg" class="rounded" alt="{{ restaurant.name }} image 1">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="carousel-item">
-                                <div class="d-flex justify-content-center">
-                                    <img src="{{ MEDIA_URL}}{{ restaurant.name }}/img2.jpg" class="d-block w-100 rounded" alt="{{ restaurant.name }} image 2">
+                                <div class="carousel-item h-100">
+                                    <div class="d-flex justify-content-center h-100">
+                                        <img src="{{ MEDIA_URL}}{{ restaurant.name }}/img2.jpg" class="rounded" alt="{{ restaurant.name }} image 2">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="carousel-item">
-                                <div class="d-flex justify-content-center">
-                                    <img src="{{ MEDIA_URL}}{{ restaurant.name }}/img3.jpg" class="d-block w-100 rounded" alt="{{ restaurant.name }} image 3">
+                                <div class="carousel-item h-100">
+                                    <div class="d-flex justify-content-center h-100">
+                                        <img src="{{ MEDIA_URL}}{{ restaurant.name }}/img3.jpg" class="rounded" alt="{{ restaurant.name }} image 3">
+                                    </div>
                                 </div>
-                            </div>
-                      </div>
-                      <button class="carousel-control-prev" type="button" data-bs-target="#restaurantCarousel" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                      </button>
-                      <button class="carousel-control-next" type="button" data-bs-target="#restaurantCarousel" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                      </button>
+                          </div>
+                          <button class="carousel-control-prev" type="button" data-bs-target="#restaurantCarousel" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                          </button>
+                          <button class="carousel-control-next" type="button" data-bs-target="#restaurantCarousel" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                          </button>
+                        </div>
                     </div>
                 </div>
 
                 <!--- google maps link --->
-                <div class="col-md-5">
-                    <iframe
-                      width="100%"
-                      height="100%"
-                      loading="lazy"
-                      allowfullscreen
-                      src={{ restaurant.map_link }}>
-                    </iframe>
+                <div class="col-md-5 p-0 m-0">
+                    <div class="ratio ratio-1x1">
+                        <iframe
+                          width="100%"
+                          height="100%"
+                          loading="lazy"
+                          allowfullscreen
+                          src={{ restaurant.map_link }}>
+                        </iframe>
+                    </div>
                 </div>
 
             </div>
@@ -81,7 +85,7 @@
 
 
         </div>
-        <div class="col-md-5 p-0" style="height:750px">
+        <div class="col-md-5 p-0 h-100">
             <div class="overflow-auto" style="max-height:650px">
 
                 <!--- table of reviews --->

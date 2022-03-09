@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from RestaurantRaterApp.forms import UserProfileForm, UserForm, SignUpForm, EditForm, RestaurantForm, ReviewForm
+from RestaurantRaterApp.forms import UserForm, SignUpForm, EditForm, RestaurantForm, ReviewForm
 from RestaurantRaterApp.models import Restaurant, user_client
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -168,30 +168,25 @@ def change_password(request):
 def signup(request):
     registered = False
     if request.method == 'POST':
-        #user_form = UserForm(request.POST)
-        #profile_form = UserProfileForm(request.POST)
+        user_form = UserForm(request.POST)
         signup_form = SignUpForm(request.POST)
-        #if user_form.is_valid() and profile_form.is_valid():
-        if signup_form.is_valid():
-            #user = user_form.save()
-            user = signup_form.save()
-            #user.set_password(user.password)
+        if user_form.is_valid() and signup_form.is_valid():
+            user = user_form.save()
+
+            user.set_password(user.password)
             user.save()
-            #prof = profile_form.save(commit=False)
-            #prof.user = user
-            #if 'picture' in request.FILES:
-            #    prof.picture = request.FILES['picture']
-            #prof.save()
+            
+            usr_client = signup_form.save(commit=False)
+            usr_client.user = user
+            usr_client.save()
+
             registered = True
         else:
-            #print(user_form.errors, profile_form.errors)
-            print(signup_form.errors)
+            print(user_form.errors, signup_form.errors)
     else:
-        #user_form = UserForm()
-        #profile_form = UserProfileForm()
+        user_form = UserForm()
         signup_form = SignUpForm()
-    #context_dict = {'user_form': user_form, 'profile_form': profile_form, 'registered': registered}
-    context_dict = {'signup_form':signup_form, 'registered': registered}
+    context_dict = {'user_form': user_form, 'signup_form': signup_form, 'registered': registered}
     return render(request, 'RestaurantRaterApp/signup.html', context_dict)
 
 def user_login(request):

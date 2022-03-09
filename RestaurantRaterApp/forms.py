@@ -18,24 +18,10 @@ class UserForm(forms.ModelForm):
         model = User
         fields = ('username', 'email', 'password', )
 
-class UserProfileForm(forms.ModelForm):
-    class Meta:
-        model = UserProfile
-        fields = ('website', 'picture', )
-
 class SignUpForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput())
-    #username = forms.CharField(max_length=128, required = True)
-    #street_number = forms.IntegerField(required = True, validators=[validate_positive])
-    #street = forms.CharField(max_length=128, required = True)
-    #city = forms.CharField(max_length=128, required = True)
-    #first_name = forms.CharField(max_length=30, required=True, help_text='Optional.')
-    #last_name = forms.CharField(max_length=30, required=True, help_text='Optional.')
-    #email = forms.EmailField(max_length=254, help_text='Required. Inform a valid email address.')
-
     class Meta:
         model = user_client
-        fields = ('username', 'name', 'surname', 'email', 'password', 'city', 'street', 'street_number')
+        fields = ('city', 'street', 'street_number')
 
 class EditForm(forms.ModelForm):
     username = forms.CharField(required=True)

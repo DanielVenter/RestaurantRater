@@ -1,7 +1,8 @@
 import os
 import requests
 import urllib.parse
-
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.db import models
 # copied from ae1 rango project to simulate user authentication (for testing only)
 from django.contrib.auth.models import User
@@ -46,19 +47,23 @@ class Restaurant(models.Model):
 
 
 class user_client(models.Model):
-    username = models.CharField(max_length=128, primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     liked_restaurants = models.ManyToManyField(Restaurant, related_name="likes")
-    street_number = models.PositiveIntegerField()
+    street_number = models.PositiveIntegerField(blank=True)
     street = models.CharField(max_length=128)
     city = models.CharField(max_length=128)
     rated_restaurants = models.JSONField(default=dict)
     rates = models.ManyToManyField(Restaurant, related_name="rates")
-    password = models.CharField(max_length=24)
-    email = models.EmailField()
-    name = models.CharField(max_length=128)
-    surname = models.CharField(max_length=128)
     owner_status = models.BooleanField(default=False)
     owned_restaurants = models.ManyToManyField(Restaurant, related_name="owns")
+
+    #@receiver(post_save, sender=User)
+    #def create_user_profile(sender, instance, created, **kwargs):
+    #    if created:
+    #        user_client.objects.create(user=instance)
+    #@receiver(post_save, sender=User)
+    #def save_user_profile(sender, instance, **kwargs):
+    #    instance.user_client.save()
 
     @property
     # List generated for easy checking
@@ -79,7 +84,7 @@ class user_client(models.Model):
     # Generate distances to all the restaurants around them
     def distances_dict(self):
         distances = {}
-        user = user_client.objects.get(username=self.username)
+        user = user_client.objects.get(username=self.user.username)
         start = f"{user.street_number} {user.street} {user.city}"
         for restaurant in Restaurant.objects.all():
             end = f"{restaurant.street_number} {restaurant.street} {restaurant.city}"
@@ -97,7 +102,7 @@ class user_client(models.Model):
         return distances
 
     def __str__(self):
-        return self.username
+        return self.user.username
 
 # copied from ae1 rango project to simulate user authentication (for testing only)
 class UserProfile(models.Model):

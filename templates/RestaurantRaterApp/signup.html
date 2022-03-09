@@ -2,16 +2,18 @@
 {% load static %}
 
 {% block title_block %}
-	Register
+	Sign Up
 {% endblock %}
 
 {% block body_block %}
-	<h1>Register for Rango</h1>
 	{% if registered %}
-		Rango says: <strong>thank you for registering!</strong>
-		<a href="{% url 'RestaurantRaterApp:home' %}">Return to the homepage.</a><br />
+        <div class="p-3 text-center">
+            <h5>You have successfully created your account!</h5>
+        </div>
+        <div class="d-grid gap-5 d-md-flex justify-content-md-center align-items-center">
+            <a class="btn btn-warning" href="{% url 'RestaurantRaterApp:login' %}" role="button">Log in to your account</a>
+        </div>
 	{% else %}
-		Rango says: <strong>register here!</strong><br />
 		<form id="user_form" method="post" action="{% url 'RestaurantRaterApp:signup' %}" enctype="multipart/form-data">
 			{% csrf_token %}
 			{{ user_form.as_p }}

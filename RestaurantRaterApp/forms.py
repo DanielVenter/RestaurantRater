@@ -12,12 +12,14 @@ def validate_positive(value):
     if value < 0:
         raise ValidationError(f"{value} is not a positive number.")
 
+#User creation form
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
     class Meta:
         model = User
         fields = ('username', 'email', 'password', )
 
+#User profile form
 class SignUpForm(forms.ModelForm):
     class Meta:
         model = user_client

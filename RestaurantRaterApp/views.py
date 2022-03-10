@@ -46,7 +46,7 @@ def explore(request, sort):
 @login_required
 def favourites(request, sort):
     this_user=request.user
-    this_user=user_client.Objects.get(username=this_user.username)
+    this_user=user_client.objects.get(user=this_user)
     favourites = list(this_user.liked_restaurants.all())
     sort_options = sort_by(favourites, sort)
     
@@ -114,9 +114,8 @@ def add_restaurant(request):
 def profile(request):
     context_dict = {}
     this_user=request.user
-    this_user=request.user
-    this_user=user_client.Objects.get(username=this_user.username)
-    owned = list(this_user.owned_restaurants.all())
+    this_user_client=user_client.objects.get(user=this_user)
+    owned = list(this_user_client.owned_restaurants.all())
     context_dict['restaurants_list']=owned
 
     restaurants = list(Restaurant.objects.all())

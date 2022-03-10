@@ -50,7 +50,7 @@ def show_restaurant(request, restaurant_id):
 def explore(request, sort):
     this_user = request.user
     restaurants_list = list(Restaurant.objects.all())
-    sort_options = sort_by(restaurants_list, sort)
+    sort_options = sort_by(restaurants_list, sort,this_user)
     try:
         this_user = user_client.objects.get(user=this_user)
         favourites = list(this_user.liked_restaurants.all())
@@ -73,7 +73,7 @@ def favourites(request, sort):
     this_user=request.user
     this_user=user_client.objects.get(user=this_user)
     favourites = list(this_user.liked_restaurants.all())
-    sort_options = sort_by(favourites, sort)
+    sort_options = sort_by(favourites, sort,this_user)
     
     context_dict = {"restaurants_list": favourites,
                     "titlemessage": "View your favourite restaurants!",
@@ -85,7 +85,8 @@ def favourites(request, sort):
 def sort_by(list, sort,user):
     if sort == "alphabetical":
         list.sort(key = lambda x: x.name)
-    elif sort == "distance":
+    elif sort == "distance" and user.is_authenticated():
+        user = user_client.objects.get(user=user)
         distances = user.distances.copy()
         my_list =[]
         while distances:

@@ -239,8 +239,14 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect(reverse('RestaurantRaterApp:home'))
-
+@login_required
 def reverse_favourite_status(request, restaurant_id):
-    #TODO: if already favourited, remove from favourites
-    #TODO: if not favourited, add to favourites
+    
+    restaurant = Restaurant.Objects.get(restaurant_id=restaurant_id)
+    this_user=request.user
+    this_user=user_client.objects.get(user=this_user)
+    if restaurant in this_user.liked_restaurants.all():
+        this_user.liked_restaurants.remove(restaurant)
+    else: 
+        this_user.liked_restaurants.add(restaurant)
     return redirect(reverse('RestaurantRaterApp:show_restaurant',kwargs={'restaurant_id':  restaurant_id}))

@@ -10,17 +10,23 @@ from datetime import datetime
 from django.contrib.auth.forms import PasswordChangeForm
 
 def home(request):
-    this_user = request.user
-    this_user = user_client.objects.get(user=this_user)
-    favourites = list(this_user.liked_restaurants.all())
-
     restaurants_list = list(Restaurant.objects.all())
 
     restaurants_list.sort(reverse=True, key = lambda x: x.rating)
 
-    context_dict = {"restaurants_list":restaurants_list[:10],
+    try:
+        this_user = user_client.objects.get(user=this_user)
+        favourites = list(this_user.liked_restaurants.all())
+
+        context_dict = {"restaurants_list":restaurants_list[:10],
                     "titlemessage":"Check out the Restaurant Rater top ten!",
                     "favourites":favourites}
+
+    except:
+        this_user = request.user
+        context_dict = {"restaurants_list":restaurants_list[:10],
+                        "titlemessage":"Check out the Restaurant Rater top ten!",
+                        "favourites":[]}
 
     return render(request, 'RestaurantRaterApp/home.html', context=context_dict)
 

@@ -10,16 +10,24 @@ from datetime import datetime
 from django.contrib.auth.forms import PasswordChangeForm
 
 def home(request):
+    this_user = request.user
+    this_user = user_client.objects.get(user=this_user)
+    favourites = list(this_user.liked_restaurants.all())
+
     restaurants_list = list(Restaurant.objects.all())
 
     restaurants_list.sort(reverse=True, key = lambda x: x.rating)
 
     context_dict = {"restaurants_list":restaurants_list[:10],
-                    "titlemessage":"Check out the Restaurant Rater top ten!",}
+                    "titlemessage":"Check out the Restaurant Rater top ten!",
+                    "favourites":favourites}
 
     return render(request, 'RestaurantRaterApp/home.html', context=context_dict)
 
 def show_restaurant(request, restaurant_id):
+    this_user = request.user
+    this_user = user_client.objects.get(user=this_user)
+    favourites = list(this_user.liked_restaurants.all())
     context_dict = {}
     try:
         
@@ -30,17 +38,22 @@ def show_restaurant(request, restaurant_id):
     except Restaurant.DoesNotExist:
   
         context_dict['restaurant'] = None
-       
+
+    context_dict['favourites'] = favourites
     return render(request, 'RestaurantRaterApp/restaurant.html', context=context_dict)
 
 def explore(request, sort):
+    this_user = request.user
+    this_user = user_client.objects.get(user=this_user)
+    favourites = list(this_user.liked_restaurants.all())
     restaurants_list = list(Restaurant.objects.all())
     sort_options = sort_by(restaurants_list, sort)
 
     context_dict = {"restaurants_list": restaurants_list,
                     "titlemessage": "Explore the Restaurant Rater records!",
                     "sort": sort,
-                    "sort_opts":sort_options}
+                    "sort_opts":sort_options,
+                    "favourites":favourites}
     return render(request, 'RestaurantRaterApp/explore.html', context=context_dict)
 
 @login_required

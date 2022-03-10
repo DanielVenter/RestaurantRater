@@ -3,7 +3,7 @@
 
 <!-- show favourites status if logged in -->
 {% if user.is_authenticated %}
-    {% if restaurant in user.liked_restaurants %}
+    {% if restaurant in favs %}
         <img src="{% static 'images/heart_fill.svg' %}" class="h-75 mx-auto d-block" alt="Filled heart"/>
     {% else %}
         <img src="{% static 'images/heart.svg' %}" class="h-75" alt="Unfilled heart"/>

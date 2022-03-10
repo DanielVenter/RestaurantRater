@@ -17,7 +17,7 @@
             <!--- name and rating header --->
             <div class="d-grid gap-2 d-flex mb-2 mx-1">
                 <div class="flex-fill">
-                    {% include 'RestaurantRaterApp/arrow_or_heart.html' with restaurant=restaurant %}
+                    {% include 'RestaurantRaterApp/arrow_or_heart.html' with restaurant=restaurant favs=favourites %}
                 </div>
                 <div class="flex-fill">
                     <h1>{{ restaurant.name }}</h1>

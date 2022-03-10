@@ -11,15 +11,32 @@ from django.contrib.auth.forms import PasswordChangeForm
 
 def home(request):
     restaurants_list = list(Restaurant.objects.all())
-
     restaurants_list.sort(reverse=True, key = lambda x: x.rating)
+    this_user = request.user
 
-    context_dict = {"restaurants_list":restaurants_list[:10],
-                    "titlemessage":"Check out the Restaurant Rater top ten!",}
+    try:
+        this_user = user_client.objects.get(user=this_user)
+        favourites = list(this_user.liked_restaurants.all())
+
+        context_dict = {"restaurants_list":restaurants_list[:10],
+                    "titlemessage":"Check out the Restaurant Rater top ten!",
+                    "favourites":favourites}
+
+    except Exception as e:
+        context_dict = {"restaurants_list":restaurants_list[:10],
+                        "titlemessage":"Check out the Restaurant Rater top ten!",
+                        "favourites":[]}
 
     return render(request, 'RestaurantRaterApp/home.html', context=context_dict)
 
 def show_restaurant(request, restaurant_id):
+    try:
+        this_user = request.user
+        this_user = user_client.objects.get(user=this_user)
+        favourites = list(this_user.liked_restaurants.all())
+    except:
+        favourites=[]
+        
     context_dict = {}
     try:
         
@@ -30,17 +47,29 @@ def show_restaurant(request, restaurant_id):
     except Restaurant.DoesNotExist:
   
         context_dict['restaurant'] = None
-       
+
+    context_dict['favourites'] = favourites
     return render(request, 'RestaurantRaterApp/restaurant.html', context=context_dict)
 
 def explore(request, sort):
+    this_user = request.user
     restaurants_list = list(Restaurant.objects.all())
-    sort_options = sort_by(restaurants_list, sort)
-
-    context_dict = {"restaurants_list": restaurants_list,
+    sort_options = sort_by(restaurants_list, sort,this_user)
+    try:
+        this_user = user_client.objects.get(user=this_user)
+        favourites = list(this_user.liked_restaurants.all())
+    
+        context_dict = {"restaurants_list": restaurants_list,
                     "titlemessage": "Explore the Restaurant Rater records!",
                     "sort": sort,
-                    "sort_opts":sort_options}
+                    "sort_opts":sort_options,
+                    "favourites":favourites}
+    except:
+        context_dict = {"restaurants_list": restaurants_list,
+                    "titlemessage": "Explore the Restaurant Rater records!",
+                    "sort": sort,
+                    "sort_opts":sort_options,
+                    "favourites":[]}
     return render(request, 'RestaurantRaterApp/explore.html', context=context_dict)
 
 @login_required
@@ -48,7 +77,7 @@ def favourites(request, sort):
     this_user=request.user
     this_user=user_client.objects.get(user=this_user)
     favourites = list(this_user.liked_restaurants.all())
-    sort_options = sort_by(favourites, sort)
+    sort_options = sort_by(favourites, sort,request.user)
     
     context_dict = {"restaurants_list": favourites,
                     "titlemessage": "View your favourite restaurants!",
@@ -57,12 +86,25 @@ def favourites(request, sort):
     return render(request, 'RestaurantRaterApp/favourites.html', context=context_dict)
 
 #helper function for explore and favourites views
-def sort_by(list, sort):
+def sort_by(list, sort,user):
     if sort == "alphabetical":
         list.sort(key = lambda x: x.name)
-    elif sort == "distance":
-        #TODO: sort by distance from user
-        pass
+    elif sort == "distance" and user.is_authenticated:
+        user = user_client.objects.get(user=user)
+        distances = user.distances.copy()
+        my_list =[]
+        while distances:
+            largest=0
+            largest_id=null
+            for restaurant_id in distances :
+                if distances[restaurant_id]>largest:
+                    largest= distances[restaurant_id]
+                    largest_id=restaurant_id
+            my_list.add(Restaurant.objects.get(restaurant_id=largest_id))
+            distances.pop(largest_id)
+        list.clear
+        my_list.reverse()
+        list=my_list
     elif sort == "rating":
         list.sort(reverse=True, key = lambda x: x.rating)
     return ["alphabetical", "distance", "rating"]
@@ -214,8 +256,14 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect(reverse('RestaurantRaterApp:home'))
-
+@login_required
 def reverse_favourite_status(request, restaurant_id):
-    #TODO: if already favourited, remove from favourites
-    #TODO: if not favourited, add to favourites
+    
+    restaurant = Restaurant.objects.get(restaurant_id=restaurant_id)
+    this_user=request.user
+    this_user=user_client.objects.get(user=this_user)
+    if restaurant in this_user.liked_restaurants.all():
+        this_user.liked_restaurants.remove(restaurant)
+    else: 
+        this_user.liked_restaurants.add(restaurant)
     return redirect(reverse('RestaurantRaterApp:show_restaurant',kwargs={'restaurant_id':  restaurant_id}))

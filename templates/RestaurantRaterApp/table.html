@@ -21,7 +21,7 @@
                     <!-- show favourites status if logged in -->
                     <td>
                         <a href="{% url 'RestaurantRaterApp:show_restaurant' restaurant.restaurant_id %}" class="text-decoration-none text-body">
-                            {% include 'RestaurantRaterApp/arrow_or_heart.html' with restaurant=restaurant %}
+                            {% include 'RestaurantRaterApp/arrow_or_heart.html' with restaurant=restaurant favs=favs %}
                         </a>
                     </td>
 

@@ -57,6 +57,7 @@ class user_client(models.Model):
     rates = models.ManyToManyField(Restaurant, related_name="rates")
     owner_status = models.BooleanField(default=False)
     owned_restaurants = models.ManyToManyField(Restaurant, related_name="owns")
+    distances_dict = models.JSONField(default=dict)
 
 
     @property
@@ -71,29 +72,30 @@ class user_client(models.Model):
     # MapLink used for Google APIs
     def map_link(self):
         map_address = f"{self.street_number}+{self.street.replace(' ', '+')},{self.city}"
-        map_link = f"www.google.com/maps/embed/v1/place?key={API_KEY}&q={map_address}"
+        map_link = f"https://www.google.com/maps/embed/v1/place?key={API_KEY}&q={map_address}"
         return map_link
 
-    @property
-    # Generate distances to all the restaurants around them
-    def distances_dict(self):
+    # Updates/Generates distances to all the restaurants around them
+    def update_distances_dict(self):
         distances = {}
-        user = user_client.objects.get(username=self.user.username)
+        user = user_client.objects.get(user=self.user)
         start = f"{user.street_number} {user.street} {user.city}"
         for restaurant in Restaurant.objects.all():
-            end = f"{restaurant.street_number} {restaurant.street} {restaurant.city}"
-            url = f"https://maps.googleapis.com/maps/api/distancematrix/json?origins={urllib.parse.quote(start)}&destinations={urllib.parse.quote(end)}&departure_time=now&key={API_KEY}"
+            if restaurant not in user.distances_dict:
+                end = f"{restaurant.street_number} {restaurant.street} {restaurant.city}"
+                url = f"https://maps.googleapis.com/maps/api/distancematrix/json?origins={urllib.parse.quote(start)}&destinations={urllib.parse.quote(end)}&departure_time=now&key={API_KEY}"
 
-            payload = {}
-            headers = {}
+                payload = {}
+                headers = {}
 
-            response = requests.request("GET", url, headers=headers, data=payload)
+                response = requests.request("GET", url, headers=headers, data=payload)
 
-            data = eval(response.text)
-            distance = float(data["rows"][0]["elements"][0]["distance"]["text"].split(" ")[0])
-            distances[restaurant.restaurant_id] = distance
+                data = eval(response.text)
+                distance = float(data["rows"][0]["elements"][0]["distance"]["text"].split(" ")[0])
+                distances[restaurant.restaurant_id] = distance
+        user.distances_dict = distances
+        user.save()
 
-        return distances
 
     def __str__(self):
         return self.user.username

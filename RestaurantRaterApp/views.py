@@ -49,17 +49,25 @@ def show_restaurant(request, restaurant_id):
     return render(request, 'RestaurantRaterApp/restaurant.html', context=context_dict)
 
 def explore(request, sort):
-    this_user = request.user
-    this_user = user_client.objects.get(user=this_user)
-    favourites = list(this_user.liked_restaurants.all())
     restaurants_list = list(Restaurant.objects.all())
     sort_options = sort_by(restaurants_list, sort)
-
-    context_dict = {"restaurants_list": restaurants_list,
+    try:
+        this_user = user_client.objects.get(user=this_user)
+        favourites = list(this_user.liked_restaurants.all())
+    
+        context_dict = {"restaurants_list": restaurants_list,
                     "titlemessage": "Explore the Restaurant Rater records!",
                     "sort": sort,
                     "sort_opts":sort_options,
                     "favourites":favourites}
+    except:
+        this_user = request.user
+
+        context_dict = {"restaurants_list": restaurants_list,
+                    "titlemessage": "Explore the Restaurant Rater records!",
+                    "sort": sort,
+                    "sort_opts":sort_options,
+                    "favourites":[]}
     return render(request, 'RestaurantRaterApp/explore.html', context=context_dict)
 
 @login_required

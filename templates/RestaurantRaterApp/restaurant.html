@@ -1,0 +1,142 @@
+{% extends 'RestaurantRaterApp/base.html' %}
+{% load static %}
+{% load restaurant_rater_tags %}
+
+{% block title_block %}
+	{% if restaurant %}
+		{{ restaurant.name }}
+	{% else %}
+		Unknown Restaurant
+	{% endif %}
+{% endblock %}
+
+{% block body_block %}
+    {% if restaurant %}
+        <div class="col-md-7 p-3 h-100">
+
+            <!--- name and rating header --->
+            <div class="d-grid gap-2 d-flex mb-2 mx-1">
+                <div class="flex-fill">
+                    {% include 'RestaurantRaterApp/arrow_or_heart.html' with restaurant=restaurant %}
+                </div>
+                <div class="flex-fill">
+                    <h1>{{ restaurant.name }}</h1>
+                </div>
+                <div class="flex-fill">
+                    {% include 'RestaurantRaterApp/stars.html' with rating=restaurant.rating %}
+                </div>
+            </div>
+
+            <!--- restaurant description --->
+            <div class="row justify-content-center align-items-center p-1 me-2">
+                <div class="bg-ly p-3">
+                    {{ restaurant.description }}
+                </div>
+            </div>
+
+            <div class="row d-grid d-md-flex justify-content-md-around my-3 h-75 w-100 p-0 overflow-hidden">
+
+                <!--- scrollable images --->
+                <div class="col-md-5 nospace">
+                    <div class="ratio ratio-1x1">
+                        <div id="restaurantCarousel" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner justify-content-center h-100">
+                                <div class="carousel-item active h-100">
+                                    <div class="d-flex justify-content-center h-100">
+                                        <img src="{{ MEDIA_URL}}{{ restaurant.name }}/img1.jpg" class="rounded" alt="{{ restaurant.name }} image 1">
+                                    </div>
+                                </div>
+                                <div class="carousel-item h-100">
+                                    <div class="d-flex justify-content-center h-100">
+                                        <img src="{{ MEDIA_URL}}{{ restaurant.name }}/img2.jpg" class="rounded" alt="{{ restaurant.name }} image 2">
+                                    </div>
+                                </div>
+                                <div class="carousel-item h-100">
+                                    <div class="d-flex justify-content-center h-100">
+                                        <img src="{{ MEDIA_URL}}{{ restaurant.name }}/img3.jpg" class="rounded" alt="{{ restaurant.name }} image 3">
+                                    </div>
+                                </div>
+                          </div>
+                          <button class="carousel-control-prev" type="button" data-bs-target="#restaurantCarousel" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                          </button>
+                          <button class="carousel-control-next" type="button" data-bs-target="#restaurantCarousel" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                          </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!--- google maps link --->
+                <div class="col-md-5 nospace">
+                    <div class="ratio ratio-1x1">
+                        <iframe
+                          width="100%"
+                          height="100%"
+                          loading="lazy"
+                          allowfullscreen
+                          src={{ restaurant.map_link }}>
+                        </iframe>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+        </div>
+        <div class="col-md-5 p-0 h-100">
+            <div class="overflow-auto" style="max-height:650px">
+
+                <!--- table of reviews --->
+                <div class="row mw-100 p-0 m-0" >
+                    {% if restaurant.comments %}
+                        <table class="table table-secondary table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col">Reviews</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for commenter, review in restaurant.comments.items %}
+                                    <!-- alternate cyan and yellow rows -->
+                                    <tr class="{% get_row_colour forloop.counter %}">
+                                        <td>{{ commenter }}</td>
+                                        <td>{{ review }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <strong>Our records currently don't contain any reviews!</strong><br />
+                    {% endif %}
+                </div>
+
+            </div>
+            <div style="max-height:100px">
+
+                <!--- favourite and review buttons --->
+                {% if user.is_authenticated %}
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-around mt-4">
+                        <a class="btn btn-warning" href="{% url 'RestaurantRaterApp:reverse_fav' restaurant.restaurant_id %}" role="button">
+                            {% if restaurant in user.liked_restaurants %}
+                                Remove from favourites
+                            {% else %}
+                                Add to favourites
+                            {% endif %}
+                        </a>
+                        <a class="btn btn-warning" href="{% url 'RestaurantRaterApp:review' restaurant.restaurant_id %}" role="button">Leave a review</a>
+                    </div>
+                {% else %}
+                    <div class="p-3 text-center">
+                        <h5>You'll need to log in or sign up to leave a review!</h5>
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+	{% else %}
+		Sorry, no restaurant recognised
+	{% endif %}
+{% endblock %}

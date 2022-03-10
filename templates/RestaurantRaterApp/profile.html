@@ -1,0 +1,14 @@
+{% extends 'RestaurantRaterApp/base.html' %}
+{% load static %}
+
+{% block title_block %}
+	My Profile
+{% endblock %}
+
+{% block profile_button %}
+	<a class="nav-link active bg-info text-body border-0" aria-current="page" href="{% url 'RestaurantRaterApp:profile' %}">Profile</a>
+{% endblock %}
+
+{% block body_block %}
+	profile page text
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'RestaurantRaterApp/base.html' %}
+{% include 'RestaurantRaterApp/table.html' %}
+{% load static %}
+{% load restaurant_rater_tags %}
+
+{% block title_block %}
+	Home
+{% endblock %}
+
+{% block home_button %}
+	<a class="nav-link active bg-info text-body border-0" aria-current="page" href="{% url 'RestaurantRaterApp:home' %}">Home</a>
+{% endblock %}
+
+{% block body_block %}
+    {% include 'RestaurantRaterApp/table.html' with r_list=restaurants_list %}
+{% endblock %}

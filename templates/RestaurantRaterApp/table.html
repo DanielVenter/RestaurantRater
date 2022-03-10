@@ -1,0 +1,45 @@
+{% load static %}
+{% load restaurant_rater_tags %}
+
+<div class="overflow-auto my-3 p-0 mh-100">
+    {% if restaurants_list %}
+        <table class="table table-secondary">
+            <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Rating</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for restaurant in r_list %}
+
+                    <!-- alternate cyan and yellow rows -->
+                    <tr class="{% get_row_colour forloop.counter %}">
+
+                    <!-- show favourites status if logged in -->
+                    <td>
+                        <a href="{% url 'RestaurantRaterApp:show_restaurant' restaurant.restaurant_id %}" class="text-decoration-none text-body">
+                            {% include 'RestaurantRaterApp/arrow_or_heart.html' with restaurant=restaurant %}
+                        </a>
+                    </td>
+
+                    <td><a href="{% url 'RestaurantRaterApp:show_restaurant' restaurant.restaurant_id %}" class="text-decoration-none text-body">{{ restaurant.name }}</a></td>
+                    <td><a href="{% url 'RestaurantRaterApp:show_restaurant' restaurant.restaurant_id %}" class="text-decoration-none text-body">{{ restaurant.description }}</a></td>
+
+                    <!-- generate star rating graphic from decimal number -->
+                    <td>
+                        <a href="{% url 'RestaurantRaterApp:show_restaurant' restaurant.restaurant_id %}" class="text-decoration-none text-body">
+                            {% include 'RestaurantRaterApp/stars.html' with rating=restaurant.rating %}
+                        </a>
+                    </td>
+                </tr>
+
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <strong>Our records currently don't contain any restaurants!</strong><br />
+    {% endif %}
+</div>

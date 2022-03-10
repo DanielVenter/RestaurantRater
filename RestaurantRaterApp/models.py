@@ -1,8 +1,11 @@
 import os
 import requests
 import urllib.parse
-
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.db import models
+# copied from ae1 rango project to simulate user authentication (for testing only)
+from django.contrib.auth.models import User
 from django_resized import ResizedImageField
 from django.contrib.auth.models import User
 
@@ -35,7 +38,7 @@ class Restaurant(models.Model):
     # Map Link used for Google API
     def map_link(self):
         map_address = f"{self.street_number}+{self.street.replace(' ', '+')},{self.city}"
-        map_link = f"www.google.com/maps/embed/v1/place?key={API_KEY}&q={map_address}"
+        map_link = f"https://www.google.com/maps/embed/v1/place?key={API_KEY}&q={map_address}"
         return map_link
 
     def __str__(self):

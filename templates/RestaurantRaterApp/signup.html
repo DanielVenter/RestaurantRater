@@ -1,0 +1,24 @@
+{% extends 'RestaurantRaterApp/base.html' %}
+{% load static %}
+
+{% block title_block %}
+	Sign Up
+{% endblock %}
+
+{% block body_block %}
+	{% if registered %}
+        <div class="p-3 text-center">
+            <h5>You have successfully created your account!</h5>
+        </div>
+        <div class="d-grid gap-5 d-md-flex justify-content-md-center align-items-center">
+            <a class="btn btn-warning" href="{% url 'RestaurantRaterApp:login' %}" role="button">Log in to your account</a>
+        </div>
+	{% else %}
+		<form id="user_form" method="post" action="{% url 'RestaurantRaterApp:signup' %}" enctype="multipart/form-data">
+			{% csrf_token %}
+			{{ user_form.as_p }}
+			{{ signup_form.as_p }}
+			<input type="submit" name="submit" value="Register" />
+		</form>
+	{% endif %}
+{% endblock %}

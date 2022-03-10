@@ -1,0 +1,23 @@
+{% load static %}
+{% load restaurant_rater_tags %}
+
+<!-- header with sort selector -->
+<div class="d-grid gap-2 d-md-flex">
+        <div class="flex-grow-1"><h1 class="text-center">{{ title }}</h1></div>
+        <div class="dropdown mt-auto">
+            Sort by:
+            <a class="btn btn-warning dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">{{ sort }}</a>
+
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <li>
+                    {% for opt in opts %}
+                        {% if opt == sort %}
+                            <a class="dropdown-item disabled" href="{% url url opt %}">{{ opt }}</a>
+                        {% else %}
+                            <a class="dropdown-item" href="{% url url opt %}">{{ opt }}</a>
+                        {% endif %}
+                    {% endfor %}
+                </li>
+            </ul>
+        </div>
+</div>

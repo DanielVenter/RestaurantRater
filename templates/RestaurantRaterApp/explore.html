@@ -1,0 +1,19 @@
+{% extends 'RestaurantRaterApp/base.html' %}
+{% load static %}
+{% load restaurant_rater_tags %}
+
+{% block title_block %}
+	Explore
+{% endblock %}
+
+{% block explore_button %}
+	<a class="nav-link active bg-info text-body border-0" aria-current="page" href="{% url 'RestaurantRaterApp:explore' sort %}">Explore</a>
+{% endblock %}
+
+{% block header_block %}
+    {% include 'RestaurantRaterApp/sort_header.html' with sort=sort title=titlemessage url="RestaurantRaterApp:explore" opts=sort_opts  %}
+{% endblock %}
+
+{% block body_block %}
+    {% include 'RestaurantRaterApp/table.html' with r_list=restaurants_list %}
+{% endblock %}

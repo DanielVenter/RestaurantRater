@@ -30,9 +30,13 @@ def home(request):
     return render(request, 'RestaurantRaterApp/home.html', context=context_dict)
 
 def show_restaurant(request, restaurant_id):
-    this_user = request.user
-    this_user = user_client.objects.get(user=this_user)
-    favourites = list(this_user.liked_restaurants.all())
+    try:
+        this_user = request.user
+        this_user = user_client.objects.get(user=this_user)
+        favourites = list(this_user.liked_restaurants.all())
+    except:
+        favourites=[]
+        
     context_dict = {}
     try:
         
@@ -73,7 +77,7 @@ def favourites(request, sort):
     this_user=request.user
     this_user=user_client.objects.get(user=this_user)
     favourites = list(this_user.liked_restaurants.all())
-    sort_options = sort_by(favourites, sort,this_user)
+    sort_options = sort_by(favourites, sort,request.user)
     
     context_dict = {"restaurants_list": favourites,
                     "titlemessage": "View your favourite restaurants!",
@@ -85,7 +89,7 @@ def favourites(request, sort):
 def sort_by(list, sort,user):
     if sort == "alphabetical":
         list.sort(key = lambda x: x.name)
-    elif sort == "distance" and user.is_authenticated():
+    elif sort == "distance" and user.is_authenticated:
         user = user_client.objects.get(user=user)
         distances = user.distances.copy()
         my_list =[]

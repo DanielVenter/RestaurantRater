@@ -45,29 +45,33 @@ def add_user(username: str, street_number: int, street: str, city: str, liked_re
     user = User.objects.create_user(username=username, email=email, password=password)
     user.save()
 
-    u = user_client.objects.get_or_create(user=user, name=name, surname=surname, street_number=street_number, street=street, city=city,
-                                          rated_restaurants=rated_restaurants, owner_status=owner_status)[0]
+    u = \
+    user_client.objects.get_or_create(user=user, name=name, surname=surname, street_number=street_number, street=street,
+                                      city=city,
+                                      rated_restaurants=rated_restaurants, owner_status=owner_status)[0]
     u.save()
+
+    u.update_distances_dict()
 
     # Adds ratings
     for restaurant in rated_restaurants.keys():
-        rates(user, restaurant)
+        rates(u.name, restaurant)
 
     # Adds liked restaurants
     for restaurant in liked_restaurants:
-        likes(user, restaurant)
+        likes(u.name, restaurant)
 
     # Adds Owner's Restaurants
     if owner_status:
         for restaurant in owned_restaurants:
-            owns(user, restaurant)
+            owns(u.name, restaurant)
 
     return u
 
 
 def rates(user: str, restaurant: str):
     # Creates link between user and restaurant
-    user_obj = user_client.objects.get(user=user)
+    user_obj = user_client.objects.get(name=user)
     restaurant_obj = Restaurant.objects.get(restaurant_id=restaurant)
     user_obj.rates.add(restaurant_obj)
     # Appends rating to ratings list which overall rating calculated from
@@ -77,14 +81,14 @@ def rates(user: str, restaurant: str):
 
 def owns(user: str, restaurant: str):
     # Creates link between user and restaurant
-    user_obj = user_client.objects.get(user=user)
+    user_obj = user_client.objects.get(name=user)
     restaurant_obj = Restaurant.objects.get(restaurant_id=restaurant)
     user_obj.owned_restaurants.add(restaurant_obj)
 
 
 def likes(user: str, restaurant: str):
     # Creates link between user and restaurant
-    user_obj = user_client.objects.get(user=user)
+    user_obj = user_client.objects.get(name=user)
     restaurant_obj = Restaurant.objects.get(restaurant_id=restaurant)
     user_obj.liked_restaurants.add(restaurant_obj)
 
@@ -642,23 +646,101 @@ def populate():
     for restaurant in restaurant_data:
         add_restaurant(restaurant["name"], restaurant["street_number"], restaurant["street"], restaurant["city"],
                        restaurant["description"], restaurant["id"], restaurant["comments"])
+        r = Restaurant.objects.get(name=restaurant["name"])
+        print(f"Created restaurant {r}")
+
     for user in user_data:
         add_user(user["username"], user["street_number"], user["street"], user["city"], user["liked_restaurants"],
                  user["rated_restaurants"],
                  user["password"], user["email"], user["name"], user["surname"], user["owner_status"],
                  user["owned_restaurants"])
+        u = user_client.objects.get(name=user["name"])
+        print(f"Created user {u}")
+        if u.owner_status:
+            print(f"User owns: {u.owned_restaurants_list}")
+        print(u.distances_dict)
+
+def populate_test():
+    mark = {"username": "Mark.E",
+            "street_number": 21,
+            "street": "Beith Street",
+            "city": "Glasgow",
+            "liked_restaurants": ["ALC"],
+            "rated_restaurants": {"ALC": 4},
+            "password": "Mark123",
+            "email": "mark@gmail.com",
+            "name": "Mark",
+            "surname": "Edwards",
+            "owner_status": False,
+            "owned_restaurants": []
+            }
+    nichola = {"username": "Nicola.H",
+               "street_number": 530,
+               "street": "Victoria Rd",
+               "city": "Glasgow",
+               "liked_restaurants": ["ALC"],
+               "rated_restaurants": {"ALC": 4},
+               "password": "Nichola123",
+               "email": "nichola@gmail.com",
+               "name": "Nicola",
+               "surname": "Hamill",
+               "owner_status": True,
+               "owned_restaurants": ["ALC"]
+               }
+    colin={"username": "Colin",
+         "street_number": 1,
+         "street": "Cathcard Rd",
+         "city": "Glasgow",
+         "liked_restaurants": [],
+         "rated_restaurants": {},
+         "password": "Colin123",
+         "email": "colin@gmail.com",
+         "name": "Colin",
+         "surname": "McNair",
+         "owner_status": False,
+         "owned_restaurants": []
+         }
+
+    restaurant_data_test = {"name": "Alchemilla",
+                            "street_number": 1126,
+                            "street": "Argyle Street",
+                            "city": "Glasgow",
+                            "description": "Seasonal Mediterranean plates and natural wine.",
+                            "id": "ALC",
+                            "comments": {
+                                "Mark.E": """The restaurant is a cute little intimate location in the interesting area of 
+                 finnieston. The lighting, ambiance and staff were great and serve the restaurant 
+                 well. """,
+                            }
+                            }
+    add_restaurant(name=restaurant_data_test["name"], street_number=restaurant_data_test["street_number"],
+                   street=restaurant_data_test["street"], city=restaurant_data_test["city"],
+                   description=restaurant_data_test["description"],
+                   restaurant_id=restaurant_data_test["id"], comments=restaurant_data_test["comments"])
+
+
+    add_user(mark["username"], mark["street_number"], mark["street"], mark["city"],
+             mark["liked_restaurants"],
+             mark["rated_restaurants"],
+             mark["password"], mark["email"], mark["name"], mark["surname"], mark["owner_status"],
+             mark["owned_restaurants"])
+
+    add_user(nichola["username"], nichola["street_number"], nichola["street"], nichola["city"],
+             nichola["liked_restaurants"], nichola["rated_restaurants"], nichola["password"], nichola["email"],
+             nichola["name"], nichola["surname"],
+             nichola["owner_status"],
+             nichola["owned_restaurants"])
+
+    add_user(colin["username"], colin["street_number"], colin["street"], colin["city"],
+             colin["liked_restaurants"], colin["rated_restaurants"], colin["password"], colin["email"],
+             colin["name"], colin["surname"],
+             colin["owner_status"],
+             colin["owned_restaurants"])
+
 
 
 if __name__ == "__main__":
     print("Starting Rango population script")
     clear()
     populate()
-    for u in user_client.objects.all():
-        print(f"Created user {u}")
-        if u.owner_status:
-            print(f"User owns: {u.owned_restaurants_list}")
-    print("\n")
-    for r in Restaurant.objects.all():
-        print(f"Created restaurant {r} with {r.rating}")
-
     print("Population finished")

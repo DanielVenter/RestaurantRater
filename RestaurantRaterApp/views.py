@@ -11,8 +11,8 @@ from django.contrib.auth.forms import PasswordChangeForm
 
 def home(request):
     restaurants_list = list(Restaurant.objects.all())
-
     restaurants_list.sort(reverse=True, key = lambda x: x.rating)
+    this_user = request.user
 
     try:
         this_user = user_client.objects.get(user=this_user)
@@ -22,8 +22,7 @@ def home(request):
                     "titlemessage":"Check out the Restaurant Rater top ten!",
                     "favourites":favourites}
 
-    except:
-        this_user = request.user
+    except Exception as e:
         context_dict = {"restaurants_list":restaurants_list[:10],
                         "titlemessage":"Check out the Restaurant Rater top ten!",
                         "favourites":[]}
@@ -49,6 +48,7 @@ def show_restaurant(request, restaurant_id):
     return render(request, 'RestaurantRaterApp/restaurant.html', context=context_dict)
 
 def explore(request, sort):
+    this_user = request.user
     restaurants_list = list(Restaurant.objects.all())
     sort_options = sort_by(restaurants_list, sort)
     try:
@@ -61,8 +61,6 @@ def explore(request, sort):
                     "sort_opts":sort_options,
                     "favourites":favourites}
     except:
-        this_user = request.user
-
         context_dict = {"restaurants_list": restaurants_list,
                     "titlemessage": "Explore the Restaurant Rater records!",
                     "sort": sort,

@@ -82,12 +82,24 @@ def favourites(request, sort):
     return render(request, 'RestaurantRaterApp/favourites.html', context=context_dict)
 
 #helper function for explore and favourites views
-def sort_by(list, sort):
+def sort_by(list, sort,user):
     if sort == "alphabetical":
         list.sort(key = lambda x: x.name)
     elif sort == "distance":
-        #TODO: sort by distance from user
-        pass
+        distances = user.distances.copy()
+        my_list =[]
+        while distances:
+            largest=0
+            largest_id=null
+            for restaurant_id in distances :
+                if distances[restaurant_id]>largest:
+                    largest= distances[restaurant_id]
+                    largest_id=restaurant_id
+            my_list.add(Restaurant.objects.get(restaurant_id=largest_id))
+            distances.pop(largest_id)
+        list.clear
+        my_list.reverse()
+        list=my_list
     elif sort == "rating":
         list.sort(reverse=True, key = lambda x: x.rating)
     return ["alphabetical", "distance", "rating"]
@@ -242,7 +254,7 @@ def user_logout(request):
 @login_required
 def reverse_favourite_status(request, restaurant_id):
     
-    restaurant = Restaurant.Objects.get(restaurant_id=restaurant_id)
+    restaurant = Restaurant.objects.get(restaurant_id=restaurant_id)
     this_user=request.user
     this_user=user_client.objects.get(user=this_user)
     if restaurant in this_user.liked_restaurants.all():

@@ -5,8 +5,6 @@ import urllib.parse
 from django.db import models
 from django_resized import ResizedImageField
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 current_dir = os.getcwd()
 API_KEY = "AIzaSyAxJa_f1f5FhqyY_JhZ42JBijy4dXNgGQA"

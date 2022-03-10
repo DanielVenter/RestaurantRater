@@ -119,13 +119,13 @@
                 <!--- favourite and review buttons --->
                 {% if user.is_authenticated %}
                     <div class="d-grid gap-2 d-md-flex justify-content-md-around mt-4">
-                        {% if restaurant %} <!--- TODO: in user.liked_restaurants --->
-                            <!--- TODO: remove from favourites --->
-                            <a class="btn btn-warning" href="{% url 'RestaurantRaterApp:show_restaurant' restaurant.restaurant_id %}" role="button">Remove from favourites</a>
-                        {% else %}
-                            <!--- TODO: add to favourites --->
-                            <a class="btn btn-warning" href="{% url 'RestaurantRaterApp:show_restaurant' restaurant.restaurant_id %}" role="button">Add to favourites</a>
-                        {% endif %}
+                        <a class="btn btn-warning" href="{% url 'RestaurantRaterApp:reverse_fav' restaurant.restaurant_id %}" role="button">
+                            {% if restaurant in user.liked_restaurants %}
+                                Remove from favourites
+                            {% else %}
+                                Add to favourites
+                            {% endif %}
+                        </a>
                         <a class="btn btn-warning" href="{% url 'RestaurantRaterApp:review' restaurant.restaurant_id %}" role="button">Leave a review</a>
                     </div>
                 {% else %}

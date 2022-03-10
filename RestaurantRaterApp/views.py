@@ -46,7 +46,7 @@ def explore(request, sort):
 @login_required
 def favourites(request, sort):
     this_user=request.user
-    favourites = list(Restaurant.objects.all()) #TODO: list(this_user.liked_restaurants.all())
+    favourites = list(this_user.liked_restaurants.all())
     sort_options = sort_by(favourites, sort)
     
     context_dict = {"restaurants_list": favourites,
@@ -114,7 +114,7 @@ def profile(request):
     context_dict = {}
     this_user=request.user
 
-    owned = list(Restaurant.objects.all()) #TODO: list(this_user.owned_restaurants.all())
+    owned = list(this_user.owned_restaurants.all())
     context_dict['restaurants_list']=owned
 
     restaurants = list(Restaurant.objects.all())
@@ -213,3 +213,8 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect(reverse('RestaurantRaterApp:home'))
+
+def reverse_favourite_status(request, restaurant_id):
+    #TODO: if already favourited, remove from favourites
+    #TODO: if not favourited, add to favourites
+    return redirect(reverse('RestaurantRaterApp:show_restaurant',kwargs={'restaurant_id':  restaurant_id}))

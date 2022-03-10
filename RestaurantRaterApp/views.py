@@ -1,12 +1,13 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from RestaurantRaterApp.forms import UserProfileForm, UserForm
+from RestaurantRaterApp.forms import UserForm, SignUpForm, EditForm, RestaurantForm, ReviewForm
 from RestaurantRaterApp.models import Restaurant, user_client
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout,update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
+from django.contrib.auth.forms import PasswordChangeForm
 
 def home(request):
     restaurants_list = list(Restaurant.objects.all())
@@ -168,24 +169,25 @@ def signup(request):
     registered = False
     if request.method == 'POST':
         user_form = UserForm(request.POST)
-        profile_form = UserProfileForm(request.POST)
-        if user_form.is_valid() and profile_form.is_valid():
+        signup_form = SignUpForm(request.POST)
+        if user_form.is_valid() and signup_form.is_valid():
             user = user_form.save()
+
             user.set_password(user.password)
             user.save()
-            prof = profile_form.save(commit=False)
-            prof.user = user
-            if 'picture' in request.FILES:
-                prof.picture = request.FILES['picture']
-            prof.save()
+            
+            usr_client = signup_form.save(commit=False)
+            usr_client.user = user
+            usr_client.save()
+
             registered = True
         else:
-            print(user_form.errors, profile_form.errors)
+            print(user_form.errors, signup_form.errors)
     else:
         user_form = UserForm()
-        profile_form = UserProfileForm()
+        signup_form = SignUpForm()
     context_dict = {'user_form': user_form,
-                    'profile_form': profile_form,
+                    'signup_form': signup_form,
                     'registered': registered,
                     'titlemessage': "Sign up for a Restaurant Rater account!"}
     return render(request, 'RestaurantRaterApp/signup.html', context_dict)

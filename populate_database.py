@@ -7,6 +7,8 @@ import django
 from django.core.files import File
 
 django.setup()
+
+from django.contrib.auth.models import User
 from RestaurantRaterApp.models import user_client, Restaurant
 
 
@@ -39,32 +41,33 @@ def add_restaurant(name: str, street_number: int, street: str, city: str, descri
 
 def add_user(username: str, street_number: int, street: str, city: str, liked_restaurants: list,
              rated_restaurants: dict, password: str, email: str, name: str,
-             surname: str,
-             owner_status=False, owned_restaurants=[]):
-    u = user_client.objects.get_or_create(username=username, street_number=street_number, street=street, city=city,
-                                          rated_restaurants=rated_restaurants, password=password, email=email,
-                                          name=name, surname=surname, owner_status=owner_status)[0]
+             surname: str, owner_status=False, owned_restaurants=[]):
+    user = User.objects.create_user(username=username, email=email, password=password)
+    user.save()
+
+    u = user_client.objects.get_or_create(user=user, name=name, surname=surname, street_number=street_number, street=street, city=city,
+                                          rated_restaurants=rated_restaurants, owner_status=owner_status)[0]
     u.save()
 
     # Adds ratings
     for restaurant in rated_restaurants.keys():
-        rates(name, restaurant)
+        rates(user, restaurant)
 
     # Adds liked restaurants
     for restaurant in liked_restaurants:
-        likes(name, restaurant)
+        likes(user, restaurant)
 
     # Adds Owner's Restaurants
     if owner_status:
         for restaurant in owned_restaurants:
-            owns(name, restaurant)
+            owns(user, restaurant)
 
     return u
 
 
 def rates(user: str, restaurant: str):
     # Creates link between user and restaurant
-    user_obj = user_client.objects.get(name=user)
+    user_obj = user_client.objects.get(user=user)
     restaurant_obj = Restaurant.objects.get(restaurant_id=restaurant)
     user_obj.rates.add(restaurant_obj)
     # Appends rating to ratings list which overall rating calculated from
@@ -74,14 +77,14 @@ def rates(user: str, restaurant: str):
 
 def owns(user: str, restaurant: str):
     # Creates link between user and restaurant
-    user_obj = user_client.objects.get(name=user)
+    user_obj = user_client.objects.get(user=user)
     restaurant_obj = Restaurant.objects.get(restaurant_id=restaurant)
     user_obj.owned_restaurants.add(restaurant_obj)
 
 
 def likes(user: str, restaurant: str):
     # Creates link between user and restaurant
-    user_obj = user_client.objects.get(name=user)
+    user_obj = user_client.objects.get(user=user)
     restaurant_obj = Restaurant.objects.get(restaurant_id=restaurant)
     user_obj.liked_restaurants.add(restaurant_obj)
 
@@ -626,13 +629,13 @@ def populate():
          "street": "Calder St",
          "city": "Glasgow",
          "liked_restaurants": ["ST", "SB", "GL"],
-         "rated_restaurants": {"ST": 4, "PDC": 3, "N16": 3, "SB": 4, "B6": 5, "GL": 5, "CS": 4, "GG": 2},
+         "rated_restaurants": {"ST": 4, "PDC": 3, "N16": 3, "B6": 5, "GL": 5, "CS": 4, "GG": 2},
          "password": "Danny123",
          "email": "danny@gmail.com",
          "name": "Danny",
          "surname": "Macpherson",
          "owner_status": True,
-         "owned_restaurants": ["GL", "CB", "FM", "TG", "HBS", "STO", "CHS"]
+         "owned_restaurants": ["GL", "CB", "FM", "TG", "HBS", "STO", "CHS", "SB"]
 
          }]
 

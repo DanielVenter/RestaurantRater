@@ -46,9 +46,10 @@ def add_user(username: str, street_number: int, street: str, city: str, liked_re
     user.save()
 
     u = \
-    user_client.objects.get_or_create(user=user, name=name, surname=surname, street_number=street_number, street=street,
-                                      city=city,
-                                      rated_restaurants=rated_restaurants, owner_status=owner_status)[0]
+        user_client.objects.get_or_create(user=user, name=name, surname=surname, street_number=street_number,
+                                          street=street,
+                                          city=city,
+                                          rated_restaurants=rated_restaurants, owner_status=owner_status)[0]
     u.save()
 
     u.update_distances_dict()
@@ -620,7 +621,7 @@ def populate():
          "city": "Glasgow",
          "liked_restaurants": ["ALC"],
          "rated_restaurants": {"ALC": 4, "JK": 3, "KC": 3, "HBS": 2, "CS": 5, "STO": 2, "CHS": 4},
-         "password": "Nichola123",
+         "password": "Nicola123",
          "email": "nichola@gmail.com",
          "name": "Nicola",
          "surname": "Hamill",
@@ -660,13 +661,14 @@ def populate():
             print(f"User owns: {u.owned_restaurants_list}")
         print(u.distances_dict)
 
+
 def populate_test():
     mark = {"username": "Mark.E",
             "street_number": 21,
             "street": "Beith Street",
             "city": "Glasgow",
             "liked_restaurants": ["ALC"],
-            "rated_restaurants": {"ALC": 4},
+            "rated_restaurants": {"ALC": 4, "KC": 5},
             "password": "Mark123",
             "email": "mark@gmail.com",
             "name": "Mark",
@@ -678,46 +680,65 @@ def populate_test():
                "street_number": 530,
                "street": "Victoria Rd",
                "city": "Glasgow",
-               "liked_restaurants": ["ALC"],
-               "rated_restaurants": {"ALC": 4},
-               "password": "Nichola123",
+               "liked_restaurants": ["ALC", "KC"],
+               "rated_restaurants": {"ALC": 4, "KC": 5},
+               "password": "Nicola123",
                "email": "nichola@gmail.com",
                "name": "Nicola",
                "surname": "Hamill",
                "owner_status": True,
                "owned_restaurants": ["ALC"]
                }
-    colin={"username": "Colin",
-         "street_number": 1,
-         "street": "Cathcard Rd",
-         "city": "Glasgow",
-         "liked_restaurants": [],
-         "rated_restaurants": {},
-         "password": "Colin123",
-         "email": "colin@gmail.com",
-         "name": "Colin",
-         "surname": "McNair",
-         "owner_status": False,
-         "owned_restaurants": []
-         }
+    colin = {"username": "Colin",
+             "street_number": 1,
+             "street": "Cathcard Rd",
+             "city": "Glasgow",
+             "liked_restaurants": ["KC"],
+             "rated_restaurants": {"KC": 5},
+             "password": "Colin123",
+             "email": "colin@gmail.com",
+             "name": "Colin",
+             "surname": "McNair",
+             "owner_status": False,
+             "owned_restaurants": []
+             }
 
-    restaurant_data_test = {"name": "Alchemilla",
-                            "street_number": 1126,
-                            "street": "Argyle Street",
-                            "city": "Glasgow",
-                            "description": "Seasonal Mediterranean plates and natural wine.",
-                            "id": "ALC",
-                            "comments": {
-                                "Mark.E": """The restaurant is a cute little intimate location in the interesting area of 
+    restaurant_data_alc = {"name": "Alchemilla",
+                           "street_number": 1126,
+                           "street": "Argyle Street",
+                           "city": "Glasgow",
+                           "description": "Seasonal Mediterranean plates and natural wine.",
+                           "id": "ALC",
+                           "comments": {
+                               "Mark.E": """The restaurant is a cute little intimate location in the interesting area of 
                  finnieston. The lighting, ambiance and staff were great and serve the restaurant 
                  well. """,
-                            }
-                            }
-    add_restaurant(name=restaurant_data_test["name"], street_number=restaurant_data_test["street_number"],
-                   street=restaurant_data_test["street"], city=restaurant_data_test["city"],
-                   description=restaurant_data_test["description"],
-                   restaurant_id=restaurant_data_test["id"], comments=restaurant_data_test["comments"])
+                           }
+                           }
+    restaurant_data_kc = {"name": "Kimchi Cult",
+                          "street_number": 14,
+                          "street": "Chancellor St",
+                          "city": "Glasgow",
+                          "description": "Korean-style fast food in Glasgow’s West End.",
+                          "id": "KC",
+                          "comments": {"Nicola.H": """My wife and I tried this tonight after hearing good things and 
+                          got the Korean Chicken burger, bibimbap and tofu. The food was generally tasty their crispy 
+                          chicken and sauce was good!""", 
+                                       "Michael.G": """Working in Glasgow, went 3 times in a week. What more can I 
+                                       say. Outstanding""", 
+                                       "Andy.P": """Portion sizes are much smaller now - it is a depressing story for 
+                                       many such places. Two months ago, their portions were generous and now they 
+                                       are absolutely the opposite- I won’t be back """
+                                       }}
+    add_restaurant(name=restaurant_data_alc["name"], street_number=restaurant_data_alc["street_number"],
+                   street=restaurant_data_alc["street"], city=restaurant_data_alc["city"],
+                   description=restaurant_data_alc["description"],
+                   restaurant_id=restaurant_data_alc["id"], comments=restaurant_data_alc["comments"])
 
+    add_restaurant(name=restaurant_data_kc["name"], street_number=restaurant_data_kc["street_number"],
+                   street=restaurant_data_kc["street"], city=restaurant_data_kc["city"],
+                   description=restaurant_data_kc["description"],
+                   restaurant_id=restaurant_data_kc["id"], comments=restaurant_data_kc["comments"])
 
     add_user(mark["username"], mark["street_number"], mark["street"], mark["city"],
              mark["liked_restaurants"],
@@ -736,7 +757,6 @@ def populate_test():
              colin["name"], colin["surname"],
              colin["owner_status"],
              colin["owned_restaurants"])
-
 
 
 if __name__ == "__main__":

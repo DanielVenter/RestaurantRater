@@ -7,7 +7,7 @@ from django.db import models
 # copied from ae1 rango project to simulate user authentication (for testing only)
 from django.contrib.auth.models import User
 from django_resized import ResizedImageField
-from django.contrib.auth.models import User
+
 
 current_dir = os.getcwd()
 API_KEY = "AIzaSyAxJa_f1f5FhqyY_JhZ42JBijy4dXNgGQA"

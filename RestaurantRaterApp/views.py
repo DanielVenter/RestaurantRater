@@ -4,30 +4,32 @@ from RestaurantRaterApp.forms import UserForm, SignUpForm, EditForm, RestaurantF
 from RestaurantRaterApp.models import Restaurant, user_client
 from django.shortcuts import redirect
 from django.urls import reverse
-from django.contrib.auth import authenticate, login, logout,update_session_auth_hash
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from django.contrib.auth.forms import PasswordChangeForm
 
+
 def home(request):
     restaurants_list = list(Restaurant.objects.all())
-    restaurants_list.sort(reverse=True, key = lambda x: x.rating)
+    restaurants_list.sort(reverse=True, key=lambda x: x.rating)
     this_user = request.user
 
     try:
         this_user = user_client.objects.get(user=this_user)
         favourites = list(this_user.liked_restaurants.all())
 
-        context_dict = {"restaurants_list":restaurants_list[:10],
-                    "titlemessage":"Check out the Restaurant Rater top ten!",
-                    "favourites":favourites}
+        context_dict = {"restaurants_list": restaurants_list[:10],
+                        "titlemessage": "Check out the Restaurant Rater top ten!",
+                        "favourites": favourites}
 
     except Exception as e:
-        context_dict = {"restaurants_list":restaurants_list[:10],
-                        "titlemessage":"Check out the Restaurant Rater top ten!",
-                        "favourites":[]}
+        context_dict = {"restaurants_list": restaurants_list[:10],
+                        "titlemessage": "Check out the Restaurant Rater top ten!",
+                        "favourites": []}
 
     return render(request, 'RestaurantRaterApp/home.html', context=context_dict)
+
 
 def show_restaurant(request, restaurant_id):
     try:
@@ -35,87 +37,91 @@ def show_restaurant(request, restaurant_id):
         this_user = user_client.objects.get(user=this_user)
         favourites = list(this_user.liked_restaurants.all())
     except:
-        favourites=[]
-        
+        favourites = []
+
     context_dict = {}
     try:
-        
+
         restaurant = Restaurant.objects.get(restaurant_id=restaurant_id)
 
         context_dict['restaurant'] = restaurant
-        context_dict['reviews']=restaurant.comments
+        context_dict['reviews'] = restaurant.comments
     except Restaurant.DoesNotExist:
-  
+
         context_dict['restaurant'] = None
 
     context_dict['favourites'] = favourites
     return render(request, 'RestaurantRaterApp/restaurant.html', context=context_dict)
 
+
 def explore(request, sort):
     this_user = request.user
     restaurants_list = list(Restaurant.objects.all())
-    sort_options = sort_by(restaurants_list, sort,this_user)
+    sort_options = sort_by(restaurants_list, sort, this_user)
     try:
         this_user = user_client.objects.get(user=this_user)
         favourites = list(this_user.liked_restaurants.all())
-    
+
         context_dict = {"restaurants_list": restaurants_list,
-                    "titlemessage": "Explore the Restaurant Rater records!",
-                    "sort": sort,
-                    "sort_opts":sort_options,
-                    "favourites":favourites}
+                        "titlemessage": "Explore the Restaurant Rater records!",
+                        "sort": sort,
+                        "sort_opts": sort_options,
+                        "favourites": favourites}
     except:
         context_dict = {"restaurants_list": restaurants_list,
-                    "titlemessage": "Explore the Restaurant Rater records!",
-                    "sort": sort,
-                    "sort_opts":sort_options,
-                    "favourites":[]}
+                        "titlemessage": "Explore the Restaurant Rater records!",
+                        "sort": sort,
+                        "sort_opts": sort_options,
+                        "favourites": []}
     return render(request, 'RestaurantRaterApp/explore.html', context=context_dict)
+
 
 @login_required
 def favourites(request, sort):
-    this_user=request.user
-    this_user=user_client.objects.get(user=this_user)
+    this_user = request.user
+    this_user = user_client.objects.get(user=this_user)
     favourites = list(this_user.liked_restaurants.all())
-    sort_options = sort_by(favourites, sort,request.user)
-    
+    sort_options = sort_by(favourites, sort, request.user)
+
     context_dict = {"restaurants_list": favourites,
                     "titlemessage": "View your favourite restaurants!",
                     "sort": sort,
-                    "sort_opts":sort_options}
+                    "sort_opts": sort_options}
     return render(request, 'RestaurantRaterApp/favourites.html', context=context_dict)
 
-#helper function for explore and favourites views
-def sort_by(list, sort,user):
+
+# helper function for explore and favourites views
+def sort_by(list, sort, user):
     if sort == "alphabetical":
-        list.sort(key = lambda x: x.name)
+        list.sort(key=lambda x: x.name)
     elif sort == "distance" and user.is_authenticated:
         user = user_client.objects.get(user=user)
         distances = user.distances.copy()
-        my_list =[]
+        my_list = []
         while distances:
-            largest=0
-            largest_id=null
-            for restaurant_id in distances :
-                if distances[restaurant_id]>largest:
-                    largest= distances[restaurant_id]
-                    largest_id=restaurant_id
+            largest = 0
+            largest_id = null
+            for restaurant_id in distances:
+                if distances[restaurant_id] > largest:
+                    largest = distances[restaurant_id]
+                    largest_id = restaurant_id
             my_list.add(Restaurant.objects.get(restaurant_id=largest_id))
             distances.pop(largest_id)
         list.clear
         my_list.reverse()
-        list=my_list
+        list = my_list
     elif sort == "rating":
-        list.sort(reverse=True, key = lambda x: x.rating)
+        list.sort(reverse=True, key=lambda x: x.rating)
     return ["alphabetical", "distance", "rating"]
-    
+
+
 @login_required
 def add_review(request, restaurant_id):
     try:
         restaurant = Restaurant.objects.get(restaurant_id=restaurant_id)
     except Restaurant.DoesNotExist:
         restaurant = None
-    
+
     if restaurant is None:
         return redirect('/restaurantraterapp/')
     form = ReviewForm()
@@ -124,41 +130,41 @@ def add_review(request, restaurant_id):
         if form.is_valid():
             if restaurant:
                 form.save(commit=False)
-                
-                return redirect(reverse('restaurantraterapp:show_restaurant',kwargs={'restaurant_id':  restaurant_id}))
+
+                return redirect(reverse('restaurantraterapp:show_restaurant', kwargs={'restaurant_id': restaurant_id}))
     else:
         print(form.errors)
     context_dict = {'form': form, 'restaurant': restaurant}
     return render(request, 'restaurantraterapp/add_review.html', context=context_dict)
-   
+
 
 @login_required
 def add_restaurant(request):
     form = RestaurantForm()
-   
+
     if request.method == 'POST':
         form = RestaurantForm(request.POST)
-        
+
         if form.is_valid():
-       
-            restaurant=form.save(commit=True)
-            print(restaurant,restaurant.id)
-            request.user.owner_status=True
-           
+            restaurant = form.save(commit=True)
+            print(restaurant, restaurant.id)
+            request.user.owner_status = True
+
         return redirect('/restaurantraterapp/')
     else:
-      
+
         print(form.errors)
 
     return render(request, 'restaurantraterapp/add_restaurant.html', {'form': form})
 
+
 @login_required
 def profile(request):
     context_dict = {}
-    this_user=request.user
-    this_user_client=user_client.objects.get(user=this_user)
+    this_user = request.user
+    this_user_client = user_client.objects.get(user=this_user)
     owned = list(this_user_client.owned_restaurants.all())
-    context_dict['restaurants_list']=owned
+    context_dict['restaurants_list'] = owned
 
     restaurants = list(Restaurant.objects.all())
     users_comments = {}
@@ -166,47 +172,49 @@ def profile(request):
         for com in restaurant.comments:
             if com == this_user.username:
                 users_comments[restaurant.name] = restaurant.comments[com]
-    context_dict['comments']= users_comments
-    
+    context_dict['comments'] = users_comments
+
     return render(request, 'RestaurantRaterApp/profile.html', context=context_dict)
+
 
 def edit_profile(request):
     if request.method == 'POST':
-        edit_form = EditForm(request.POST,instance=request.user)
-        
-        if edit_form.is_valid() :
-           edit_form.save()
-           return redirect('RestaurantRaterApp/profile')
-         
-           
-           
+        edit_form = EditForm(request.POST, instance=request.user)
+
+        if edit_form.is_valid():
+            edit_form.save()
+            return redirect('RestaurantRaterApp/profile')
+
+
+
         else:
-            
+
             return redirect('RestaurantRaterApp/edit_profile')
     else:
         edit_form = EditForm()
-        
-    context_dict = {'edit_form': edit_form }
+
+    context_dict = {'edit_form': edit_form}
     return render(request, 'RestaurantRaterApp/edit_profile.html', context_dict)
+
 
 def change_password(request):
     if request.method == 'POST':
-        password_form = PasswordChangeForm(data=request.POST,user=request.user)
-        
-        if password_form.is_valid() :
+        password_form = PasswordChangeForm(data=request.POST, user=request.user)
+
+        if password_form.is_valid():
             password_form.save()
-            update_session_auth_hash(request,password_form.user)
+            update_session_auth_hash(request, password_form.user)
             return redirect('restaurantraterapp/profile')
-           
+
         else:
-            
+
             return redirect('RestaurantRaterApp/change_password')
     else:
         password_form = PasswordChangeForm(user=request.user)
-        
-    context_dict = {'password_form': password_form }
+
+    context_dict = {'password_form': password_form}
     return render(request, 'RestaurantRaterApp/change_password.html', context_dict)
-    
+
 
 def signup(request):
     registered = False
@@ -218,7 +226,7 @@ def signup(request):
 
             user.set_password(user.password)
             user.save()
-            
+
             usr_client = signup_form.save(commit=False)
             usr_client.user = user
             usr_client.save()
@@ -234,6 +242,7 @@ def signup(request):
                     'registered': registered,
                     'titlemessage': "Sign up for a Restaurant Rater account!"}
     return render(request, 'RestaurantRaterApp/signup.html', context_dict)
+
 
 def user_login(request):
     if request.method == 'POST':
@@ -252,18 +261,20 @@ def user_login(request):
     else:
         return render(request, 'RestaurantRaterApp/login.html')
 
+
 @login_required
 def user_logout(request):
     logout(request)
     return redirect(reverse('RestaurantRaterApp:home'))
+
+
 @login_required
 def reverse_favourite_status(request, restaurant_id):
-    
     restaurant = Restaurant.objects.get(restaurant_id=restaurant_id)
-    this_user=request.user
-    this_user=user_client.objects.get(user=this_user)
+    this_user = request.user
+    this_user = user_client.objects.get(user=this_user)
     if restaurant in this_user.liked_restaurants.all():
         this_user.liked_restaurants.remove(restaurant)
-    else: 
+    else:
         this_user.liked_restaurants.add(restaurant)
-    return redirect(reverse('RestaurantRaterApp:show_restaurant',kwargs={'restaurant_id':  restaurant_id}))
+    return redirect(reverse('RestaurantRaterApp:show_restaurant', kwargs={'restaurant_id': restaurant_id}))

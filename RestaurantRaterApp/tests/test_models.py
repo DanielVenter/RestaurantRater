@@ -49,8 +49,7 @@ class UserModelTests(TestCase):
     def test_user_dict(self):
         msg = "user distance dict not generated correctly"
         self.assertEqual(self.user.distances_dict,
-                         {'ALC': 1.6}, msg)
-
+                         {'ALC': 1.6, 'KC': 0.9}, msg)
 
 class RestaurantModelTests(TestCase):
     def setUp(self):

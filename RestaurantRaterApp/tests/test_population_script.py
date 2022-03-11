@@ -79,7 +79,7 @@ class PopulationScriptTests(TestCase):
     def test_correct_no_restaurants(self):
         msg = "population script does not create all restaurants."
 
-        self.assertEqual(len(Restaurant.objects.all()), 1, msg)
+        self.assertEqual(len(Restaurant.objects.all()), 2, msg)
 
     # Tests if the population script creates a correct number of users
     def test_correct_no_users(self):

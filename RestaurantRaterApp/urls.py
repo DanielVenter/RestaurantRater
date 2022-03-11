@@ -13,5 +13,5 @@ urlpatterns = [
     path('logout/', views.user_logout, name='logout'),
     path('<slug:restaurant_id>/reverse_fav/', views.reverse_favourite_status, name='reverse_fav'),
     path('<slug:restaurant_id>/review/', views.add_review, name='review'),
-    path('<slug:restaurant_id>/',views.show_restaurant, name='show_restaurant'),
+    path('<slug:restaurant_id>/', views.show_restaurant, name='show_restaurant'),
 ]

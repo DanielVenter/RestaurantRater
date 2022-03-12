@@ -14,13 +14,18 @@
             <a class="btn btn-warning" href="{% url 'RestaurantRaterApp:login' %}" role="button">Log in to your account</a>
         </div>
 	{% else %}
-		<form id="user_form" method="post" action="{% url 'RestaurantRaterApp:signup' %}" enctype="multipart/form-data">
-			{% csrf_token %}
-			{% include 'RestaurantRaterApp/form_col.html' with form=user_form %}
-            {% include 'RestaurantRaterApp/form_col.html' with form=signup_form %}
-            <div class="form-group d-grid gap-2 d-md-flex justify-content-md-around mt-4">
-                <input type="submit" class="btn btn-warning" name="submit" value="Register" />
-            </div>
-		</form>
+        <div class="row p-3 text-center nospace">
+            {% if invalid %}
+                    <h5>Invalid input, please try again.</h5>
+            {% endif %}
+            <form id="user_form" method="post" action="{% url 'RestaurantRaterApp:signup' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% include 'RestaurantRaterApp/form_col.html' with form=user_form %}
+                {% include 'RestaurantRaterApp/form_col.html' with form=signup_form %}
+                <div class="form-group d-grid gap-2 d-md-flex justify-content-md-around mt-4">
+                    <input type="submit" class="btn btn-warning" name="submit" value="Register" />
+                </div>
+            </form>
+        </div>
 	{% endif %}
 {% endblock %}

@@ -224,6 +224,7 @@ def change_password(request):
 
 def signup(request):
     registered = False
+    invalid = False
     if request.method == 'POST':
         user_form = UserForm(request.POST)
         signup_form = SignUpForm(request.POST)
@@ -241,18 +242,20 @@ def signup(request):
 
             registered = True
         else:
-            print(user_form.errors, signup_form.errors)
+            invalid = True
     else:
         user_form = UserForm()
         signup_form = SignUpForm()
     context_dict = {'user_form': user_form,
                     'signup_form': signup_form,
                     'registered': registered,
+                    'invalid': invalid,
                     'titlemessage': "Sign up for a Restaurant Rater account!"}
     return render(request, 'RestaurantRaterApp/signup.html', context_dict)
 
 
 def user_login(request):
+    invalid = False
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -264,8 +267,7 @@ def user_login(request):
             else:
                 return HttpResponse("Your RestaurantRaterApp account is disabled.")
         else:
-            print(f"Invalid login details: {username}, {password}")
-            return HttpResponse("Invalid login details supplied.")
+            return render(request, 'RestaurantRaterApp/login.html', {"titlemessage": "Log in to your Restaurant Rater account!", "invalid":True})
     else:
         return render(request, 'RestaurantRaterApp/login.html', {"titlemessage": "Log in to your Restaurant Rater account!"})
 

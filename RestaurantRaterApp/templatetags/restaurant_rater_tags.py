@@ -10,6 +10,10 @@ def modulo(num, val):
 def subtract(value, arg):
     return value - arg
 
+@register.filter
+def get_value(dict, key):
+    return dict[key]
+
 @register.simple_tag
 def get_row_colour(counter):
     if counter%2 == 0:

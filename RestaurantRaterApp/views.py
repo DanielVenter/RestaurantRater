@@ -237,6 +237,8 @@ def signup(request):
             usr_client.user = user
             usr_client.save()
 
+            usr_client.update_distances_dict()
+
             registered = True
         else:
             print(user_form.errors, signup_form.errors)

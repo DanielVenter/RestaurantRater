@@ -36,7 +36,7 @@
                                     <tr class="{% get_row_colour forloop.counter %}">
                                         <td>
                                             <a href="{% url 'RestaurantRaterApp:show_restaurant' restaurant.restaurant_id %}" class="text-decoration-none text-body">
-                                                {% include 'RestaurantRaterApp/arrow_or_heart.html' with restaurant=restaurant favs=favs %}
+                                                {% include 'RestaurantRaterApp/arrow_or_heart.html' with restaurant=restaurant favs=favourites %}
                                             </a>
                                         </td>
                                         <td><a href="{% url 'RestaurantRaterApp:show_restaurant' restaurant.restaurant_id %}" class="text-decoration-none text-body">{{ restaurant.name }}</a></td>

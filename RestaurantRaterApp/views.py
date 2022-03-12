@@ -289,5 +289,9 @@ def reverse_favourite_status(request, restaurant_id):
 
 @login_required
 def del_confirm(request):
-    #TODO
-    return render(request, 'RestaurantRaterApp/delete_confirmation.html')
+    return render(request, 'RestaurantRaterApp/delete_confirmation.html', {"titlemessage": "Do you want to delete your Restaurant Rater account?"})
+
+@login_required
+def del_user(request):
+    #TODO: delete the user
+    return redirect(reverse('RestaurantRaterApp:home'))

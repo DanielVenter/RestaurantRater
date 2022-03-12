@@ -7,5 +7,9 @@
 {% endblock %}
 
 {% block body_block %}
-    delete confirmation text
+    <div class="text-center p-3">
+        <h5>Note that choosing to delete your Restaurant Rater account is a permanent action.</h5>
+        <br />
+        <a class="btn btn-warning" href="{% url 'RestaurantRaterApp:delete_user' %}" role="button">Delete account</a>
+    </div>
 {% endblock %}

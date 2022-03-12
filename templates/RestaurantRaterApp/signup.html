@@ -16,9 +16,27 @@
 	{% else %}
 		<form id="user_form" method="post" action="{% url 'RestaurantRaterApp:signup' %}" enctype="multipart/form-data">
 			{% csrf_token %}
-			{{ user_form.as_p }}
-			{{ signup_form.as_p }}
-			<input type="submit" name="submit" value="Register" />
+			{% for field in user_form %}
+				<div class="form-group row justify-content-md-center">
+					<label class="col-sm-1 col-form-label" for="{{ field.auto_id }}">{{ field.label|add:":" }}</label>
+					<div class="col-sm-3">
+						{{ field }}
+					</div>
+				</div>
+			{% endfor %}
+			{% for field in signup_form %}
+				<div class="form-group row justify-content-md-center">
+					<label class="col-sm-1 col-form-label" for="{{ field.auto_id }}">{{ field.label|add:":" }}</label>
+					<div class="col-sm-3">
+						{{ field }}
+					</div>
+				</div>
+			{% endfor %}
+			<div class="form-group row justify-content-md-center">
+				<div class="col-sm-1">
+					<input type="submit" class="btn btn-warning" name="submit" value="Register" />
+				</div>
+			</div>
 		</form>
 	{% endif %}
 {% endblock %}

@@ -14,15 +14,30 @@ def validate_positive(value):
 
 #User creation form
 class UserForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput())
     class Meta:
         model = User
-        fields = ('username', 'email', 'password', )
+
+        widgets = {
+            'username': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 "}),
+            'password': forms.PasswordInput(attrs={'class': "form-control form-control-sm mb-2 "}),
+            'email': forms.EmailInput(attrs={'class': "form-control form-control-sm mb-2 "}),
+        }
+
+        fields = ('username', 'password', 'email', )
 
 #User profile form
 class SignUpForm(forms.ModelForm):
     class Meta:
         model = user_client
+
+        widgets = {
+            'name': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2"}),
+            'surname': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 "}),
+            'city': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 "}),
+            'street': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 "}),
+            'street_number': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 "}),
+        }
+
         fields = ('name', 'surname','city', 'street', 'street_number')
 
 class EditForm(forms.ModelForm):

@@ -15,5 +15,5 @@
 {% endblock %}
 
 {% block body_block %}
-    {% include 'RestaurantRaterApp/table.html' with r_list=restaurants_list  favs=favourites %}
+    {% include 'RestaurantRaterApp/table.html' with r_list=restaurants_list  favs=favourites dists=distances %}
 {% endblock %}

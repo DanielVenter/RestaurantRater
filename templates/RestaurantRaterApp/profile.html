@@ -1,5 +1,6 @@
 {% extends 'RestaurantRaterApp/base.html' %}
 {% load static %}
+{% load restaurant_rater_tags %}
 
 {% block title_block %}
 	My Profile
@@ -16,12 +17,36 @@
             Info space
 
         </div>
-        <div class="col-md-4 p-0 h-100">
+        <div class="col-md-4 p-3 h-100">
             <div class="overflow-auto" style="max-height:650px">
 
                 <!--- table of users restaurants --->
                 <div class="row mw-100 p-0 m-0" >
-                    Restaurant table
+                    {% if restaurants_list %}
+                        <table class="table table-secondary table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col">My Restaurants</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for restaurant in restaurants_list %}
+                                    <!-- alternate cyan and yellow rows -->
+                                    <tr class="{% get_row_colour forloop.counter %}">
+                                        <td>
+                                            <a href="{% url 'RestaurantRaterApp:show_restaurant' restaurant.restaurant_id %}" class="text-decoration-none text-body">
+                                                {% include 'RestaurantRaterApp/arrow_or_heart.html' with restaurant=restaurant favs=favs %}
+                                            </a>
+                                        </td>
+                                        <td><a href="{% url 'RestaurantRaterApp:show_restaurant' restaurant.restaurant_id %}" class="text-decoration-none text-body">{{ restaurant.name }}</a></td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <strong>You don't currently own any restaurants in our records!</strong><br />
+                    {% endif %}
                 </div>
 
             </div>

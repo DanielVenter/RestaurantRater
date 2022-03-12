@@ -163,8 +163,7 @@ def profile(request):
     context_dict = {}
     this_user = request.user
     this_user_client = user_client.objects.get(user=this_user)
-    owned = list(this_user_client.owned_restaurants.all())
-    context_dict['restaurants_list'] = owned
+    context_dict['restaurants_list'] = this_user_client.owned_restaurants_list
 
     restaurants = list(Restaurant.objects.all())
     users_comments = {}

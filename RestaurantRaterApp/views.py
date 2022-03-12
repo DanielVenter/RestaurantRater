@@ -14,19 +14,18 @@ def home(request):
     restaurants_list = list(Restaurant.objects.all())
     restaurants_list.sort(reverse=True, key=lambda x: x.rating)
     this_user = request.user
-
+    context_dict = {"restaurants_list": restaurants_list[:10],
+                    "titlemessage": "Check out the Restaurant Rater top ten!"}
     try:
         this_user = user_client.objects.get(user=this_user)
         favourites = list(this_user.liked_restaurants.all())
-
-        context_dict = {"restaurants_list": restaurants_list[:10],
-                        "titlemessage": "Check out the Restaurant Rater top ten!",
-                        "favourites": favourites}
+        distances = this_user.distances_dict.copy()
+        context_dict['favourites'] = favourites
+        context_dict['distances'] = distances
 
     except Exception as e:
-        context_dict = {"restaurants_list": restaurants_list[:10],
-                        "titlemessage": "Check out the Restaurant Rater top ten!",
-                        "favourites": []}
+        context_dict['favourites'] = []
+        context_dict['distances'] = []
 
     return render(request, 'RestaurantRaterApp/home.html', context=context_dict)
 
@@ -58,21 +57,20 @@ def explore(request, sort):
     this_user = request.user
     restaurants_list = list(Restaurant.objects.all())
     sort_options = sort_by(restaurants_list, sort, this_user)
+    context_dict = {"restaurants_list": restaurants_list,
+                    "titlemessage": "Explore the Restaurant Rater records!",
+                    "sort": sort,
+                    "sort_opts": sort_options}
     try:
         this_user = user_client.objects.get(user=this_user)
         favourites = list(this_user.liked_restaurants.all())
-
-        context_dict = {"restaurants_list": restaurants_list,
-                        "titlemessage": "Explore the Restaurant Rater records!",
-                        "sort": sort,
-                        "sort_opts": sort_options,
-                        "favourites": favourites}
+        distances = this_user.distances_dict.copy()
+        context_dict['favourites'] = favourites
+        context_dict['distances'] = distances
     except:
-        context_dict = {"restaurants_list": restaurants_list,
-                        "titlemessage": "Explore the Restaurant Rater records!",
-                        "sort": sort,
-                        "sort_opts": sort_options,
-                        "favourites": []}
+        context_dict['favourites'] = []
+        context_dict['distances'] = []
+
     return render(request, 'RestaurantRaterApp/explore.html', context=context_dict)
 
 
@@ -80,10 +78,12 @@ def explore(request, sort):
 def favourites(request, sort):
     this_user = request.user
     this_user = user_client.objects.get(user=this_user)
+    distances = this_user.distances_dict.copy()
     favourites = list(this_user.liked_restaurants.all())
     sort_options = sort_by(favourites, sort, request.user)
 
     context_dict = {"restaurants_list": favourites,
+                    "distances": distances,
                     "titlemessage": "View your favourite restaurants!",
                     "sort": sort,
                     "sort_opts": sort_options}
@@ -96,16 +96,16 @@ def sort_by(list, sort, user):
         list.sort(key=lambda x: x.name)
     elif sort == "distance" and user.is_authenticated:
         user = user_client.objects.get(user=user)
-        distances = user.distances.copy()
+        distances = user.distances_dict.copy()
         my_list = []
         while distances:
             largest = 0
-            largest_id = null
+            largest_id = None
             for restaurant_id in distances:
                 if distances[restaurant_id] > largest:
                     largest = distances[restaurant_id]
                     largest_id = restaurant_id
-            my_list.add(Restaurant.objects.get(restaurant_id=largest_id))
+            my_list.append(Restaurant.objects.get(restaurant_id=largest_id))
             distances.pop(largest_id)
         list.clear
         my_list.reverse()

@@ -267,7 +267,7 @@ def user_login(request):
             print(f"Invalid login details: {username}, {password}")
             return HttpResponse("Invalid login details supplied.")
     else:
-        return render(request, 'RestaurantRaterApp/login.html')
+        return render(request, 'RestaurantRaterApp/login.html', {"titlemessage": "Log in to your Restaurant Rater account!"})
 
 
 @login_required

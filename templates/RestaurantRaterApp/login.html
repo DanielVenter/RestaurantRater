@@ -6,13 +6,22 @@
 {% endblock %}
 
 {% block body_block %}
-	<h1>Login to Rango</h1>
 	<form id="login_form" method="post" action="{% url 'RestaurantRaterApp:login' %}">
 		{% csrf_token %}
-		Username: <input type="text" name="username" value="" size="50" />
-		<br />
-		Password: <input type="password" name="password" value="" size="50" />
-		<br />
-		<input type="submit" value="submit" />
+        <div class="form-group row justify-content-md-center">
+            <label class="col-md-1 col-form-label" for="username">Username:</label>
+            <div class="col-md-3">
+                <input type="text" name="username" value="" size="50" />
+            </div>
+        </div>
+        <div class="form-group row justify-content-md-center">
+            <label class="col-md-1 col-form-label" for="password">Password:</label>
+            <div class="col-md-3">
+                <input type="text" name="password" value="" size="50" />
+            </div>
+        </div>
+        <div class="form-group d-grid gap-2 d-md-flex justify-content-md-around mt-4">
+            <input type="submit" class="btn btn-warning" name="submit" value="Log In" />
+        </div>
 	</form>
 {% endblock %}

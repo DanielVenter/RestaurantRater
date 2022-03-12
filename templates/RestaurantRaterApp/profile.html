@@ -14,7 +14,23 @@
     {% if user.is_authenticated %}
         <div class="col-md-4 p-3 h-100">
 
-            Info space
+            <!--- account details --->
+            <div class="row justify-content-center align-items-center p-1 me-2">
+                <div class="bg-ly p-3">
+                    {% for label, value in account_details.items %}
+                        <div class="d-flex p-1 gap-2">
+                            <div class="flex-column text-end">{{ label }}: </div>
+                            <div class="flex-column">{{ value }}</div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        <!--- account actions buttons --->
+        <div class="d-flex justify-content-center align-items-stretch flex-column p-5 gap-4 me-4">
+            <a class="btn btn-warning" href="{% url 'RestaurantRaterApp:edit_profile' %}" role="button">Update account details</a>
+            <a class="btn btn-warning" href="{% url 'RestaurantRaterApp:delete_profile' %}" role="button">Delete account</a>
+        </div>
 
         </div>
         <div class="col-md-4 p-3 h-100">

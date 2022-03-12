@@ -174,6 +174,12 @@ def profile(request):
                 users_comments[restaurant.name] = restaurant.comments[com]
     context_dict['comments'] = users_comments
 
+    context_dict['account_details'] = {"Username": this_user.username,
+                                       "Name": this_user_client.name,
+                                       "Surname": this_user_client.surname,
+                                       "Email": this_user.email,
+                                       "Address": f"{this_user_client.street_number} {this_user_client.street} {this_user_client.city}"}
+
     return render(request, 'RestaurantRaterApp/profile.html', context=context_dict)
 
 
@@ -278,3 +284,8 @@ def reverse_favourite_status(request, restaurant_id):
     else:
         this_user.liked_restaurants.add(restaurant)
     return redirect(reverse('RestaurantRaterApp:show_restaurant', kwargs={'restaurant_id': restaurant_id}))
+
+@login_required
+def del_confirm(request):
+    #TODO
+    return render(request, 'RestaurantRaterApp/delete_confirmation.html')

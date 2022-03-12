@@ -10,5 +10,41 @@
 {% endblock %}
 
 {% block body_block %}
-	profile page text
+    {% if user.is_authenticated %}
+        <div class="col-md-4 p-3 h-100">
+
+            Info space
+
+        </div>
+        <div class="col-md-4 p-0 h-100">
+            <div class="overflow-auto" style="max-height:650px">
+
+                <!--- table of users restaurants --->
+                <div class="row mw-100 p-0 m-0" >
+                    Restaurant table
+                </div>
+
+            </div>
+            <div style="max-height:100px">
+
+                <!--- add restaurant button --->
+                <div class="d-grid gap-2 d-md-flex justify-content-md-around mt-4">
+                    <a class="btn btn-warning" href="{% url 'RestaurantRaterApp:add_restaurant' %}" role="button">Add your restaurant</a>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-4 p-0 h-100">
+            <div class="overflow-auto mh-100">
+
+                <!--- table of users reviews --->
+                <div class="row mw-100 p-0 m-0" >
+                    Review table
+                </div>
+
+            </div>
+        </div>
+	{% else %}
+		Sorry, no user recognised
+	{% endif %}
 {% endblock %}

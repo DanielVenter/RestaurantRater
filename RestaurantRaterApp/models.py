@@ -100,6 +100,7 @@ class user_client(models.Model):
         response = requests.request("GET", url, headers=headers, data=payload)
 
         data = eval(response.text)
+        print(data)
         distances = (data["rows"][0]["elements"])
         for i, distance in enumerate(distances):
             distances_matrix[restaurants[i]] = float(distance["distance"]["text"].split(" ")[0])

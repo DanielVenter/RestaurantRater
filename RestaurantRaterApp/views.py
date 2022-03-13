@@ -285,5 +285,14 @@ def del_confirm(request):
 
 @login_required
 def del_user(request):
-    #TODO: delete the user
+     
+    
+    u=request.user
+    u.delete()
+                   
     return redirect(reverse('RestaurantRaterApp:home'))
+    
+      
+
+     
+    

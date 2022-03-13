@@ -659,7 +659,6 @@ def populate():
         print(f"Created user {u}")
         if u.owner_status:
             print(f"User owns: {u.owned_restaurants_list}")
-        print(u.distances_dict)
 
 
 def populate_test():

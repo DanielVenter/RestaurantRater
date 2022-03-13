@@ -139,7 +139,9 @@ def add_restaurant(request):
             restaurant = form.save(commit=True)
             print(restaurant, restaurant.id)
             request.user.owner_status = True
-
+        this_user = request.user
+        this_user = user_client.objects.get(user=this_user)
+        this_user.distances_dict()
         return redirect('/restaurantraterapp/')
     else:
 

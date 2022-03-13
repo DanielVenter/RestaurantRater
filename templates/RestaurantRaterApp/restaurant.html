@@ -82,14 +82,12 @@
 
             </div>
 
-
-
         </div>
         <div class="col-md-5 p-0 h-100">
             <div class="overflow-auto" style="max-height:650px">
 
                 <!--- table of reviews --->
-                <div class="row mw-100 p-0 m-0" >
+                <div class="row mw-100 nospace" >
                     {% if restaurant.comments %}
                         <table class="table table-secondary table-hover">
                             <thead>
@@ -120,7 +118,7 @@
                 {% if user.is_authenticated %}
                     <div class="d-grid gap-2 d-md-flex justify-content-md-around mt-4">
                         <a class="btn btn-warning" href="{% url 'RestaurantRaterApp:reverse_fav' restaurant.restaurant_id %}" role="button">
-                            {% if restaurant in user.liked_restaurants %}
+                            {% if restaurant in favourites %}
                                 Remove from favourites
                             {% else %}
                                 Add to favourites
@@ -137,6 +135,6 @@
             </div>
         </div>
 	{% else %}
-		Sorry, no restaurant recognised
+        <h5>Sorry, no restaurant recognised.</h5>
 	{% endif %}
 {% endblock %}

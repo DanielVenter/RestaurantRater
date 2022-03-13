@@ -9,6 +9,9 @@
                     <th scope="col"></th>
                     <th scope="col">Name</th>
                     <th scope="col">Description</th>
+                    {% if user.is_authenticated %}
+                        <th scope="col">Distance</th>
+                    {% endif %}
                     <th scope="col">Rating</th>
                 </tr>
             </thead>
@@ -27,6 +30,9 @@
 
                     <td><a href="{% url 'RestaurantRaterApp:show_restaurant' restaurant.restaurant_id %}" class="text-decoration-none text-body">{{ restaurant.name }}</a></td>
                     <td><a href="{% url 'RestaurantRaterApp:show_restaurant' restaurant.restaurant_id %}" class="text-decoration-none text-body">{{ restaurant.description }}</a></td>
+                    {% if user.is_authenticated %}
+                        <td><a href="{% url 'RestaurantRaterApp:show_restaurant' restaurant.restaurant_id %}" class="text-decoration-none text-body">{{ dists|get_value:restaurant.restaurant_id }}km</a></td>
+                    {% endif %}
 
                     <!-- generate star rating graphic from decimal number -->
                     <td>
@@ -40,6 +46,6 @@
             </tbody>
         </table>
     {% else %}
-        <strong>Our records currently don't contain any restaurants!</strong><br />
+        <h5>Our records currently don't contain any restaurants.</h5>
     {% endif %}
 </div>

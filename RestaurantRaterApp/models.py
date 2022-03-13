@@ -63,7 +63,7 @@ class user_client(models.Model):
     def owned_restaurants_list(self):
         owned_restaurants = []
         for restaurant in self.owned_restaurants.all():
-            owned_restaurants.append(restaurant.restaurant_id)
+            owned_restaurants.append(restaurant)
         return owned_restaurants
 
     @property

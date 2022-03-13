@@ -1,0 +1,15 @@
+{% extends 'RestaurantRaterApp/base.html' %}
+{% load static %}
+{% load restaurant_rater_tags %}
+
+{% block title_block %}
+	Delete Account
+{% endblock %}
+
+{% block body_block %}
+    <div class="text-center p-3">
+        <h5>Note that choosing to delete your Restaurant Rater account is a permanent action.</h5>
+        <br />
+        <a class="btn btn-warning" href="{% url 'RestaurantRaterApp:delete_user' %}" role="button">Delete account</a>
+    </div>
+{% endblock %}

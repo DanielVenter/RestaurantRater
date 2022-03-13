@@ -40,32 +40,31 @@ class SignUpForm(forms.ModelForm):
 
         fields = ('name', 'surname','city', 'street', 'street_number')
 
-class EditForm(forms.ModelForm):
-    username = forms.CharField(required=True)
-    email = forms.EmailField(required=True)
-    first_name = forms.CharField(required=False)
-    last_name = forms.CharField(required=False)
-
+class EditUserForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ('username', 'email', 'first_name', 'last_name')
 
-    def clean_email(self):
-        username = self.cleaned_data.get('username')
-        email = self.cleaned_data.get('email')
+        widgets = {
+            'username': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 "}),
+            'email': forms.EmailInput(attrs={'class': "form-control form-control-sm mb-2 "}),
+        }
 
-        if email and User.objects.filter(email=email).exclude(username=username).count():
-            raise forms.ValidationError('This email address is already in use. Please supply a different email address.')
-        return email
+        fields = ('username', 'email', )
 
-    def save(self, commit=True):
-        user = super(RegistrationForm, self).save(commit=False)
-        user.email = self.cleaned_data['email']
+class EditSignUpForm(forms.ModelForm):
+    class Meta:
+        model = user_client
 
-        if commit:
-            user.save()
+        widgets = {
+            'name': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2"}),
+            'surname': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 "}),
+            'city': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 "}),
+            'street': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 "}),
+            'street_number': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 "}),
+        }
 
-        return user
+        fields = ('name', 'surname','city', 'street', 'street_number')
+
 
 class RestaurantForm(forms.ModelForm):
     name = forms.CharField(required=True)

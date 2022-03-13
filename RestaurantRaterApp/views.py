@@ -97,19 +97,9 @@ def sort_by(list, sort, user):
     elif sort == "distance" and user.is_authenticated:
         user = user_client.objects.get(user=user)
         distances = user.distances_dict.copy()
-        my_list = []
-        while distances:
-            largest = 0
-            largest_id = None
-            for restaurant_id in distances:
-                if distances[restaurant_id] > largest:
-                    largest = distances[restaurant_id]
-                    largest_id = restaurant_id
-            my_list.append(Restaurant.objects.get(restaurant_id=largest_id))
-            distances.pop(largest_id)
-        list.clear
-        my_list.reverse()
-        list = my_list
+        list.sort( key=lambda x: distances[x.restaurant_id])
+           
+        
     elif sort == "rating":
         list.sort(reverse=True, key=lambda x: x.rating)
     return ["alphabetical", "distance", "rating"]

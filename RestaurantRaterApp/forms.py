@@ -6,13 +6,16 @@ from RestaurantRaterApp.models import Restaurant, user_client
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import PasswordChangeForm
+
 current_dir = os.getcwd()
+
 
 def validate_positive(value):
     if value < 0:
         raise ValidationError(f"{value} is not a positive number.")
 
-#User creation form
+
+# User creation form
 class UserForm(forms.ModelForm):
     class Meta:
         model = User
@@ -23,9 +26,10 @@ class UserForm(forms.ModelForm):
             'email': forms.EmailInput(attrs={'class': "form-control form-control-sm mb-2 "}),
         }
 
-        fields = ('username', 'password', 'email', )
+        fields = ('username', 'password', 'email',)
 
-#User profile form
+
+# User profile form
 class SignUpForm(forms.ModelForm):
     class Meta:
         model = user_client
@@ -38,8 +42,9 @@ class SignUpForm(forms.ModelForm):
             'street_number': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 "}),
         }
 
-        fields = ('name', 'surname','city', 'street', 'street_number')
+        fields = ('name', 'surname', 'city', 'street', 'street_number')
 
+# Edits the user model in user_client
 class EditUserForm(forms.ModelForm):
     class Meta:
         model = User
@@ -49,8 +54,10 @@ class EditUserForm(forms.ModelForm):
             'email': forms.EmailInput(attrs={'class': "form-control form-control-sm mb-2 "}),
         }
 
-        fields = ('username', 'email', )
+        fields = ('username', 'email',)
 
+
+# Edits the user_client form
 class EditSignUpForm(forms.ModelForm):
     class Meta:
         model = user_client
@@ -63,7 +70,7 @@ class EditSignUpForm(forms.ModelForm):
             'street_number': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 "}),
         }
 
-        fields = ('name', 'surname','city', 'street', 'street_number')
+        fields = ('name', 'surname', 'city', 'street', 'street_number')
 
 
 class RestaurantForm(forms.ModelForm):
@@ -80,12 +87,17 @@ class RestaurantForm(forms.ModelForm):
 
     class Meta:
         model = Restaurant
-        fields = ('name', 'street_number', 'street', 'city', 'ratings', 'description', 'img1','img2', 'img3', 'restaurant_id', 'comments')
+        fields = (
+        'name', 'street_number', 'street', 'city', 'ratings', 'description', 'img1', 'img2', 'img3', 'restaurant_id',
+        'comments')
+
 
 class ReviewForm(forms.ModelForm):
-    STAR_CHOICES = [(0.5, '0.5 / 5'), (1, '1 / 5'), (1.5, '1.5 / 5'), (2, '2 / 5'), (2.5, '2.5 / 5'), (3, '3 / 5'), (3.5, '3.5 / 5'), (4, '4 / 5'), (4.5, '4.5 / 5'), (5, '5 / 5')]
+    STAR_CHOICES = [(0.5, '0.5 / 5'), (1, '1 / 5'), (1.5, '1.5 / 5'), (2, '2 / 5'), (2.5, '2.5 / 5'), (3, '3 / 5'),
+                    (3.5, '3.5 / 5'), (4, '4 / 5'), (4.5, '4.5 / 5'), (5, '5 / 5')]
     rating = forms.CharField(label="What would you rate this restaurant?", widget=forms.Select(choices=STAR_CHOICES))
     review = forms.CharField(required=True)
+
     class Meta:
         model = Restaurant
         fields = ('review',)

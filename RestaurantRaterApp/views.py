@@ -97,9 +97,9 @@ def sort_by(list, sort, user):
     elif sort == "distance" and user.is_authenticated:
         user = user_client.objects.get(user=user)
         distances = user.distances_dict.copy()
-        list.sort( key=lambda x: distances[x.restaurant_id])
-           
-        
+        list.sort(key=lambda x: distances[x.restaurant_id])
+
+
     elif sort == "rating":
         list.sort(reverse=True, key=lambda x: x.rating)
     return ["alphabetical", "distance", "rating"]
@@ -180,8 +180,9 @@ def edit_profile(request):
         edit_signup_form = EditSignUpForm(request.POST)
 
         if edit_user_form.is_valid() and edit_signup_form.is_valid():
-            
-            old_address = request.user.user_client.city + request.user.user_client.street + str(request.user.user_client.street_number)
+
+            old_address = request.user.user_client.city + request.user.user_client.street + str(
+                request.user.user_client.street_number)
             request.user.username = edit_user_form.cleaned_data['username']
             request.user.email = edit_user_form.cleaned_data['email']
             request.user.user_client.name = edit_signup_form.cleaned_data['name']
@@ -191,7 +192,8 @@ def edit_profile(request):
             request.user.user_client.street_number = edit_signup_form.cleaned_data['street_number']
             request.user.save()
             request.user.user_client.save()
-            new_address = request.user.user_client.city + request.user.user_client.street + str(request.user.user_client.street_number)
+            new_address = request.user.user_client.city + request.user.user_client.street + str(
+                request.user.user_client.street_number)
 
             print(f"Old Address: {old_address} New Address: {new_address}")
             if not (old_address == new_address):
@@ -204,7 +206,8 @@ def edit_profile(request):
         edit_user_form = EditUserForm(instance=request.user)
         edit_signup_form = EditSignUpForm(instance=request.user.user_client)
 
-    context_dict = {'edit_user_form': edit_user_form, 'edit_signup_form':edit_signup_form, 'titlemessage': "Update your Restaurant Rater account details!"}
+    context_dict = {'edit_user_form': edit_user_form, 'edit_signup_form': edit_signup_form,
+                    'titlemessage': "Update your Restaurant Rater account details!"}
     return render(request, 'RestaurantRaterApp/edit_profile.html', context_dict)
 
 
@@ -272,9 +275,11 @@ def user_login(request):
             else:
                 return HttpResponse("Your RestaurantRaterApp account is disabled.")
         else:
-            return render(request, 'RestaurantRaterApp/login.html', {"titlemessage": "Log in to your Restaurant Rater account!", "invalid":True})
+            return render(request, 'RestaurantRaterApp/login.html',
+                          {"titlemessage": "Log in to your Restaurant Rater account!", "invalid": True})
     else:
-        return render(request, 'RestaurantRaterApp/login.html', {"titlemessage": "Log in to your Restaurant Rater account!"})
+        return render(request, 'RestaurantRaterApp/login.html',
+                      {"titlemessage": "Log in to your Restaurant Rater account!"})
 
 
 @login_required
@@ -294,20 +299,16 @@ def reverse_favourite_status(request, restaurant_id):
         this_user.liked_restaurants.add(restaurant)
     return redirect(reverse('RestaurantRaterApp:show_restaurant', kwargs={'restaurant_id': restaurant_id}))
 
+
 @login_required
 def del_confirm(request):
-    return render(request, 'RestaurantRaterApp/delete_confirmation.html', {"titlemessage": "Do you want to delete your Restaurant Rater account?"})
+    return render(request, 'RestaurantRaterApp/delete_confirmation.html',
+                  {"titlemessage": "Do you want to delete your Restaurant Rater account?"})
+
 
 @login_required
 def del_user(request):
-     
-    
-    u=request.user
+    u = request.user
     u.delete()
-                   
-    return redirect(reverse('RestaurantRaterApp:home'))
-    
-      
 
-     
-    
+    return redirect(reverse('RestaurantRaterApp:home'))

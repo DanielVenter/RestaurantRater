@@ -7,5 +7,14 @@
 {% endblock %}
 
 {% block body_block %}
-    edit profile text
+        <div class="row p-3 text-center nospace">
+            <form id="edit_form" method="post" action="{% url 'RestaurantRaterApp:edit_profile' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% include 'RestaurantRaterApp/form_col.html' with form=edit_user_form %}
+                {% include 'RestaurantRaterApp/form_col.html' with form=edit_signup_form %}
+                <div class="form-group d-grid gap-2 d-md-flex justify-content-md-around mt-4">
+                    <input type="submit" class="btn btn-warning" name="submit" value="Update" />
+                </div>
+            </form>
+        </div>
 {% endblock %}

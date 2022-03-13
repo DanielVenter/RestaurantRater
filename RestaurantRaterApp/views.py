@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from RestaurantRaterApp.forms import UserForm, SignUpForm, EditForm, RestaurantForm, ReviewForm
+from RestaurantRaterApp.forms import UserForm, SignUpForm, EditUserForm, RestaurantForm, ReviewForm, EditSignUpForm
 from RestaurantRaterApp.models import Restaurant, user_client
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -175,23 +175,38 @@ def profile(request):
     return render(request, 'RestaurantRaterApp/profile.html', context=context_dict)
 
 
+@login_required
 def edit_profile(request):
     if request.method == 'POST':
-        edit_form = EditForm(request.POST, instance=request.user)
+        edit_user_form = EditUserForm(request.POST, instance=request.user)
+        edit_signup_form = EditSignUpForm(request.POST)
 
-        if edit_form.is_valid():
-            edit_form.save()
-            return redirect('RestaurantRaterApp/profile')
+        if edit_user_form.is_valid() and edit_signup_form.is_valid():
+            
+            old_address = request.user.user_client.city + request.user.user_client.street + str(request.user.user_client.street_number)
+            request.user.username = edit_user_form.cleaned_data['username']
+            request.user.email = edit_user_form.cleaned_data['email']
+            request.user.user_client.name = edit_signup_form.cleaned_data['name']
+            request.user.user_client.surname = edit_signup_form.cleaned_data['surname']
+            request.user.user_client.street = edit_signup_form.cleaned_data['street']
+            request.user.user_client.city = edit_signup_form.cleaned_data['city']
+            request.user.user_client.street_number = edit_signup_form.cleaned_data['street_number']
+            request.user.save()
+            request.user.user_client.save()
+            new_address = request.user.user_client.city + request.user.user_client.street + str(request.user.user_client.street_number)
 
+            print(f"Old Address: {old_address} New Address: {new_address}")
+            if not (old_address == new_address):
+                request.user.user_client.update_distances_dict(new_address=True)
 
-
+            return redirect(reverse('RestaurantRaterApp:profile'))
         else:
-
             return redirect('RestaurantRaterApp/edit_profile')
     else:
-        edit_form = EditForm()
+        edit_user_form = EditUserForm(instance=request.user)
+        edit_signup_form = EditSignUpForm(instance=request.user.user_client)
 
-    context_dict = {'edit_form': edit_form}
+    context_dict = {'edit_user_form': edit_user_form, 'edit_signup_form':edit_signup_form, 'titlemessage': "Update your Restaurant Rater account details!"}
     return render(request, 'RestaurantRaterApp/edit_profile.html', context_dict)
 
 

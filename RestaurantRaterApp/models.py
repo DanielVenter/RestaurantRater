@@ -8,7 +8,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django_resized import ResizedImageField
 
-
 current_dir = os.getcwd()
 API_KEY = "AIzaSyAxJa_f1f5FhqyY_JhZ42JBijy4dXNgGQA"
 
@@ -21,11 +20,11 @@ class Restaurant(models.Model):
     ratings = models.JSONField(default=list)
     description = models.CharField(max_length=240)
     img1 = ResizedImageField(size=[225, 225], quality=100, crop=["middle", "center"],
-                             upload_to=f"{current_dir}\\media\\", force_format='jpeg')
+                             upload_to=f"{current_dir}/media/", force_format='jpeg')
     img2 = ResizedImageField(size=[225, 225], quality=100, crop=["middle", "center"],
-                             upload_to=f"{current_dir}\\media\\", force_format='jpeg')
+                             upload_to=f"{current_dir}/media/", force_format='jpeg')
     img3 = ResizedImageField(size=[225, 225], quality=100, crop=["middle", "center"],
-                             upload_to=f"{current_dir}\\media\\", force_format='jpeg')
+                             upload_to=f"{current_dir}/media/", force_format='jpeg')
     restaurant_id = models.CharField(max_length=128, primary_key=True)
     comments = models.JSONField(default=dict)
 
@@ -59,7 +58,6 @@ class user_client(models.Model):
     owned_restaurants = models.ManyToManyField(Restaurant, related_name="owns")
     distances_dict = models.JSONField(default=dict)
 
-
     @property
     # List generated for easy checking
     def owned_restaurants_list(self):
@@ -76,26 +74,39 @@ class user_client(models.Model):
         return map_link
 
     # Updates/Generates distances to all the restaurants around them
-    def update_distances_dict(self):
-        distances = {}
+    def update_distances_dict(self, new_address=False):
         user = user_client.objects.get(user=self.user)
+        distances_matrix = user.distances_dict
+        restaurants = []
+
         start = f"{user.street_number} {user.street} {user.city}"
-        for restaurant in Restaurant.objects.all():
-            if restaurant not in user.distances_dict:
-                end = f"{restaurant.street_number} {restaurant.street} {restaurant.city}"
-                url = f"https://maps.googleapis.com/maps/api/distancematrix/json?origins={urllib.parse.quote(start)}&destinations={urllib.parse.quote(end)}&departure_time=now&key={API_KEY}"
+        end = []
 
-                payload = {}
-                headers = {}
+        if new_address:
+            for restaurant in Restaurant.objects.all():
+                end.append(f"{restaurant.street_number} {restaurant.street} {restaurant.city}")
+                restaurants.append(f"{restaurant}")
+        else:
+            for restaurant in Restaurant.objects.all():
+                if f"{restaurant}" not in user.distances_dict:
+                    end.append(f"{restaurant.street_number} {restaurant.street} {restaurant.city}")
+                    restaurants.append(f"{restaurant}")
 
-                response = requests.request("GET", url, headers=headers, data=payload)
+        destinations = "|".join(end)
 
-                data = eval(response.text)
-                distance = float(data["rows"][0]["elements"][0]["distance"]["text"].split(" ")[0])
-                distances[restaurant.restaurant_id] = distance
-        user.distances_dict = distances
+        url = f"https://maps.googleapis.com/maps/api/distancematrix/json?origins={urllib.parse.quote(start)}&destinations={urllib.parse.quote(destinations)}&departure_time=now&key={API_KEY}"
+
+        payload = {}
+        headers = {}
+
+        response = requests.request("GET", url, headers=headers, data=payload)
+
+        data = eval(response.text)
+        distances = (data["rows"][0]["elements"])
+        for i, distance in enumerate(distances):
+            distances_matrix[restaurants[i]] = float(distance["distance"]["text"].split(" ")[0])
+        user.distances_dict = distances_matrix
         user.save()
-
 
     def __str__(self):
         return self.user.username

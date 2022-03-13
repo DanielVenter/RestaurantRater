@@ -118,13 +118,19 @@
                 {% if user.is_authenticated %}
                     <div class="d-grid gap-2 d-md-flex justify-content-md-around mt-4">
                         <a class="btn btn-warning" href="{% url 'RestaurantRaterApp:reverse_fav' restaurant.restaurant_id %}" role="button">
-                            {% if restaurant in user.liked_restaurants %}
+                            {% if restaurant in favourites %}
                                 Remove from favourites
                             {% else %}
                                 Add to favourites
                             {% endif %}
                         </a>
-                        <a class="btn btn-warning" href="{% url 'RestaurantRaterApp:review' restaurant.restaurant_id %}" role="button">Leave a review</a>
+                        {% if user.username in reviews %}
+                            <a class="btn btn-warning disabled" href="{% url 'RestaurantRaterApp:review' restaurant.restaurant_id %}" role="button">Already left a review</a>
+                        {% elif restaurant in user.user_client.owned_restaurants_list %}
+                            <a class="btn btn-warning disabled" href="{% url 'RestaurantRaterApp:review' restaurant.restaurant_id %}" role="button">Cannot review own restaurant</a>
+                        {% else %}
+                            <a class="btn btn-warning" href="{% url 'RestaurantRaterApp:review' restaurant.restaurant_id %}" role="button">Leave a review</a>
+                        {% endif %}
                     </div>
                 {% else %}
                     <div class="p-3 text-center">

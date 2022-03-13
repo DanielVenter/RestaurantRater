@@ -74,16 +74,21 @@ class user_client(models.Model):
         return map_link
 
     # Updates/Generates distances to all the restaurants around them
-    def update_distances_dict(self):
+    def update_distances_dict(self, new_address=False):
         user = user_client.objects.get(user=self.user)
         distances_matrix = user.distances_dict
         restaurants = []
         start = f"{user.street_number} {user.street} {user.city}"
         end = []
-        for restaurant in Restaurant.objects.all():
-            if f"{restaurant}" not in user.distances_dict:
+        if not new_address:
+            for restaurant in Restaurant.objects.all():
                 end.append(f"{restaurant.street_number} {restaurant.street} {restaurant.city}")
                 restaurants.append(f"{restaurant}")
+        else:
+            for restaurant in Restaurant.objects.all():
+                if f"{restaurant}" not in user.distances_dict:
+                    end.append(f"{restaurant.street_number} {restaurant.street} {restaurant.city}")
+                    restaurants.append(f"{restaurant}")
 
         destinations = "|".join(end)
 

@@ -75,15 +75,15 @@ class user_client(models.Model):
 
     # Updates/Generates distances to all the restaurants around them
     def update_distances_dict(self):
-        distances_matrix = {}
-        restaurants = []
         user = user_client.objects.get(user=self.user)
+        distances_matrix = user.distances_dict
+        restaurants = []
         start = f"{user.street_number} {user.street} {user.city}"
         end = []
         for restaurant in Restaurant.objects.all():
-            restaurants.append(f"{restaurant}")
             if f"{restaurant}" not in user.distances_dict:
                 end.append(f"{restaurant.street_number} {restaurant.street} {restaurant.city}")
+                restaurants.append(f"{restaurant}")
 
         destinations = "|".join(end)
 

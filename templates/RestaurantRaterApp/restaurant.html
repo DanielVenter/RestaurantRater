@@ -125,7 +125,9 @@
                             {% endif %}
                         </a>
                         {% if user.username in reviews %}
-                            <a class="btn btn-warning disabled" href="{% url 'RestaurantRaterApp:review' restaurant.restaurant_id %}" role="button">Leave a review</a>
+                            <a class="btn btn-warning disabled" href="{% url 'RestaurantRaterApp:review' restaurant.restaurant_id %}" role="button">Already left a review</a>
+                        {% elif restaurant in user.user_client.owned_restaurants_list %}
+                            <a class="btn btn-warning disabled" href="{% url 'RestaurantRaterApp:review' restaurant.restaurant_id %}" role="button">Cannot review own restaurant</a>
                         {% else %}
                             <a class="btn btn-warning" href="{% url 'RestaurantRaterApp:review' restaurant.restaurant_id %}" role="button">Leave a review</a>
                         {% endif %}

@@ -180,14 +180,22 @@ def edit_profile(request):
         edit_signup_form = EditSignUpForm(request.POST)
 
         if edit_user_form.is_valid() and edit_signup_form.is_valid():
+            
+            old_address = request.user.user_client.city + request.user.user_client.street + str(request.user.user_client.street_number)
             request.user.username = edit_user_form.cleaned_data['username']
             request.user.email = edit_user_form.cleaned_data['email']
             request.user.user_client.name = edit_signup_form.cleaned_data['name']
             request.user.user_client.surname = edit_signup_form.cleaned_data['surname']
-            request.user.user_client.surname = edit_signup_form.cleaned_data['street']
+            request.user.user_client.street = edit_signup_form.cleaned_data['street']
+            request.user.user_client.city = edit_signup_form.cleaned_data['city']
             request.user.user_client.street_number = edit_signup_form.cleaned_data['street_number']
             request.user.save()
             request.user.user_client.save()
+            new_address = request.user.user_client.city + request.user.user_client.street + str(request.user.user_client.street_number)
+            
+            if not (old_address == new_address):
+                request.user.user_client.update_distances_dict(new_address = True)
+
             return redirect(reverse('RestaurantRaterApp:profile'))
         else:
             return redirect('RestaurantRaterApp/edit_profile')

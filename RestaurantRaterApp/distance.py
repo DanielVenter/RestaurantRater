@@ -15,26 +15,39 @@ API_KEY = "AIzaSyAxJa_f1f5FhqyY_JhZ42JBijy4dXNgGQA"
 
 def get_distance():
     matrix = {}
+    end = []
+    restaurants =[]
+    for restaurant in Restaurant.objects.all():
+        end.append(f"{restaurant.street_number} {restaurant.street} {restaurant.city}")
+        restaurants.append(f"{restaurant}")
+
+    print(restaurants)
+    destinations = "|".join(end)
 
     for user in user_client.objects.all():
-        distances = {}
+        distances_dict = {}
+        print(user)
         start = f"{user.street_number} {user.street} {user.city}"
+        ends = urllib.parse.quote(destinations)
 
-        for restaurant in Restaurant.objects.all():
-            end = f"{restaurant.street_number} {restaurant.street} {restaurant.city}"
-            url = f"https://maps.googleapis.com/maps/api/distancematrix/json?origins={urllib.parse.quote(start)}&destinations={urllib.parse.quote(end)}&departure_time=now&key={API_KEY}"
+        url = f"https://maps.googleapis.com/maps/api/distancematrix/json?origins={urllib.parse.quote(start)}&destinations={ends}&departure_time=now&key={API_KEY}"
 
-            payload = {}
-            headers = {}
+        payload = {}
+        headers = {}
 
-            response = requests.request("GET", url, headers=headers, data=payload)
+        response = requests.request("GET", url, headers=headers, data=payload)
 
-            data = eval(response.text)
-            distance = float(data["rows"][0]["elements"][0]["distance"]["text"].split(" ")[0])
-            distances[restaurant.restaurant_id] = distance
+        data = eval(response.text)
+        distances = (data["rows"][0]["elements"])
+        for i, distance in enumerate(distances):
+            distances_dict[restaurants[i]] =(distance["distance"]["text"].split(" ")[0])
 
-        matrix[user.username] = distances
+        print(distances_dict)
 
-    return matrix
+
+
+
+
+
 
 print(get_distance())

@@ -192,9 +192,10 @@ def edit_profile(request):
             request.user.save()
             request.user.user_client.save()
             new_address = request.user.user_client.city + request.user.user_client.street + str(request.user.user_client.street_number)
-            
+
+            print(f"Old Address: {old_address} New Address: {new_address}")
             if not (old_address == new_address):
-                request.user.user_client.update_distances_dict(new_address = True)
+                request.user.user_client.update_distances_dict(new_address=True)
 
             return redirect(reverse('RestaurantRaterApp:profile'))
         else:

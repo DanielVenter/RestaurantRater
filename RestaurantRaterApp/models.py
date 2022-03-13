@@ -82,7 +82,7 @@ class user_client(models.Model):
         start = f"{user.street_number} {user.street} {user.city}"
         end = []
 
-        if not new_address:
+        if new_address:
             for restaurant in Restaurant.objects.all():
                 end.append(f"{restaurant.street_number} {restaurant.street} {restaurant.city}")
                 restaurants.append(f"{restaurant}")
@@ -102,7 +102,6 @@ class user_client(models.Model):
         response = requests.request("GET", url, headers=headers, data=payload)
 
         data = eval(response.text)
-        print(data)
         distances = (data["rows"][0]["elements"])
         for i, distance in enumerate(distances):
             distances_matrix[restaurants[i]] = float(distance["distance"]["text"].split(" ")[0])

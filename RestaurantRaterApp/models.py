@@ -1,16 +1,15 @@
-import os
 import requests
 import urllib.parse
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from django.db import models
-# copied from ae1 rango project to simulate user authentication (for testing only)
 from django.contrib.auth.models import User
 from django_resized import ResizedImageField
 from RestaurantRater import settings
+from django.core.files.storage import FileSystemStorage
+
 
 API_KEY = "AIzaSyAxJa_f1f5FhqyY_JhZ42JBijy4dXNgGQA"
 
+fs = FileSystemStorage(location=settings.MEDIA_DIR)
 
 class Restaurant(models.Model):
     name = models.CharField(max_length=128)
@@ -20,11 +19,11 @@ class Restaurant(models.Model):
     ratings = models.JSONField(default=list)
     description = models.CharField(max_length=240)
     img1 = ResizedImageField(size=[225, 225], quality=100, crop=["middle", "center"],
-                             upload_to=settings.MEDIA_DIR, force_format='jpeg')
+                             storage=fs, force_format='jpeg')
     img2 = ResizedImageField(size=[225, 225], quality=100, crop=["middle", "center"],
-                             upload_to=settings.MEDIA_DIR, force_format='jpeg')
+                             storage=fs, force_format='jpeg')
     img3 = ResizedImageField(size=[225, 225], quality=100, crop=["middle", "center"],
-                             upload_to=settings.MEDIA_DIR, force_format='jpeg')
+                             storage=fs, force_format='jpeg')
     restaurant_id = models.CharField(max_length=128, primary_key=True)
     comments = models.JSONField(default=dict)
 

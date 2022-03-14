@@ -21,7 +21,6 @@ def clear():
         os.rmdir(f"{media_dir}/{folder}")
     print("Media Folder Cleared")
 
-
 def add_restaurant(name: str, street_number: int, street: str, city: str, description: str, restaurant_id: str,
                    comments: dict):
     r = Restaurant.objects.get_or_create(name=name, restaurant_id=restaurant_id, street_number=street_number,

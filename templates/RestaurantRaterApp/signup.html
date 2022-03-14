@@ -6,6 +6,8 @@
 {% endblock %}
 
 {% block body_block %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/signup.css' %}">
+    <script defer src="{% static 'js/signup.js' %}"></script>
 	{% if registered %}
         <div class="p-3 text-center">
             <h5>You have successfully created your account!</h5>
@@ -16,14 +18,14 @@
 	{% else %}
         <div class="row p-3 text-center nospace">
             {% if invalid %}
-                    <h5>Invalid input, please try again.</h5>
+                    <h5>Username already exists, please try again.</h5>
             {% endif %}
             <form id="user_form" method="post" action="{% url 'RestaurantRaterApp:signup' %}" enctype="multipart/form-data">
                 {% csrf_token %}
                 {% include 'RestaurantRaterApp/form_col.html' with form=user_form %}
                 {% include 'RestaurantRaterApp/form_col.html' with form=signup_form %}
                 <div class="form-group d-grid gap-2 d-md-flex justify-content-md-around mt-4">
-                    <input type="submit" class="btn btn-warning" name="submit" value="Register" />
+                    <input type="submit" class="btn btn-warning" name="submit" value="Register" id="id_submit" />
                 </div>
             </form>
         </div>

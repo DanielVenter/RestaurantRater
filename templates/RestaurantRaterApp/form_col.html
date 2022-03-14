@@ -5,6 +5,8 @@
 {% for field in form %}
     <div class="form-group row justify-content-center">
         <label class="col-sm-1 col-form-label" for="{{ field.auto_id }}">{{ field.label|add:":" }}</label>
-        <div class="col-sm-3"> {{ field }} </div>
+        <div class="col-sm-3 mb-3">  {{ field }}
+            <small class="custom-align-left" style="display:none" ></small>
+        </div>
     </div>
 {% endfor %}

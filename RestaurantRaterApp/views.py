@@ -4,6 +4,7 @@ from RestaurantRaterApp.forms import UserForm, SignUpForm, EditUserForm, Restaur
 from RestaurantRaterApp.models import Restaurant, user_client
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
@@ -260,7 +261,8 @@ def signup(request):
                     'signup_form': signup_form,
                     'registered': registered,
                     'invalid': invalid,
-                    'titlemessage': "Sign up for a Restaurant Rater account!"}
+                    'titlemessage': "Sign up for a Restaurant Rater account!",
+                    'users': [usr.username for usr in User.objects.all()],}
     return render(request, 'RestaurantRaterApp/signup.html', context_dict)
 
 

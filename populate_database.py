@@ -17,8 +17,14 @@ def clear():
     media_dir = f"{current_dir}/media"
     for folder in os.listdir(media_dir):
         for file in os.listdir(f"{media_dir}/{folder}"):
-            os.remove(f"{media_dir}/{folder}/{file}")
-        os.rmdir(f"{media_dir}/{folder}")
+            try:
+                os.remove(f"{media_dir}/{folder}/{file}")
+            except NotADirectoryError:
+                pass
+        try:
+            os.rmdir(f"{media_dir}/{folder}")
+        except NotADirectoryError:
+            pass
     print("Media Folder Cleared")
 
 

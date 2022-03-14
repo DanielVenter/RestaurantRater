@@ -8,6 +8,9 @@
 
 {% block body_block %}
         <div class="row p-3 text-center nospace">
+            {% if invalid %}
+                    <h5>Username already exists, please try again.</h5>
+            {% endif %}
             <form id="edit_form" method="post" action="{% url 'RestaurantRaterApp:edit_profile' %}" enctype="multipart/form-data">
                 {% csrf_token %}
                 {% include 'RestaurantRaterApp/form_col.html' with form=edit_user_form %}

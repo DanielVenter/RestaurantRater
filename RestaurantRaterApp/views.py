@@ -178,6 +178,7 @@ def profile(request):
 
 @login_required
 def edit_profile(request):
+    invalid = False
     if request.method == 'POST':
         edit_user_form = EditUserForm(request.POST, instance=request.user)
         edit_signup_form = EditSignUpForm(request.POST)
@@ -204,13 +205,14 @@ def edit_profile(request):
 
             return redirect(reverse('RestaurantRaterApp:profile'))
         else:
-            return redirect('RestaurantRaterApp/edit_profile')
+            invalid = True
     else:
         edit_user_form = EditUserForm(instance=request.user)
         edit_signup_form = EditSignUpForm(instance=request.user.user_client)
 
     context_dict = {'edit_user_form': edit_user_form, 'edit_signup_form': edit_signup_form,
-                    'titlemessage': "Update your Restaurant Rater account details!"}
+                    'titlemessage': "Update your Restaurant Rater account details!",
+                    'invalid':invalid}
     return render(request, 'RestaurantRaterApp/edit_profile.html', context_dict)
 
 

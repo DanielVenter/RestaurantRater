@@ -201,6 +201,7 @@ class TestViews(TestCase):
 
         self.assertEqual(response.status_code, 302)
 
+
     # Can't complete test - template does not exists.
     # def test_add_review_login(self):
     #     self.client.login(username="Nicola.H", password="Nicola123")

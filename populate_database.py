@@ -15,11 +15,16 @@ from RestaurantRaterApp.models import user_client, Restaurant
 # Clears media folder to prevent memory issues
 def clear():
     media_dir = f"{current_dir}/media"
-    for folder in os.listdir(media_dir):
-        for file in os.listdir(f"{media_dir}/{folder}"):
-            os.remove(f"{media_dir}/{folder}/{file}")
-        os.rmdir(f"{media_dir}/{folder}")
-    print("Media Folder Cleared")
+    try:
+        for folder in os.listdir(media_dir):
+            for file in os.listdir(f"{media_dir}/{folder}"):
+                os.remove(f"{media_dir}/{folder}/{file}")
+            os.rmdir(f"{media_dir}/{folder}")
+    except NotADirectoryError:
+        pass
+
+
+print("Media Folder Cleared")
 
 def add_restaurant(name: str, street_number: int, street: str, city: str, description: str, restaurant_id: str,
                    comments: dict):
@@ -721,9 +726,9 @@ def populate_test():
                           "id": "KC",
                           "comments": {"Nicola.H": """My wife and I tried this tonight after hearing good things and 
                           got the Korean Chicken burger, bibimbap and tofu. The food was generally tasty their crispy 
-                          chicken and sauce was good!""", 
+                          chicken and sauce was good!""",
                                        "Michael.G": """Working in Glasgow, went 3 times in a week. What more can I 
-                                       say. Outstanding""", 
+                                       say. Outstanding""",
                                        "Andy.P": """Portion sizes are much smaller now - it is a depressing story for 
                                        many such places. Two months ago, their portions were generous and now they 
                                        are absolutely the opposite- I won’t be back """

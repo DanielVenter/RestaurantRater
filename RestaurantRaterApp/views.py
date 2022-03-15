@@ -141,6 +141,7 @@ def add_restaurant(request):
             this_user = request.user
             this_user = user_client.objects.get(user=this_user)
             this_user.update_distances_dict()
+            this_user.owned_restaurants.add(restaurant)
             return redirect('RestaurantRaterApp:profile')
         else:
             print(form.errors)

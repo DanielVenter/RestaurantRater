@@ -79,11 +79,12 @@ class RestaurantForm(forms.ModelForm):
     street = forms.CharField(required=True)
     city = forms.CharField(required=True)
     description = forms.CharField(required=True)
-    img1 = models.ImageField(f"{current_dir}\\media\\")
-    img2 = models.ImageField(f"{current_dir}\\media\\")
-    img3 = models.ImageField(f"{current_dir}\\media\\")
-    restaurant_id = forms.IntegerField(required=True)
-    comments = forms.CharField(required=True)
+    restaurant_id = forms.IntegerField(widget=forms.HiddenInput(), required=False)
+    img1 = models.ImageField(upload_to="hello", blank=True)
+    img2 = models.ImageField(upload_to="hello", blank=True)
+    img3 = models.ImageField(upload_to="hello", blank=True)
+    comments = forms.CharField(widget=forms.HiddenInput(), required=False)
+    ratings = forms.CharField(widget=forms.HiddenInput(), required=False)
 
     class Meta:
         model = Restaurant

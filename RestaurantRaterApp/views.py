@@ -114,7 +114,7 @@ def add_review(request, restaurant_id):
         restaurant = None
 
     if restaurant is None:
-        return redirect('/restaurantraterapp/')
+        return redirect('/RestaurantRaterApp/')
     form = ReviewForm()
     if request.method == 'POST':
         form = ReviewForm(request.POST)
@@ -122,33 +122,31 @@ def add_review(request, restaurant_id):
             if restaurant:
                 form.save(commit=False)
 
-                return redirect(reverse('restaurantraterapp:show_restaurant', kwargs={'restaurant_id': restaurant_id}))
+                return redirect(reverse('RestaurantRaterApp:show_restaurant', kwargs={'restaurant_id': restaurant_id}))
     else:
         print(form.errors)
     context_dict = {'form': form, 'restaurant': restaurant}
-    return render(request, 'restaurantraterapp/add_review.html', context=context_dict)
+    return render(request, 'RestaurantRaterApp/add_review.html', context=context_dict)
 
 
 @login_required(login_url='RestaurantRaterApp:login')
 def add_restaurant(request):
     form = RestaurantForm()
-
     if request.method == 'POST':
         form = RestaurantForm(request.POST)
-
         if form.is_valid():
             restaurant = form.save(commit=True)
             print(restaurant, restaurant.id)
             request.user.owner_status = True
-        this_user = request.user
-        this_user = user_client.objects.get(user=this_user)
-        this_user.distances_dict()
-        return redirect('/restaurantraterapp/')
-    else:
+            #this_user = request.user
+            #this_user = user_client.objects.get(user=this_user)
+            #this_user.update_distances_dict()#
+            return redirect('RestaurantRaterApp:profile')
+        else:
 
-        print(form.errors)
+            print(form.errors)
 
-    return render(request, 'restaurantraterapp/add_restaurant.html', {'form': form})
+    return render(request, 'RestaurantRaterApp/add_restaurant.html', {'form': form})
 
 
 @login_required(login_url='RestaurantRaterApp:login')

@@ -17,11 +17,18 @@
         </div>
 	{% else %}
         <div class="row p-3 text-center nospace">
-            {% if invalid %}
-                <small id="user_registered" style="display:none">Username already exists.</small>
+            {% if invalid_username %}
+                <small id="invalid_username" style="display:none">Username already exists.</small>
             {% else %}
-                <small id="user_registered" style="display:none">Username does not exist.</small>
+                <small id="invalid_username" style="display:none">Username does not exist.</small>
             {% endif %}
+
+            {% if invalid_address %}
+                <small id="invalid_address" style="display:none">Invalid address.</small>
+            {% else %}
+                <small id="invalid_address" style="display:none">Good address.</small>
+            {% endif %}
+
             <form id="user_form" method="post" action="{% url 'RestaurantRaterApp:signup' %}" enctype="multipart/form-data">
                 {% csrf_token %}
                 {% include 'RestaurantRaterApp/form_col.html' with form=user_form %}

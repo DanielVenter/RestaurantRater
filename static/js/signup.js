@@ -10,7 +10,9 @@ const _name = document.getElementById("id_name");
 const surname = document.getElementById("id_surname");
 const city = document.getElementById("id_city");
 const street = document.getElementById("id_street");
-const usernameExists = document.getElementById("user_registered");
+const usernameExists = document.getElementById("invalid_username");
+const addressState = document.getElementById("invalid_address");
+var invalidAddress = false;
 
 //Regex for password: at least 6 characters, one lowercase and uppercase character and one number
 const passChecker = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})')
@@ -18,11 +20,19 @@ const passChecker = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})')
 //Array of fields
 const fieldsArray = [username, password, email, street_number, _name, surname, city, street];
 
-
 //Checks if username already exists
 if(usernameExists.innerText === "Username already exists."){
     checkInputs();
     setErrorFor(username, "Username already exists.");
+}
+
+if(addressState.innerText === "Invalid address."){
+    checkInputs();
+    setErrorFor(city, "Invalid address.");
+    setErrorFor(street, "Invalid address.");
+    setErrorFor(street_number, "Invalid address.");
+
+    invalidAddress = true;
 }
 
 function checkInputs(){
@@ -61,12 +71,16 @@ function checkInputs(){
     //City checking
     if(city.value === "")
         setErrorFor(city, "Your city cannot be blank.");
+    else if(invalidAddress)
+        setErrorFor(city, addressState.innerText);
     else
         setSuccessFor(city);
     
     //Street checking
-    if(street.value === "")
+    if(street.value === "" && !invalidAddress)
         setErrorFor(street, "Your street cannot be blank.");
+    else if(invalidAddress)
+        setErrorFor(street, addressState.innerText);
     else
         setSuccessFor(street);
 
@@ -75,6 +89,8 @@ function checkInputs(){
         setErrorFor(street_number, "Your street number cannot be blank.")
     else if(street_number.value < 0)
         setErrorFor(street_number, "The street number must be a positive integer.");
+    else if(invalidAddress)
+        setErrorFor(street_number, addressState.innerText);
     else
         setSuccessFor(street_number);
     

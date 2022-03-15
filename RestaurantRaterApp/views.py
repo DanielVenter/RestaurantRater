@@ -237,12 +237,26 @@ def change_password(request):
 
 def signup(request):
     registered = False
-    invalid = False
+    invalid_username = False
+    invalid_address = False
     if request.method == 'POST':
         user_form = UserForm(request.POST)
         signup_form = SignUpForm(request.POST)
         if user_form.is_valid() and signup_form.is_valid():
             user = user_form.save()
+
+            try:
+                usr_client.update_distances_dict()
+            except Exception as e:
+                invalid_address = True
+                context_dict = {'user_form': user_form,
+                    'signup_form': signup_form,
+                    'registered': False,
+                    'invalid_username': invalid_username,
+                    'invalid_address': invalid_address,
+                    'titlemessage': "Sign up for a Restaurant Rater account!",
+                    'users': [usr.username for usr in User.objects.all()],}
+                return render(request, 'RestaurantRaterApp/signup.html', context_dict)
 
             user.set_password(user.password)
             user.save()
@@ -251,18 +265,17 @@ def signup(request):
             usr_client.user = user
             usr_client.save()
 
-            usr_client.update_distances_dict()
-
             registered = True
         else:
-            invalid = True
+            invalid_username = True
     else:
         user_form = UserForm()
         signup_form = SignUpForm()
     context_dict = {'user_form': user_form,
                     'signup_form': signup_form,
                     'registered': registered,
-                    'invalid': invalid,
+                    'invalid_username': invalid_username,
+                    'invalid_address': invalid_address,
                     'titlemessage': "Sign up for a Restaurant Rater account!",
                     'users': [usr.username for usr in User.objects.all()],}
     return render(request, 'RestaurantRaterApp/signup.html', context_dict)

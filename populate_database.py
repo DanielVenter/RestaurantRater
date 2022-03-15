@@ -32,13 +32,13 @@ def add_restaurant(name: str, street_number: int, street: str, city: str, descri
                                          street=street,
                                          city=city, description=description, comments=comments)[0]
     # Adds images from lib to restaurant
-    images = os.listdir(f"{current_dir}\\PopulateData\\images\\{restaurant_id}")
-    r.img1.save(f"{name}\\img1.jpg",
-                File(open(f"{current_dir}\\PopulateData\\images\\{restaurant_id}\\{images[0]}", "rb")))
-    r.img2.save(f"{name}\\img2.jpg",
-                File(open(f"{current_dir}\\PopulateData\\images\\{restaurant_id}\\{images[1]}", "rb")))
-    r.img3.save(f"{name}\\img3.jpg",
-                File(open(f"{current_dir}\\PopulateData\\images\\{restaurant_id}\\{images[2]}", "rb")))
+    images = os.listdir(os.path.join(current_dir, "PopulateData", "images", restaurant_id))
+    r.img1.save(os.path.join(name, "img1.jpg"),
+                File(open(os.path.join(current_dir, "PopulateData", "images", restaurant_id, images[0]), "rb")))
+    r.img2.save(os.path.join(name, "img2.jpg"),
+                File(open(os.path.join(current_dir, "PopulateData", "images", restaurant_id, images[1]), "rb")))
+    r.img3.save(os.path.join(name, "img3.jpg"),
+                File(open(os.path.join(current_dir, "PopulateData", "images", restaurant_id, images[2]), "rb")))
     r.save()
     return r
 

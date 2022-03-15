@@ -1,0 +1,33 @@
+.custom-align-left {
+    text-align: left;
+}
+
+.custom-align-right {
+    text-align: right;
+}
+
+.form-group input {
+    border: 2px solid !important;
+}
+
+.form-control.success i.fa-check-circle {
+    color: #2ecc71;
+    display: block;
+}
+
+input.error {
+    border-color: red !important;
+}
+
+input.success {
+    border-color: green !important;
+}
+
+.form-group label {
+    padding-right: 0px !important;
+    text-align: right !important;
+}
+
+.form-group i {
+    float: left !important;
+}

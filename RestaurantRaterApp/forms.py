@@ -80,9 +80,9 @@ class RestaurantForm(forms.ModelForm):
     city = forms.CharField(required=True)
     description = forms.CharField(required=True)
     restaurant_id = forms.IntegerField(widget=forms.HiddenInput(), required=False)
-    img1 = models.ImageField(upload_to="testing", blank=True)
-    img2 = models.ImageField(upload_to="testing", blank=True)
-    img3 = models.ImageField(upload_to="testing", blank=True)
+    img1 = models.ImageField(upload_to=f"{name}", blank=True)
+    img2 = models.ImageField(upload_to=f"{name}", blank=True)
+    img3 = models.ImageField(upload_to=f"{name}", blank=True)
     comments = forms.CharField(widget=forms.HiddenInput(), required=False)
     ratings = forms.CharField(widget=forms.HiddenInput(), required=False)
 

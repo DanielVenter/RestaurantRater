@@ -20,8 +20,10 @@ const fieldsArray = [username, password, email, street_number, _name, surname, c
 
 
 //Checks if username already exists
-if(usernameExists.innerText === "Username already exists.")
+if(usernameExists.innerText === "Username already exists."){
     setErrorFor(username, "Username already exists.");
+    checkInputs();
+}
 
 function checkInputs(){
     //Email checking

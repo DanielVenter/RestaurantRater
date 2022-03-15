@@ -7,5 +7,14 @@
 {% endblock %}
 
 {% block body_block %}
-    Add restaurant page text
+    <form id="restaurant_form" method="post" action="{% url 'RestaurantRaterApp:add_restaurant' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for hidden in form.hidden_fields %}
+            {{ hidden }}
+        {% endfor %}
+        {% include 'RestaurantRaterApp/form_col.html' with form=form.visible_fields %}
+        <div class="form-group d-grid gap-2 d-md-flex justify-content-md-around mt-4">
+            <input type="submit" class="btn btn-warning" name="submit" value="Add Restaurant" id="id_submit" />
+        </div>
+    </form>
 {% endblock %}

@@ -107,7 +107,7 @@ def populate():
          "street": "Argyle Street",
          "city": "Glasgow",
          "description": "Seasonal Mediterranean plates and natural wine.",
-         "id": "ALC",
+         "id": "alchemilla",
          "comments": {
              "Mark.E": """The restaurant is a cute little intimate location in the interesting area of 
              finnieston. The lighting, ambiance and staff were great and serve the restaurant 
@@ -128,7 +128,7 @@ def populate():
          "street": "Dumbarton Road",
          "city": "Glasgow",
          "description": "Comfort food done right",
-         "id": "JK",
+         "id": "julies-kopitiam",
          "comments": {
              "Thom.O": """I've enjoyed eating here in the past but £40 for rice, an egg, a chicken leg,
             some cucumber and 3 chickpea fritters is excessive. There is just no attempt to compete at all with the
@@ -146,7 +146,7 @@ def populate():
          "street": "Chancellor St",
          "city": "Glasgow",
          "description": "Korean-style fast food in Glasgow’s West End.",
-         "id": "KC",
+         "id": "kimchi-cult",
          "comments": {"Nicola.H": """My wife and I tried this tonight after hearing good things and got the Korean 
          Chicken burger, bibimbap and tofu. The food was generally tasty their crispy chicken and sauce was good!""",
                       "Michael.G": """Working in Glasgow, went 3 times in a week. What more can I say. Outstanding""",
@@ -161,7 +161,7 @@ def populate():
          "street": "Sauchiehall Street",
          "city": "Glasgow",
          "description": "The small plates trend is done very well at this slick Sauchiehall Street restaurant.",
-         "id": "OnF",
+         "id": "ox-and-finch",
          "comments": {"Michael.G": """The food served at Ox and Finch, Glasgow is immensely delicious, of the right 
          portion and reasonably priced. You must not give amiss to this place. The service is just superb and there 
          is a variety of meat, vegetables to choose from. You will surely enjoy your meal as I did.""",
@@ -176,7 +176,7 @@ def populate():
          "street": "Annfield Place",
          "city": "Glasgow",
          "description": "A five- or even eight-course fine-dining odyssey.",
-         "id": "BE",
+         "id": "bilson-eleven",
          "comments": {"Thom.O": """What an unbelievable night that was last night at this restaurant. The food, 
          the service and the wine was absolutely sublime. Just an absolutely unbelievable experience and I certainly 
          would recommend this place to anyone who loves their wine and their fine dining experiences.""",
@@ -192,7 +192,7 @@ def populate():
          "street": "great Western",
          "city": "Glasgow",
          "description": "Très bon Franco-Scottish cooking.",
-         "id": "CB",
+         "id": "cail-bruich",
          "comments": {"Jeremy.S": """This was our first visit to Cail Bruich. Food and service was excellent, 
          what you'd expect from a Michelin star restaurant. Staff are very knowledgeable about the dishes they serve. 
          We had the chefs tasting menu and was great. Very disappointed by the manner in which a dessert was served, 
@@ -213,7 +213,7 @@ def populate():
          "street": "Ruthven Ln",
          "city": "Glasgow",
          "description": "A fresh, casual, canteen-style Vietnamese restaurant.",
-         "id": "HBS",
+         "id": "the-hanoi-bike-shop",
          "comments": {"Matt.W": """We arrived at the Hanoi Bike Shop with much anticipation, joined by our Vietnamese 
          friend. The decor is superb, beautifully decorated. Ordered the spring rolls - delish, followed by a beef 
          pho, average, and my wife got the red duck curry - excellent. I asked for a Vietnamese iced coffee with 
@@ -231,7 +231,7 @@ def populate():
          "street": "Argyle Street",
          "city": "Glasgow",
          "description": "A slice of Brooklyn-esque cool on the Finnieston ‘strip’.",
-         "id": "TG",
+         "id": "the-gannet",
          "comments": {"Mark.E": """Friendly service. A menu that reads better than it delivers for some courses. 
          Disappointing lack of stornoway black pudding on what was a well cooked duck scotch egg. The fillet of beef 
          was tough and served with 2 small rectangles of mushroom and a trickle of well cooked sauce...it could have 
@@ -257,7 +257,7 @@ def populate():
          "street": "Argyle Street",
          "city": "Glasgow",
          "description": "Proudly sourced Scottish seafood and gins at a suitably rustic Argyle Street location.",
-         "id": "FM",
+         "id": "the-finnieston",
          "comments": {"Matt.W": """Expensive for what you get. Carafe of house wine, half litre at £14 is cheaky. 
          Pleasant enough atmosphere but really stuffy responses when it came to trying to get food. Only permitted 
          food at designated tables. No snacks or small plates served anywhere else. Doesn't make sense.""",
@@ -278,7 +278,7 @@ def populate():
          "street": "Gibson Street",
          "city": "Glasgow",
          "description": "Pub grub staples done very well at a hip West End restaurant.",
-         "id": "ST",
+         "id": "stravaigin",
          "comments": {"Michael.G": """Great staff, very attentive and polite waitress but the food omg. Thai curry 
          was full of fish sauce, veggie haggis tasted sour ( as it was off ). Not happy, would not recommend and will 
          not be back.""",
@@ -300,7 +300,7 @@ def populate():
          "street": "Hyndland Street",
          "city": "Glasgow",
          "description": "A quirky diner proving you can cook duck in A LOT of different ways.",
-         "id": "PDC",
+         "id": "patrick-duck-club",
          "comments": {"Thom.O": """First time visit, booking in advance particularly at weekends is advised. The food 
          and service were excellent. I had a starter, main and dessert (shown in pics) and all courses were delicious.
          Highly recommended!""",
@@ -314,7 +314,7 @@ def populate():
          "street": "Byres Road",
          "city": "Glasgow",
          "description": "A Euro-bistro in a Byres Road bolthole.",
-         "id": "N16",
+         "id": "number-16",
          "comments": {"Rose.S": """Absolutely sensational. Fantastic food, really creative, delicious and not dainty 
          for the quality. Service was excellent too.""",
                       "Jeremy.S": """The food was presented nicely and the restaurant was cosy hence the star but was 
@@ -328,7 +328,7 @@ def populate():
          "street": "Sauchiehall Street",
          "city": "Glasgow",
          "description": "Premium Spanish meat served in New York loft-style interiors.",
-         "id": "SB",
+         "id": "spanish-butcher",
          "comments": {"Mark.E": """It does steaks and it does steaks very well indeed. Staff are very friendly and 
          helpful, and take great care in explaining the complexities of ordering your steak. Lighting is subdued, 
          the atmosphere is relaxed. It is not cheap but you're getting prime cuts of beef your money.""",
@@ -345,7 +345,7 @@ def populate():
          "city": "Glasgow",
          "description": """A new venture from the team behind Six by Nico, which donates 100% of its profits to the
                         Beatson Cancer Charity.""",
-         "id": "B6",
+         "id": "beat-6",
          "comments": {"Jeff.D": """Had the vegetarian tasting menu and it was so good. Super friendly staff in a 
          place with a lovely atmosphere.  Will definitely go back""",
 
@@ -365,7 +365,7 @@ def populate():
          "street": "Argyle Street",
          "city": "Glasgow",
          "description": "For fresh Mediterranean flavours from the chef who brought us Alchemilla.",
-         "id": "GL",
+         "id": "glorisa",
          "comments": {"Thom.O": """Small plates sharing menu. Short list of options, all done very well with 
          interesting interpretations of some of my favourite tapas dishes. Menu changes frequently, which means I'm 
          highly likely to return several times!""",
@@ -381,7 +381,7 @@ def populate():
          "street": "Argyle Street",
          "city": "Glasgow",
          "description": "One of the city’s best seafood restaurants with a daily specials board that’s always worth a gander.",
-         "id": "CS",
+         "id": "crabshakk",
          "comments": {"Andy.P": """Excellent seafood restaurant, it’s a go to for seafood lovers. We had scallops in 
          brown butter, cockles with samphire then halibut as a main course and few oysters as a “treat” (just 
          because) Everything was cooked perfectly. I do recommend book a table as it is quite busy. By the time we 
@@ -405,7 +405,7 @@ def populate():
          "street": "Renfield Lane",
          "city": "Glasgow",
          "description": "Bar and gig venue with gig posters for wallpaper, a vegan menu and a leftfield events calendar.",
-         "id": "STO",
+         "id": "stereo",
          "comments": {"Matt.W": """Quite possibly the worst bar staff in Glasgow.  We visited Stereo last night with 
          a few friends.  We had a great night upstairs and then made the mistake of going downstairs. We ordered two 
          drinks and then realised we couldn't pay with our card.  We had no cash so I went to the cash machine.  
@@ -431,7 +431,7 @@ def populate():
          "street": "Dumbarton Road",
          "city": "Glasgow",
          "description": "South East Asian dishes, delicious cocktails and plenty of soul.",
-         "id": "GG",
+         "id": "gaga",
          "comments": {"Michael.G": """Tasty food, very friendly and accommodating staff. Will be back in future. Also 
          dog friendly!""",
                       "Jeff.D": """Were in the area, needed somewhere to eat Found this place. Very good. Food was 
@@ -453,7 +453,7 @@ def populate():
          "city": "Glasgow",
          "description": "Proper sleeves-rolled-up plates and (of course) a formidable drinks selection at a US-style "
                         "dive.",
-         "id": "CHS",
+         "id": "chinaskis",
          "comments": {"Mark.E": """Best bar in Glasgow! Not cheap but plenty of ambience and decent bar food too. 
          Outdoor space has been improved with heaters and roofing now.""",
                       "Jeremy.S": """Great spot to drop by for a drink or two. Nice heated outdoor area if you cant 
@@ -471,7 +471,7 @@ def populate():
          "street": "Great Western Road",
          "city": "Glasgow",
          "description": "Creative contemporary vegan dining to wolf down before a gig.",
-         "id": "HP",
+         "id": "the-hug-and-pint",
          "comments": {"Mark.E": """Zero enforcement of mask wearing at the venue. I have not felt so unsafe since 
          covid first came to the country. Not even a verbal reminder coming in that masks are mandatory and crammed 
          full to the point of shoving. Gig was good, won’t be back.""",
@@ -490,9 +490,9 @@ def populate():
          "street_number": 21,
          "street": "Beith Street",
          "city": "Glasgow",
-         "liked_restaurants": ["ALC", "SB", "B6"],
-         "rated_restaurants": {"ALC": 4, "JK": 2, "ST": 3, "PDC": 2, "N16": 1, "SB": 4, "B6": 5, "GL": 3, "CB": 1,
-                               "FM": 2, "TG": 3, "HBS": 1, "CHS": 5, "HP": 1},
+         "liked_restaurants": ["alchemilla", "spanish-butcher", "beat-6"],
+         "rated_restaurants": {"alchemilla": 4, "julies-kopitiam": 2, "stravaigin": 3, "patrick-duck-club": 2, "number-16": 1, "spanish-butcher": 4, "beat-6": 5, "glorisa": 3, "cail-bruich": 1,
+                               "the-finnieston": 2, "the-gannet": 3, "the-hanoi-bike-shop": 1, "chinaskis": 5, "the-hug-and-pint": 1},
          "password": "Mark123",
          "email": "mark@gmail.com",
          "name": "Mark",
@@ -505,9 +505,9 @@ def populate():
          "street_number": 164,
          "street": "Buchanan St",
          "city": "Glasgow",
-         "liked_restaurants": ["ALC", "JK", "HBS"],
-         "rated_restaurants": {"ALC": 5, "JK": 5, "KC": 3, "OnF": 1, "SB": 2, "B6": 5, "GL": 1, "CB": 2, "FM": 2,
-                               "TG": 3, "HBS": 4, "STO": 1},
+         "liked_restaurants": ["alchemilla", "julies-kopitiam", "the-hanoi-bike-shop"],
+         "rated_restaurants": {"alchemilla": 5, "julies-kopitiam": 5, "kimchi-cult": 3, "ox-and-finch": 1, "spanish-butcher": 2, "beat-6": 5, "glorisa": 1, "cail-bruich": 2, "the-finnieston": 2,
+                               "the-gannet": 3, "the-hanoi-bike-shop": 4, "stereo": 1},
          "password": "Matt123",
          "email": "matt@gmail.com",
          "name": "Matthew",
@@ -520,9 +520,9 @@ def populate():
          "street_number": 161,
          "street": "Duke St",
          "city": "Glasgow",
-         "liked_restaurants": ["ALC", "PDC", "B6", "GL"],
-         "rated_restaurants": {"ALC": 4, "JK": 3, "BE": 5, "ST": 3, "PDC": 4, "N16": 2, "SB": 1, "B6": 4, "GL": 5,
-                               "TG": 2, "HBS": 3, "STO": 2},
+         "liked_restaurants": ["alchemilla", "patrick-duck-club", "beat-6", "glorisa"],
+         "rated_restaurants": {"alchemilla": 4, "julies-kopitiam": 3, "bilson-eleven": 5, "stravaigin": 3, "patrick-duck-club": 4, "number-16": 2, "spanish-butcher": 1, "beat-6": 4, "glorisa": 5,
+                               "the-gannet": 2, "the-hanoi-bike-shop": 3, "stereo": 2},
          "password": "Thom123",
          "email": "thom@gmail.com",
          "name": "Thomas",
@@ -535,8 +535,8 @@ def populate():
          "street_number": 477,
          "street": "Duke St",
          "city": "Glasgow",
-         "liked_restaurants": ["ALC"],
-         "rated_restaurants": {"ALC": 4, "JK": 2, "KC": 4, "OnF": 5, "BE": 4, "ST": 2, "PDC": 3, "CS": 4, "GG": 5},
+         "liked_restaurants": ["alchemilla"],
+         "rated_restaurants": {"alchemilla": 4, "julies-kopitiam": 2, "kimchi-cult": 4, "ox-and-finch": 5, "bilson-eleven": 4, "stravaigin": 2, "patrick-duck-club": 3, "crabshakk": 4, "gaga": 5},
          "password": "Matt123",
          "email": "matt@gmail.com",
          "name": "Michael",
@@ -549,9 +549,9 @@ def populate():
          "street_number": 394,
          "street": "Great Western Rd",
          "city": "Glasgow",
-         "liked_restaurants": ["FM"],
-         "rated_restaurants": {"KC": 3, "OnF": 5, "BE": 4, "ST": 2, "PDC": 4, "CB": 3, "FM": 2, "TG": 1, "HBS": 2,
-                               "CS": 4, "HP": 1},
+         "liked_restaurants": ["the-finnieston"],
+         "rated_restaurants": {"kimchi-cult": 3, "ox-and-finch": 5, "bilson-eleven": 4, "stravaigin": 2, "patrick-duck-club": 4, "cail-bruich": 3, "the-finnieston": 2, "the-gannet": 1, "the-hanoi-bike-shop": 2,
+                               "crabshakk": 4, "the-hug-and-pint": 1},
          "password": "Andy123",
          "email": "andy@gmail.com",
          "name": "Andy",
@@ -564,9 +564,9 @@ def populate():
          "street_number": 8,
          "street": "Cresswell Ln",
          "city": "Glasgow",
-         "liked_restaurants": ["ALC", "N16", "B6", "FM"],
-         "rated_restaurants": {"ALC": 4, "JK": 4, "ST": 3, "PDC": 2, "N16": 4, "SB": 3, "B6": 4, "GL": 2, "FM": 4,
-                               "TG": 3, "HBS": 2, "STO": 1},
+         "liked_restaurants": ["alchemilla", "number-16", "beat-6", "the-finnieston"],
+         "rated_restaurants": {"alchemilla": 4, "julies-kopitiam": 4, "stravaigin": 3, "patrick-duck-club": 2, "number-16": 4, "spanish-butcher": 3, "beat-6": 4, "glorisa": 2, "the-finnieston": 4,
+                               "the-gannet": 3, "the-hanoi-bike-shop": 2, "stereo": 1},
          "password": "Rose123",
          "email": "rose@gmail.com",
          "name": "Rose",
@@ -579,9 +579,9 @@ def populate():
          "street_number": 1620,
          "street": "Great Western Rd",
          "city": "Glasgow",
-         "liked_restaurants": ["SB"],
-         "rated_restaurants": {"ST": 2, "PDC": 4, "N16": 2, "SB": 5, "B6": 5, "GL": 1, "CB": 4, "FM": 3, "HBS": 2,
-                               "CS": 5, "CHS": 5, "HP": 1},
+         "liked_restaurants": ["spanish-butcher"],
+         "rated_restaurants": {"stravaigin": 2, "patrick-duck-club": 4, "number-16": 2, "spanish-butcher": 5, "beat-6": 5, "glorisa": 1, "cail-bruich": 4, "the-finnieston": 3, "the-hanoi-bike-shop": 2,
+                               "crabshakk": 5, "chinaskis": 5, "the-hug-and-pint": 1},
          "password": "Jem123",
          "email": "jeremy@gmail.com",
          "name": "Jeremy",
@@ -594,9 +594,9 @@ def populate():
          "street_number": 108,
          "street": "Queen Margaret Dr",
          "city": "Glasgow",
-         "liked_restaurants": ["ALC", "JK", "B6", "GL", "FM"],
-         "rated_restaurants": {"ALC": 5, "JK": 4, "KC": 3, "OnF": 1, "ST": 3, "PDC": 2, "B6": 5, "GL": 4, "CB": 3,
-                               "FM": 4, "TG": 3, "HBS": 3, "GG": 4},
+         "liked_restaurants": ["alchemilla", "julies-kopitiam", "beat-6", "glorisa", "the-finnieston"],
+         "rated_restaurants": {"alchemilla": 5, "julies-kopitiam": 4, "kimchi-cult": 3, "ox-and-finch": 1, "stravaigin": 3, "patrick-duck-club": 2, "beat-6": 5, "glorisa": 4, "cail-bruich": 3,
+                               "the-finnieston": 4, "the-gannet": 3, "the-hanoi-bike-shop": 3, "gaga": 4},
          "password": "Jeff123",
          "email": "jeff@gmail.com",
          "name": "Jeff",
@@ -609,42 +609,42 @@ def populate():
          "street_number": 1,
          "street": "Cathcard Rd",
          "city": "Glasgow",
-         "liked_restaurants": ["PDC", "GL"],
-         "rated_restaurants": {"PDC": 3, "N16": 3, "SB": 3, "B6": 4, "GL": 5, "GG": 3, "CHS": 4, "HP": 1},
+         "liked_restaurants": ["patrick-duck-club", "glorisa"],
+         "rated_restaurants": {"patrick-duck-club": 3, "number-16": 3, "spanish-butcher": 3, "beat-6": 4, "glorisa": 5, "gaga": 3, "chinaskis": 4, "the-hug-and-pint": 1},
          "password": "Colin123",
          "email": "colin@gmail.com",
          "name": "Colin",
          "surname": "McNair",
          "owner_status": True,
-         "owned_restaurants": ["ALC", "JK", "KC", "OnF", "BE", "CS"]
+         "owned_restaurants": ["alchemilla", "julies-kopitiam", "kimchi-cult", "ox-and-finch", "bilson-eleven", "crabshakk"]
          },
         # Nicola Hamill - Owner
         {"username": "Nicola.H",
          "street_number": 530,
          "street": "Victoria Rd",
          "city": "Glasgow",
-         "liked_restaurants": ["ALC"],
-         "rated_restaurants": {"ALC": 4, "JK": 3, "KC": 3, "HBS": 2, "CS": 5, "STO": 2, "CHS": 4},
+         "liked_restaurants": ["alchemilla"],
+         "rated_restaurants": {"alchemilla": 4, "julies-kopitiam": 3, "kimchi-cult": 3, "the-hanoi-bike-shop": 2, "crabshakk": 5, "stereo": 2, "chinaskis": 4},
          "password": "Nicola123",
          "email": "nichola@gmail.com",
          "name": "Nicola",
          "surname": "Hamill",
          "owner_status": True,
-         "owned_restaurants": ["ST", "PDC", "N16", "SB", "B6", "GG", "HP"]
+         "owned_restaurants": ["stravaigin", "patrick-duck-club", "number-16", "spanish-butcher", "beat-6", "gaga", "the-hug-and-pint"]
          },
         # Danny Macpherson - Owner
         {"username": "Danny.M",
          "street_number": 316,
          "street": "Calder St",
          "city": "Glasgow",
-         "liked_restaurants": ["ST", "SB", "GL"],
-         "rated_restaurants": {"ST": 4, "PDC": 3, "N16": 3, "B6": 5, "GL": 5, "CS": 4, "GG": 2},
+         "liked_restaurants": ["stravaigin", "spanish-butcher", "glorisa"],
+         "rated_restaurants": {"stravaigin": 4, "patrick-duck-club": 3, "number-16": 3, "beat-6": 5, "glorisa": 5, "crabshakk": 4, "gaga": 2},
          "password": "Danny123",
          "email": "danny@gmail.com",
          "name": "Danny",
          "surname": "Macpherson",
          "owner_status": True,
-         "owned_restaurants": ["GL", "CB", "FM", "TG", "HBS", "STO", "CHS", "SB"]
+         "owned_restaurants": ["glorisa", "cail-bruich", "the-finnieston", "the-gannet", "the-hanoi-bike-shop", "stereo", "chinaskis", "spanish-butcher"]
 
          }]
 
@@ -670,8 +670,8 @@ def populate_test():
             "street_number": 21,
             "street": "Beith Street",
             "city": "Glasgow",
-            "liked_restaurants": ["ALC"],
-            "rated_restaurants": {"ALC": 4, "KC": 5},
+            "liked_restaurants": ["alchemilla"],
+            "rated_restaurants": {"alchemilla": 4, "kimchi-cult": 5},
             "password": "Mark123",
             "email": "mark@gmail.com",
             "name": "Mark",
@@ -683,21 +683,21 @@ def populate_test():
                "street_number": 530,
                "street": "Victoria Rd",
                "city": "Glasgow",
-               "liked_restaurants": ["ALC", "KC"],
-               "rated_restaurants": {"ALC": 4, "KC": 5},
+               "liked_restaurants": ["alchemilla", "kimchi-cult"],
+               "rated_restaurants": {"alchemilla": 4, "kimchi-cult": 5},
                "password": "Nicola123",
                "email": "nichola@gmail.com",
                "name": "Nicola",
                "surname": "Hamill",
                "owner_status": True,
-               "owned_restaurants": ["ALC"]
+               "owned_restaurants": ["alchemilla"]
                }
     colin = {"username": "Colin",
              "street_number": 1,
              "street": "Cathcard Rd",
              "city": "Glasgow",
-             "liked_restaurants": ["KC"],
-             "rated_restaurants": {"KC": 5},
+             "liked_restaurants": ["kimchi-cult"],
+             "rated_restaurants": {"kimchi-cult": 5},
              "password": "Colin123",
              "email": "colin@gmail.com",
              "name": "Colin",
@@ -711,7 +711,7 @@ def populate_test():
                            "street": "Argyle Street",
                            "city": "Glasgow",
                            "description": "Seasonal Mediterranean plates and natural wine.",
-                           "id": "ALC",
+                           "id": "alchemilla",
                            "comments": {
                                "Mark.E": """The restaurant is a cute little intimate location in the interesting area of 
                  finnieston. The lighting, ambiance and staff were great and serve the restaurant 
@@ -723,7 +723,7 @@ def populate_test():
                           "street": "Chancellor St",
                           "city": "Glasgow",
                           "description": "Korean-style fast food in Glasgow’s West End.",
-                          "id": "KC",
+                          "id": "kimchi-cult",
                           "comments": {"Nicola.H": """My wife and I tried this tonight after hearing good things and 
                           got the Korean Chicken burger, bibimbap and tofu. The food was generally tasty their crispy 
                           chicken and sauce was good!""",

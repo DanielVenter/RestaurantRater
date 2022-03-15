@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django_resized import ResizedImageField
 from RestaurantRater import settings
 from django.core.files.storage import FileSystemStorage
+from django.template.defaultfilters import slugify
 
 
 API_KEY = "AIzaSyAxJa_f1f5FhqyY_JhZ42JBijy4dXNgGQA"
@@ -26,6 +27,10 @@ class Restaurant(models.Model):
                              storage=fs, force_format='jpeg')
     restaurant_id = models.CharField(max_length=128, primary_key=True)
     comments = models.JSONField(default=dict)
+
+    def save(self, *args, **kwargs):
+        self.restaurant_id = slugify(self.name)
+        super(Restaurant, self).save(*args, **kwargs)
 
     @property
     # Average rating that gets displayed to users.

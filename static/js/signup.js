@@ -31,8 +31,6 @@ if(addressState.innerText === "Invalid address."){
     setErrorFor(city, "Invalid address.");
     setErrorFor(street, "Invalid address.");
     setErrorFor(street_number, "Invalid address.");
-
-    invalidAddress = true;
 }
 
 function checkInputs(){
@@ -71,16 +69,12 @@ function checkInputs(){
     //City checking
     if(city.value === "")
         setErrorFor(city, "Your city cannot be blank.");
-    else if(invalidAddress)
-        setErrorFor(city, addressState.innerText);
     else
         setSuccessFor(city);
     
     //Street checking
     if(street.value === "" && !invalidAddress)
         setErrorFor(street, "Your street cannot be blank.");
-    else if(invalidAddress)
-        setErrorFor(street, addressState.innerText);
     else
         setSuccessFor(street);
 
@@ -89,8 +83,6 @@ function checkInputs(){
         setErrorFor(street_number, "Your street number cannot be blank.")
     else if(street_number.value < 0)
         setErrorFor(street_number, "The street number must be a positive integer.");
-    else if(invalidAddress)
-        setErrorFor(street_number, addressState.innerText);
     else
         setSuccessFor(street_number);
     
@@ -105,6 +97,8 @@ function checkInputs(){
 registerBtn.addEventListener("click", e => {
     if(checkInputs() === false)
         e.preventDefault();
+    
+    console.log(addressState.innerText);
   });
 
 

@@ -245,10 +245,20 @@ def signup(request):
         signup_form = SignUpForm(request.POST)
         if user_form.is_valid() and signup_form.is_valid():
             user = user_form.save()
+            usr_client = signup_form.save(commit=False)
+            user.set_password(user.password)
+            user.save()
 
+            usr_client.user = user
+            usr_client.save()
             try:
                 usr_client.update_distances_dict()
             except Exception as e:
+                print(e)
+
+                user.delete()
+                usr_client.delete()
+
                 invalid_address = True
                 context_dict = {'user_form': user_form,
                     'signup_form': signup_form,
@@ -258,13 +268,6 @@ def signup(request):
                     'titlemessage': "Sign up for a Restaurant Rater account!",
                     'users': [usr.username for usr in User.objects.all()],}
                 return render(request, 'RestaurantRaterApp/signup.html', context_dict)
-
-            user.set_password(user.password)
-            user.save()
-
-            usr_client = signup_form.save(commit=False)
-            usr_client.user = user
-            usr_client.save()
 
             registered = True
         else:

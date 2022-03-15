@@ -35,12 +35,12 @@ class UserModelTests(TestCase):
     def test_owned_restaurants_list_order(self):
         msg = "user_client's owned restaurants list does not work accordingly"
 
-        self.assertEqual(self.user2.owned_restaurants_list[0], "ALC", msg)
+        self.assertEqual(f"{self.user2.owned_restaurants_list[0]}", "ALC", msg)
 
     # Tests if user_client's owned_restaurants returns the exact list
     def test_owned_restaurants_list_correct_list(self):
         msg = "user_client's owned restaurants list does not work accordingly"
-        restaurant_ids = ["ALC"]
+        restaurant_ids = [Restaurant.objects.get(restaurant_id="ALC")]
 
         for restaurant_id in restaurant_ids:
             self.assertTrue(restaurant_id in self.user2.owned_restaurants_list, msg)

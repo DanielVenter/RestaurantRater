@@ -6,7 +6,7 @@ from populate_database import populate_test
 from RestaurantRaterApp.models import Restaurant, user_client
 from RestaurantRaterApp.forms import UserForm, SignUpForm
 from django.contrib.auth.models import User
-import json
+from RestaurantRaterApp.forms import UserForm, SignUpForm, EditUserForm, RestaurantForm, ReviewForm, EditSignUpForm
 
 
 class TestViews(TestCase):
@@ -40,6 +40,12 @@ class TestViews(TestCase):
         self.logout = reverse("RestaurantRaterApp:logout")
         # Reverse Fav
         self.reverse_fav = reverse("RestaurantRaterApp:reverse_fav", args=["ALC"])
+        # Add restaurant
+        self.addRestaurant = reverse("RestaurantRaterApp:add_restaurant")
+        # Profile Page
+        self.profile = reverse("RestaurantRaterApp:profile")
+        self.delete = reverse('RestaurantRaterApp:delete_profile')
+        self.delete_confirm = reverse("RestaurantRaterApp:delete_user")
 
     # Tests home page without user
     def test_home_logout(self):
@@ -202,21 +208,60 @@ class TestViews(TestCase):
         self.assertEqual(response.status_code, 302)
 
 
-    # Can't complete test - template does not exists.
-    # def test_add_review_login(self):
-    #     self.client.login(username="Nicola.H", password="Nicola123")
-    #     response = self.client.get(self.review)
-    #
-    #     self.assertEqual(response.status_code, 200)
+    # Can't complete test
+    def test_add_review_login(self):
+        self.client.login(username="Nicola.H", password="Nicola123")
+        response = self.client.get(self.review)
 
-    # def test_add_restaurant(self):
-    #
-    # def test_profile(self):
-    #
-    # def test_edit_profile(self):
-    #
-    # def test_change_password(self):
-    #
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "RestaurantRaterApp/base.html")
+        self.assertTemplateUsed(response, "restaurantraterapp/add_review.html")
+
+    def test_add_restaurant_logout(self):
+        response = self.client.get(self.addRestaurant)
+
+        self.assertEqual(response.status_code, 302)
+
+    def test_add_restaurant(self):
+        self.client.login(username="Nicola.H", password="Nicola123")
+        response = self.client.get(self.addRestaurant)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "RestaurantRaterApp/base.html")
+        self.assertTemplateUsed(response, "restaurantraterapp/add_restaurant.html")
+
+    def test_profile_logout(self):
+        response = self.client.get(self.profile)
+
+        self.assertEqual(response.status_code, 302)
+
+    def test_profile_signin(self):
+        self.client.login(username="Nicola.H", password="Nicola123")
+        response = self.client.get(self.profile)
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertEqual(response.context["account_details"]["Username"], "Nicola.H")
+        self.assertTemplateUsed(response, "RestaurantRaterApp/base.html")
+        self.assertTemplateUsed(response, "RestaurantRaterApp/profile.html")
+        self.assertTemplateUsed(response, "RestaurantRaterApp/arrow_or_heart.html")
+
+    def test_edit_profile_logout(self):
+        response = self.client.get(self.profile)
+
+        self.assertEqual(response.status_code, 302)
+
+    def test_edit_profile_login(self):
+        self.client.login(username="Nicola.H", password="Nicola123")
+        response = self.client.get(self.profile)
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertTemplateUsed(response, "RestaurantRaterApp/base.html")
+        self.assertTemplateUsed(response, "RestaurantRaterApp/profile.html")
+        self.assertTemplateUsed(response, "RestaurantRaterApp/arrow_or_heart.html")
+
+
     def test_signup_good(self):
         response = self.client.get(self.signup)
 
@@ -248,11 +293,6 @@ class TestViews(TestCase):
         self.assertTemplateUsed(response, "RestaurantRaterApp/base.html")
         self.assertTrue(self.client.login(username='testuser', password='test123'))
 
-    def test_signup_bad(self):
-        response = self.client.post(self.signup)
-        content = response.content.decode('utf-8')
-
-        self.assertTrue('<ul class="errorlist">' in content)
 
     def test_user_login(self):
         user_obj = user_client.objects.get(name="Nicola")

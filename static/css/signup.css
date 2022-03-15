@@ -10,9 +10,16 @@
     border: 2px solid !important;
 }
 
-.form-control.success i.fa-check-circle {
-    color: #2ecc71;
-    display: block;
+
+
+i.fa-solid.fa-circle-check {
+    color: green !important;
+    display: none;
+}
+
+i.fa-solid.fa-circle-exclamation {
+    color: #e74c3c !important;
+    display: none;
 }
 
 input.error {

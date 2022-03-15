@@ -1,5 +1,7 @@
+//Form submit button
 const registerBtn = document.getElementById("id_submit");
 
+//Form fields
 const username = document.getElementById("id_username");
 const password = document.getElementById("id_password");
 const email = document.getElementById("id_email");
@@ -8,13 +10,16 @@ const _name = document.getElementById("id_name");
 const surname = document.getElementById("id_surname");
 const city = document.getElementById("id_city");
 const street = document.getElementById("id_street");
-
 const usernameExists = document.getElementById("user_registered");
 
+//Regex for password: at least 6 characters, one lowercase and uppercase character and one number
 const passChecker = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})')
 
+//Array of fields
 const fieldsArray = [username, password, email, street_number, _name, surname, city, street];
 
+
+//Checks if username already exists
 if(usernameExists.innerText === "Username already exists.")
     setErrorFor(username, "Username already exists.");
 
@@ -95,6 +100,12 @@ function setSuccessFor(input){
     inputDiv = input.parentElement;
     inputSmall = inputDiv.querySelector("small");
     inputSmall.style.display = "none";
+
+    exclamationIcon = input.parentElement.parentElement.childNodes[5].childNodes[3];
+    checkIcon = input.parentElement.parentElement.childNodes[5].childNodes[1];
+    checkIcon.style.display = "block";
+    exclamationIcon.style.display = "none";
+
 }
 
 //Sets error for a certain input box
@@ -108,6 +119,11 @@ function setErrorFor(input, message){
     inputSmall.innerText = message;
     inputSmall.style.color = "red";
     inputSmall.style.display = "block";
+
+    exclamationIcon = input.parentElement.parentElement.childNodes[5].childNodes[3];
+    checkIcon = input.parentElement.parentElement.childNodes[5].childNodes[1];
+    checkIcon.style.display = "none";
+    exclamationIcon.style.display = "block";
 }
 
 //Checks if email is valid

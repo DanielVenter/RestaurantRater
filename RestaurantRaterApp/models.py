@@ -35,7 +35,10 @@ class Restaurant(models.Model):
     @property
     # Average rating that gets displayed to users.
     def rating(self):
-        return round(sum(self.ratings) / len(self.ratings), 2)
+        try:
+            return round(sum(self.ratings) / len(self.ratings), 2)
+        except ZeroDivisionError:
+            return 0
 
     @property
     # Map Link used for Google API

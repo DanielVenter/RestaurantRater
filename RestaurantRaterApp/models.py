@@ -45,16 +45,16 @@ class Restaurant(models.Model):
 
 class user_client(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    liked_restaurants = models.ManyToManyField(Restaurant, related_name="likes")
+    liked_restaurants = models.ManyToManyField(Restaurant, related_name="likes", blank=True)
     name = models.CharField(max_length=128)
     surname = models.CharField(max_length=128)
     street_number = models.PositiveIntegerField()
     street = models.CharField(max_length=128)
     city = models.CharField(max_length=128)
     rated_restaurants = models.JSONField(default=dict)
-    rates = models.ManyToManyField(Restaurant, related_name="rates")
+    rates = models.ManyToManyField(Restaurant, related_name="rates", blank=True)
     owner_status = models.BooleanField(default=False)
-    owned_restaurants = models.ManyToManyField(Restaurant, related_name="owns")
+    owned_restaurants = models.ManyToManyField(Restaurant, related_name="owns", blank=True)
     distances_dict = models.JSONField(default=dict)
 
     @property

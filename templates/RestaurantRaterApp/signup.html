@@ -18,7 +18,9 @@
 	{% else %}
         <div class="row p-3 text-center nospace">
             {% if invalid %}
-                    <h5>Username already exists, please try again.</h5>
+                <small id="user_registered" style="display:none">Username already exists.</small>
+            {% else %}
+                <small id="user_registered" style="display:none">Username does not exist.</small>
             {% endif %}
             <form id="user_form" method="post" action="{% url 'RestaurantRaterApp:signup' %}" enctype="multipart/form-data">
                 {% csrf_token %}

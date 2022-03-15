@@ -9,9 +9,14 @@ const surname = document.getElementById("id_surname");
 const city = document.getElementById("id_city");
 const street = document.getElementById("id_street");
 
+const usernameExists = document.getElementById("user_registered");
+
 const passChecker = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})')
 
 const fieldsArray = [username, password, email, street_number, _name, surname, city, street];
+
+if(usernameExists.innerText === "Username already exists.")
+    setErrorFor(username, "Username already exists.");
 
 function checkInputs(){
     //Email checking

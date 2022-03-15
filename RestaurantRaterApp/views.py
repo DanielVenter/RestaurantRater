@@ -75,7 +75,7 @@ def explore(request, sort):
     return render(request, 'RestaurantRaterApp/explore.html', context=context_dict)
 
 
-@login_required
+@login_required(login_url='RestaurantRaterApp:login')
 def favourites(request, sort):
     this_user = request.user
     this_user = user_client.objects.get(user=this_user)
@@ -106,7 +106,7 @@ def sort_by(list, sort, user):
     return ["alphabetical", "distance", "rating"]
 
 
-@login_required
+@login_required(login_url='RestaurantRaterApp:login')
 def add_review(request, restaurant_id):
     try:
         restaurant = Restaurant.objects.get(restaurant_id=restaurant_id)
@@ -129,7 +129,7 @@ def add_review(request, restaurant_id):
     return render(request, 'restaurantraterapp/add_review.html', context=context_dict)
 
 
-@login_required
+@login_required(login_url='RestaurantRaterApp:login')
 def add_restaurant(request):
     form = RestaurantForm()
 
@@ -151,7 +151,7 @@ def add_restaurant(request):
     return render(request, 'restaurantraterapp/add_restaurant.html', {'form': form})
 
 
-@login_required
+@login_required(login_url='RestaurantRaterApp:login')
 def profile(request):
     context_dict = {}
     this_user = request.user
@@ -176,7 +176,7 @@ def profile(request):
     return render(request, 'RestaurantRaterApp/profile.html', context=context_dict)
 
 
-@login_required
+@login_required(login_url='RestaurantRaterApp:login')
 def edit_profile(request):
     invalid = False
     if request.method == 'POST':
@@ -216,6 +216,7 @@ def edit_profile(request):
     return render(request, 'RestaurantRaterApp/edit_profile.html', context_dict)
 
 
+@login_required(login_url='RestaurantRaterApp:login')
 def change_password(request):
     if request.method == 'POST':
         password_form = PasswordChangeForm(data=request.POST, user=request.user)
@@ -301,13 +302,13 @@ def user_login(request):
                       {"titlemessage": "Log in to your Restaurant Rater account!"})
 
 
-@login_required
+@login_required(login_url='RestaurantRaterApp:login')
 def user_logout(request):
     logout(request)
     return redirect(reverse('RestaurantRaterApp:home'))
 
 
-@login_required
+@login_required(login_url='RestaurantRaterApp:login')
 def reverse_favourite_status(request, restaurant_id):
     restaurant = Restaurant.objects.get(restaurant_id=restaurant_id)
     this_user = request.user
@@ -319,13 +320,13 @@ def reverse_favourite_status(request, restaurant_id):
     return redirect(reverse('RestaurantRaterApp:show_restaurant', kwargs={'restaurant_id': restaurant_id}))
 
 
-@login_required
+@login_required(login_url='RestaurantRaterApp:login')
 def del_confirm(request):
     return render(request, 'RestaurantRaterApp/delete_confirmation.html',
                   {"titlemessage": "Do you want to delete your Restaurant Rater account?"})
 
 
-@login_required
+@login_required(login_url='RestaurantRaterApp:login')
 def del_user(request):
     u = request.user
     u.delete()

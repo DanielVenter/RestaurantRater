@@ -1,12 +1,11 @@
-import reverse as reverse
 from django.test import TestCase, Client
 
 from django.urls import reverse
 from populate_database import populate_test
 from RestaurantRaterApp.models import Restaurant, user_client
-from RestaurantRaterApp.forms import UserForm, SignUpForm
+
 from django.contrib.auth.models import User
-from RestaurantRaterApp.forms import UserForm, SignUpForm, EditUserForm, RestaurantForm, ReviewForm, EditSignUpForm
+from RestaurantRaterApp.forms import UserForm, SignUpForm
 
 
 class TestViews(TestCase):
@@ -15,7 +14,6 @@ class TestViews(TestCase):
         populate_test()
 
         self.client = Client()
-
         # home
         self.home = reverse("RestaurantRaterApp:home")
         # Show restaurant
@@ -57,12 +55,6 @@ class TestViews(TestCase):
         self.assertEqual(2, len(response.context["restaurants_list"]))
         self.assertEqual(0, len(response.context["favourites"]))
 
-        # Template Asserts
-        self.assertTemplateUsed(response, "RestaurantRaterApp/home.html")
-        self.assertTemplateUsed(response, "RestaurantRaterApp/base.html")
-        self.assertTemplateUsed(response, "RestaurantRaterApp/table.html")
-        self.assertTemplateUsed(response, "RestaurantRaterApp/arrow_or_heart.html")
-        self.assertTemplateUsed(response, "RestaurantRaterApp/stars.html")
 
     def test_home_login(self):
         self.client.login(username="Mark.E", password="Mark123")
@@ -74,12 +66,6 @@ class TestViews(TestCase):
         self.assertEqual(2, len(response.context["restaurants_list"]))
         self.assertNotEqual(0, len(response.context["favourites"]))
 
-        # Template Assert
-        self.assertTemplateUsed(response, "RestaurantRaterApp/home.html")
-        self.assertTemplateUsed(response, "RestaurantRaterApp/base.html")
-        self.assertTemplateUsed(response, "RestaurantRaterApp/table.html")
-        self.assertTemplateUsed(response, "RestaurantRaterApp/arrow_or_heart.html")
-        self.assertTemplateUsed(response, "RestaurantRaterApp/stars.html")
 
     # Tests restaurant page no user
     def test_show_restaurant_logout(self):

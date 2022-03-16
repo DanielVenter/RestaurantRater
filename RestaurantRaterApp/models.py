@@ -52,6 +52,7 @@ class Restaurant(models.Model):
 
 
 class user_client(models.Model):
+    # user contains username, password and email
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     liked_restaurants = models.ManyToManyField(Restaurant, related_name="likes", blank=True)
     name = models.CharField(max_length=128)

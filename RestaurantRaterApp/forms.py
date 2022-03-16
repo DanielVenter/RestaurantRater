@@ -104,8 +104,8 @@ class RestaurantForm(forms.ModelForm):
 class ReviewForm(forms.ModelForm):
     STAR_CHOICES = [(0.5, '0.5 / 5'), (1, '1 / 5'), (1.5, '1.5 / 5'), (2, '2 / 5'), (2.5, '2.5 / 5'), (3, '3 / 5'),
                     (3.5, '3.5 / 5'), (4, '4 / 5'), (4.5, '4.5 / 5'), (5, '5 / 5')]
-    rating = forms.CharField(label="What would you rate this restaurant?", widget=forms.Select(choices=STAR_CHOICES))
-    review = forms.CharField(required=True)
+    rating = forms.CharField(label="What would you rate this restaurant?", widget=forms.Select(choices=STAR_CHOICES, attrs={'class': "form-control form-control-sm mb-2"}))
+    review = forms.CharField(required=True, widget=forms.Textarea(attrs={'class': "form-control form-control-sm mb-2"}))
 
     class Meta:
         model = Restaurant

@@ -246,8 +246,11 @@ def change_password(request):
 
 def signup(request):
     registered = False
+    
+    #Flags for username authenticity and address validation.
     invalid_username = False
     invalid_address = 0
+
     if request.method == 'POST':
         user_form = UserForm(request.POST)
         signup_form = SignUpForm(request.POST)
@@ -260,11 +263,13 @@ def signup(request):
             usr_client.user = user
             usr_client.save()
 
+            #Using google maps geocode API. 
             gmaps_key = googlemaps.Client(key="AIzaSyA5dcV3e9Oe4ZED0UkRRH4P1f4sMG3LSrw")
+            
+            #Geocodes the address. 
             g = gmaps_key.geocode(str(signup_form.cleaned_data["street_number"]) + " " + signup_form.cleaned_data["street"] + ", " + signup_form.cleaned_data["city"])
 
-            print(len(g))
-
+            #If length is 0 then no address has been matched.
             if len(g) == 0:
                 user.delete()
                 usr_client.delete()
@@ -278,6 +283,10 @@ def signup(request):
                     'titlemessage': "Sign up for a Restaurant Rater account!",
                     'users': [usr.username for usr in User.objects.all()],}
                 return render(request, 'RestaurantRaterApp/signup.html', context_dict)
+            
+            #If length is greater than 1, then two address-related fields are different valid locations.
+            #If long_name is equal to the city, it means that the city is correct but not the other two fields.
+            #In this case, only the street number and street fields are going to be highlighted red.
             elif g[0]['address_components'][0]['long_name'] == signup_form.cleaned_data["city"] or len(g) > 1:
                 user.delete()
                 usr_client.delete()
@@ -292,6 +301,7 @@ def signup(request):
                     'users': [usr.username for usr in User.objects.all()],}
                 return render(request, 'RestaurantRaterApp/signup.html', context_dict)
             
+            #If there are no restaurants on the server then updating the distances matrix will cause error.
             if len(Restaurant.objects.all()) > 0:
                 usr_client.update_distances_dict()
 

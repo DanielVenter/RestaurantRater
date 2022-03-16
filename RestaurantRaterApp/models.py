@@ -25,7 +25,7 @@ class Restaurant(models.Model):
                              storage=fs, force_format='jpeg')
     img3 = ResizedImageField(size=[225, 225], quality=100, crop=["middle", "center"],
                              storage=fs, force_format='jpeg')
-    restaurant_id = models.CharField(max_length=128, primary_key=True)
+    restaurant_id = models.SlugField(max_length=128, primary_key=True)
     comments = models.JSONField(default=dict)
 
     def save(self, *args, **kwargs):

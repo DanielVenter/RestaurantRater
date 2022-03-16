@@ -133,17 +133,17 @@ def add_review(request, restaurant_id):
 def add_restaurant(request):
     form = RestaurantForm()
     if request.method == 'POST':
-        form = RestaurantForm(request.POST)
+        form = RestaurantForm(request.POST, request.FILES)
         if form.is_valid():
             restaurant = form.save(commit=True)
-            print(restaurant, restaurant.id)
+            print(restaurant, restaurant.restaurant_id)
             request.user.owner_status = True
-            #this_user = request.user
-            #this_user = user_client.objects.get(user=this_user)
-            #this_user.update_distances_dict()#
+            this_user = request.user
+            this_user = user_client.objects.get(user=this_user)
+            this_user.update_distances_dict()
+            this_user.owned_restaurants.add(restaurant)
             return redirect('RestaurantRaterApp:profile')
         else:
-
             print(form.errors)
 
     return render(request, 'RestaurantRaterApp/add_restaurant.html', {'form': form})

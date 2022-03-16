@@ -10,9 +10,9 @@ class PopulationScriptTests(TestCase):
     # Tests populate_database's likes method
     def test_likes(self):
         msg = "population script's likes method does not work accordingly."
-        likes("Colin", "ALC")
+        likes("Colin", "alchemilla")
 
-        self.assertTrue(Restaurant.objects.get(restaurant_id="ALC") in user_client.objects.get(
+        self.assertTrue(Restaurant.objects.get(restaurant_id="alchemilla") in user_client.objects.get(
             name="Colin").liked_restaurants.all(), msg)
 
     # Tests if populate_database's rates method adds the rating to the Restaurant's ratings list
@@ -20,25 +20,25 @@ class PopulationScriptTests(TestCase):
         msg = "population script's rates method does not work accordingly"
 
         usr = user_client.objects.get(name="Colin")
-        usr.rated_restaurants["ALC"] = 5
+        usr.rated_restaurants["alchemilla"] = 5
         usr.save()
 
         print(usr.rated_restaurants)
 
-        rates("Colin", "ALC")
+        rates("Colin", "alchemilla")
 
-        self.assertEqual(3, len(Restaurant.objects.get(restaurant_id="ALC").ratings), msg)
+        self.assertEqual(3, len(Restaurant.objects.get(restaurant_id="alchemilla").ratings), msg)
 
     # Tests if Restaurant's rating property calculates a new rating every time, even if the ratings list has changed
     def test_rates_adds_rating_calculation(self):
         msg = "population script's rates method does not work accordingly"
 
         usr = user_client.objects.get(name="Colin")
-        usr.rated_restaurants["ALC"] = 5
+        usr.rated_restaurants["alchemilla"] = 5
         usr.save()
 
-        rates("Colin", "ALC")
-        self.assertEqual(4.33, Restaurant.objects.get(restaurant_id="ALC").rating, msg)
+        rates("Colin", "alchemilla")
+        self.assertEqual(4.33, Restaurant.objects.get(restaurant_id="alchemilla").rating, msg)
 
     # Tests if user_clients that are owners are assigned with at least one owned restaurant
     def test_owners_have_owned_restaurant(self):
@@ -62,7 +62,7 @@ class PopulationScriptTests(TestCase):
     def test_owns_len(self):
         msg = "population script's owns method does not work accordingly"
 
-        owns("Colin", "ALC")
+        owns("Colin", "alchemilla")
 
         self.assertTrue(len(user_client.objects.get(name="Colin").owned_restaurants.all()) == 1, msg)
 
@@ -70,9 +70,9 @@ class PopulationScriptTests(TestCase):
     def test_owns_restaurant_added(self):
         msg = "population script's owns method does not work accordingly"
 
-        owns("Colin", "ALC")
+        owns("Colin", "alchemilla")
 
-        self.assertTrue(Restaurant.objects.get(restaurant_id="ALC") in user_client.objects.get(
+        self.assertTrue(Restaurant.objects.get(restaurant_id="alchemilla") in user_client.objects.get(
             name="Colin").owned_restaurants.all(), msg)
 
     # Tests if the population script creates a correct number of restaurants
@@ -91,7 +91,7 @@ class PopulationScriptTests(TestCase):
     def test_correct_restaurants_created(self):
         msg = "population script does not create all restaurants."
 
-        restaurant_ids = ["ALC"]
+        restaurant_ids = ["alchemilla"]
 
         for restaurant_id in restaurant_ids:
             self.assertIsNotNone(Restaurant.objects.get(restaurant_id=restaurant_id))

@@ -8,6 +8,8 @@ from RestaurantRaterApp.models import Restaurant, user_client
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import PasswordChangeForm
+from django_resized import ResizedImageField
+from django.core.files.storage import FileSystemStorage
 
 current_dir = os.getcwd()
 
@@ -76,15 +78,19 @@ class EditSignUpForm(forms.ModelForm):
 
 
 class RestaurantForm(forms.ModelForm):
+    fs = FileSystemStorage(location=settings.MEDIA_DIR)
     name = forms.CharField(required=True)
     street_number = forms.IntegerField(required=True)
     street = forms.CharField(required=True)
     city = forms.CharField(required=True)
     description = forms.CharField(required=True)
     restaurant_id = forms.IntegerField(widget=forms.HiddenInput(), required=False)
-    img1 = models.ImageField(upload_to=f"{settings.MEDIA_DIR}\\{name}", blank=True)
-    img2 = models.ImageField(upload_to=f"{settings.MEDIA_DIR}\\{name}", blank=True)
-    img3 = models.ImageField(upload_to=f"{settings.MEDIA_DIR}\\{name}", blank=True)
+    img1 = ResizedImageField(size=[225, 225], quality=100, crop=["middle", "center"],
+                             storage=fs, force_format='jpeg')
+    img2 = ResizedImageField(size=[225, 225], quality=100, crop=["middle", "center"],
+                             storage=fs, force_format='jpeg')
+    img3 = ResizedImageField(size=[225, 225], quality=100, crop=["middle", "center"],
+                             storage=fs, force_format='jpeg')
     comments = forms.CharField(widget=forms.HiddenInput(), required=False)
     ratings = forms.CharField(widget=forms.HiddenInput(), required=False)
 

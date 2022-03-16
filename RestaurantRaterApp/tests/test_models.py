@@ -35,12 +35,12 @@ class UserModelTests(TestCase):
     def test_owned_restaurants_list_order(self):
         msg = "user_client's owned restaurants list does not work accordingly"
 
-        self.assertEqual(f"{self.user2.owned_restaurants_list[0]}", "ALC", msg)
+        self.assertEqual(f"{self.user2.owned_restaurants_list[0]}", "alchemilla", msg)
 
     # Tests if user_client's owned_restaurants returns the exact list
     def test_owned_restaurants_list_correct_list(self):
         msg = "user_client's owned restaurants list does not work accordingly"
-        restaurant_ids = [Restaurant.objects.get(restaurant_id="ALC")]
+        restaurant_ids = [Restaurant.objects.get(restaurant_id="alchemilla")]
 
         for restaurant_id in restaurant_ids:
             self.assertTrue(restaurant_id in self.user2.owned_restaurants_list, msg)
@@ -49,19 +49,19 @@ class UserModelTests(TestCase):
     def test_user_dict(self):
         msg = "user distance dict not generated correctly"
         self.assertEqual(self.user.distances_dict,
-                         {'ALC': 1.6, 'KC': 0.9}, msg)
+                         {'alchemilla': 1.6, 'kimchi-cult': 0.9}, msg)
 
 class RestaurantModelTests(TestCase):
     def setUp(self):
         populate_test()
 
-        self.restaurant = Restaurant.objects.get(restaurant_id="ALC")
+        self.restaurant = Restaurant.objects.get(restaurant_id="alchemilla")
 
     # Tests Restaurant's __str__ method
     def test_restaurant_str(self):
         msg = "restaurant's string representation does not work accordingly"
 
-        self.assertEqual(str(self.restaurant), "ALC", msg)
+        self.assertEqual(str(self.restaurant), "alchemilla", msg)
 
     # Tests if Restaurant's map_link property returns the correct link
     def test_restaurant_map_link(self):

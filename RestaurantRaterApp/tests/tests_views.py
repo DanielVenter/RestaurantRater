@@ -1,11 +1,12 @@
+import reverse as reverse
 from django.test import TestCase, Client
 
 from django.urls import reverse
 from populate_database import populate_test
 from RestaurantRaterApp.models import Restaurant, user_client
-
-from django.contrib.auth.models import User
 from RestaurantRaterApp.forms import UserForm, SignUpForm
+from django.contrib.auth.models import User
+from RestaurantRaterApp.forms import UserForm, SignUpForm, EditUserForm, RestaurantForm, ReviewForm, EditSignUpForm
 
 
 class TestViews(TestCase):
@@ -14,10 +15,11 @@ class TestViews(TestCase):
         populate_test()
 
         self.client = Client()
+
         # home
         self.home = reverse("RestaurantRaterApp:home")
         # Show restaurant
-        self.show_restaurant = reverse("RestaurantRaterApp:show_restaurant", args=["ALC"])
+        self.show_restaurant = reverse("RestaurantRaterApp:show_restaurant", args=["alchemilla"])
         # Three version of ratings
         self.explore_rating = reverse("RestaurantRaterApp:explore", args=["rating"])
         self.explore_distance = reverse("RestaurantRaterApp:explore", args=["distance"])
@@ -27,7 +29,7 @@ class TestViews(TestCase):
         self.favourites_distance = reverse("RestaurantRaterApp:favourites", args=["distance"])
         self.favourites_alphabetical = reverse("RestaurantRaterApp:favourites", args=["alphabetical"])
         # Review
-        self.review = reverse("RestaurantRaterApp:review", args=["ALC"])
+        self.review = reverse("RestaurantRaterApp:review", args=["alchemilla"])
         # Add Restaurant
         # self.add = reverse("RestaurantRaterApp:")
         # Sign-Up
@@ -37,7 +39,7 @@ class TestViews(TestCase):
         # Logout
         self.logout = reverse("RestaurantRaterApp:logout")
         # Reverse Fav
-        self.reverse_fav = reverse("RestaurantRaterApp:reverse_fav", args=["ALC"])
+        self.reverse_fav = reverse("RestaurantRaterApp:reverse_fav", args=["alchemilla"])
         # Add restaurant
         self.addRestaurant = reverse("RestaurantRaterApp:add_restaurant")
         # Profile Page
@@ -73,28 +75,16 @@ class TestViews(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(1, len(response.context["reviews"]))
 
-        # Template Assert
-        self.assertTemplateUsed(response, "RestaurantRaterApp/restaurant.html")
-        self.assertTemplateUsed(response, "RestaurantRaterApp/base.html")
-        self.assertTemplateUsed(response, "RestaurantRaterApp/arrow_or_heart.html")
-        self.assertTemplateUsed(response, "RestaurantRaterApp/stars.html")
-
     # Tests restaurant page with user
     def test_show_restaurant_login(self):
         self.client.login(username="Nicola.H", password="Nicola123")
-        response = self.client.get(self.home)
+        response = self.client.get(self.show_restaurant)
 
         # Content Asserts
         response = self.client.get(self.show_restaurant)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(1, len(response.context["reviews"]))
         self.assertNotEqual(0, len(response.context["favourites"]))
-
-        # Template Asserts
-        self.assertTemplateUsed(response, "RestaurantRaterApp/restaurant.html")
-        self.assertTemplateUsed(response, "RestaurantRaterApp/base.html")
-        self.assertTemplateUsed(response, "RestaurantRaterApp/arrow_or_heart.html")
-        self.assertTemplateUsed(response, "RestaurantRaterApp/stars.html")
 
     # Tests Explore Page No user - here we are focussing on the difference between the sorts
     def test_explore_logout_rating(self):
@@ -105,15 +95,8 @@ class TestViews(TestCase):
         self.assertContains(response, "Explore the Restaurant Rater records!")
         self.assertEqual(response.context["sort"], "rating")
         self.assertEqual(response.context["restaurants_list"],
-                         [Restaurant.objects.get(restaurant_id="KC"), Restaurant.objects.get(restaurant_id="ALC")])
+                         [Restaurant.objects.get(name="Kimchi Cult"), Restaurant.objects.get(name="Alchemilla")])
         self.assertEqual(len(response.context["favourites"]), 0)
-
-        # Template Asserts
-        self.assertTemplateUsed(response, "RestaurantRaterApp/explore.html")
-        self.assertTemplateUsed(response, "RestaurantRaterApp/base.html")
-        self.assertTemplateUsed(response, "RestaurantRaterApp/sort_header.html")
-        self.assertTemplateUsed(response, "RestaurantRaterApp/stars.html")
-        self.assertTemplateUsed(response, "RestaurantRaterApp/arrow_or_heart.html")
 
     # No need to test templates or content just that the list has been correctly modified
     def test_explore_logout_alphabetical(self):
@@ -121,7 +104,7 @@ class TestViews(TestCase):
 
         self.assertEqual(response.context["sort"], "alphabetical")
         self.assertEqual(response.context["restaurants_list"],
-                         [Restaurant.objects.get(restaurant_id="ALC"), Restaurant.objects.get(restaurant_id="KC")])
+                         [Restaurant.objects.get(name="Alchemilla"), Restaurant.objects.get(name="Kimchi Cult")])
 
     # No need to test templates or content just that the list has been correctly modified -needs to be updated once
     # distances are implemented
@@ -131,7 +114,7 @@ class TestViews(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["sort"], "distance")
         self.assertEqual(response.context["restaurants_list"],
-                         [Restaurant.objects.get(restaurant_id="ALC"), Restaurant.objects.get(restaurant_id="KC")])
+                         [Restaurant.objects.get(name="Alchemilla"), Restaurant.objects.get(name="Kimchi Cult")])
 
     # Testing if user's favourites are returned correctly. No need to test rest of page, repeated above.
     def test_explore_login_rating(self):
@@ -155,15 +138,7 @@ class TestViews(TestCase):
         self.assertContains(response, "View your favourite restaurants!")
         self.assertEqual(response.context["sort"], "alphabetical")
         self.assertEqual(response.context["restaurants_list"],
-                         [Restaurant.objects.get(restaurant_id="ALC"), Restaurant.objects.get(restaurant_id="KC")])
-
-        # Template Asserts
-        self.assertTemplateUsed(response, "RestaurantRaterApp/favourites.html")
-        self.assertTemplateUsed(response, "RestaurantRaterApp/base.html")
-        self.assertTemplateUsed(response, "RestaurantRaterApp/sort_header.html")
-        self.assertTemplateUsed(response, "RestaurantRaterApp/stars.html")
-        self.assertTemplateUsed(response, "RestaurantRaterApp/table.html")
-        self.assertTemplateUsed(response, "RestaurantRaterApp/arrow_or_heart.html")
+                         [Restaurant.objects.get(name="Alchemilla"), Restaurant.objects.get(name="Kimchi Cult")])
 
     # Checks favourite page when sorted by distance
     def test_favourites_login_distance(self):
@@ -173,7 +148,7 @@ class TestViews(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["sort"], "alphabetical")
         self.assertEqual(response.context["restaurants_list"],
-                         [Restaurant.objects.get(restaurant_id="ALC"), Restaurant.objects.get(restaurant_id="KC")])
+                         [Restaurant.objects.get(name="Alchemilla"), Restaurant.objects.get(name="Kimchi Cult")])
 
     # Checks favourite page regarding rating
     def test_favourites_login_rating(self):
@@ -183,7 +158,7 @@ class TestViews(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["sort"], "rating")
         self.assertEqual(response.context["restaurants_list"],
-                         [Restaurant.objects.get(restaurant_id="KC"), Restaurant.objects.get(restaurant_id="ALC"), ])
+                         [Restaurant.objects.get(name="Kimchi Cult"), Restaurant.objects.get(name="Alchemilla")])
 
     # Makes sure Anon users can't add a review
     def test_add_review_logout(self):
@@ -193,11 +168,9 @@ class TestViews(TestCase):
 
     def test_add_review_login(self):
         self.client.login(username="Nicola.H", password="Nicola123")
-        response = self.client.get(self.review)
+        response = self.client.get(self.addRestaurant)
 
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "RestaurantRaterApp/base.html")
-        self.assertTemplateUsed(response, "restaurantraterapp/add_review.html")
 
     def test_add_restaurant_logout(self):
         response = self.client.get(self.addRestaurant)
@@ -209,8 +182,6 @@ class TestViews(TestCase):
         response = self.client.get(self.addRestaurant)
 
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "RestaurantRaterApp/base.html")
-        self.assertTemplateUsed(response, "restaurantraterapp/add_restaurant.html")
 
     def test_profile_logout(self):
         response = self.client.get(self.profile)
@@ -223,11 +194,6 @@ class TestViews(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
-        self.assertEqual(response.context["account_details"]["Username"], "Nicola.H")
-        self.assertTemplateUsed(response, "RestaurantRaterApp/base.html")
-        self.assertTemplateUsed(response, "RestaurantRaterApp/profile.html")
-        self.assertTemplateUsed(response, "RestaurantRaterApp/arrow_or_heart.html")
-
     def test_edit_profile_logout(self):
         response = self.client.get(self.profile)
 
@@ -238,10 +204,6 @@ class TestViews(TestCase):
         response = self.client.get(self.profile)
 
         self.assertEqual(response.status_code, 200)
-
-        self.assertTemplateUsed(response, "RestaurantRaterApp/base.html")
-        self.assertTemplateUsed(response, "RestaurantRaterApp/profile.html")
-        self.assertTemplateUsed(response, "RestaurantRaterApp/arrow_or_heart.html")
 
     def test_signup_good(self):
         response = self.client.get(self.signup)
@@ -269,11 +231,6 @@ class TestViews(TestCase):
         self.assertEqual(len(User.objects.all()), 4)
         self.assertEqual(len(user_client.objects.all()), 4)
 
-        # Template Asserts
-        self.assertTemplateUsed(response, "RestaurantRaterApp/signup.html")
-        self.assertTemplateUsed(response, "RestaurantRaterApp/base.html")
-        self.assertTrue(self.client.login(username='testuser', password='test123'))
-
     def test_user_login(self):
         user_obj = user_client.objects.get(name="Nicola")
 
@@ -299,7 +256,7 @@ class TestViews(TestCase):
 
         response = self.client.get(self.reverse_fav)
 
-        self.assertTrue(Restaurant.objects.get(restaurant_id="ALC") not in list(user_obj.liked_restaurants.all()))
+        self.assertTrue(Restaurant.objects.get(name="Alchemilla") not in list(user_obj.liked_restaurants.all()))
 
     def test_reverse_favourite_status_add(self):
         user_obj = user_client.objects.get(name="Colin")
@@ -308,4 +265,4 @@ class TestViews(TestCase):
         response = self.client.get(self.reverse_fav)
         print(list(user_obj.liked_restaurants.all()))
 
-        self.assertTrue(Restaurant.objects.get(restaurant_id="ALC") in list(user_obj.liked_restaurants.all()))
+        self.assertTrue(Restaurant.objects.get(name="Alchemilla") in list(user_obj.liked_restaurants.all()))

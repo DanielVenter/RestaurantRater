@@ -118,6 +118,9 @@ def add_review(request, restaurant_id):
     if restaurant is None:
         return redirect('/RestaurantRaterApp/')
 
+    if restaurant.restaurant_id in this_user_client.rated_restaurants.keys() or restaurant in this_user_client.owned_restaurants.all():
+        return redirect(reverse('RestaurantRaterApp:show_restaurant', kwargs={'restaurant_id': restaurant_id}))
+
     form = ReviewForm()
     if request.method == 'POST':
         form = ReviewForm(request.POST)

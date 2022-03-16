@@ -268,9 +268,25 @@ def signup(request):
             
             #Geocodes the address. 
             g = gmaps_key.geocode(str(signup_form.cleaned_data["street_number"]) + " " + signup_form.cleaned_data["street"] + ", " + signup_form.cleaned_data["city"])
+            print(len(g))
 
             #If length is 0 then no address has been matched.
-            if len(g) == 0:
+            if len(g[0]) == 0:
+                user.delete()
+                usr_client.delete()
+
+                invalid_address = 1
+                context_dict = {'user_form': user_form,
+                    'signup_form': signup_form,
+                    'registered': True,
+                    'invalid_username': invalid_username,
+                    'invalid_address': invalid_address,
+                    'titlemessage': "Sign up for a Restaurant Rater account!",
+                    'users': [usr.username for usr in User.objects.all()],}
+                return render(request, 'RestaurantRaterApp/signup.html', context_dict)
+            
+            #If length is greater than 1, then two address-related fields are different valid locations.
+            elif len(g) > 1:
                 user.delete()
                 usr_client.delete()
 
@@ -284,22 +300,36 @@ def signup(request):
                     'users': [usr.username for usr in User.objects.all()],}
                 return render(request, 'RestaurantRaterApp/signup.html', context_dict)
             
-            #If length is greater than 1, then two address-related fields are different valid locations.
-            #If long_name is equal to the city, it means that the city is correct but not the other two fields.
-            #In this case, only the street number and street fields are going to be highlighted red.
-            elif g[0]['address_components'][0]['long_name'] == signup_form.cleaned_data["city"] or len(g) > 1:
-                user.delete()
-                usr_client.delete()
+            #If we reached this place, now we check that all of the fields (street, city and street number) are correct
+            #If not, then we don't submit the form.
+            else:
+                city_ok = street_ok = street_nr_ok = False
+                for x in g[0]['address_components']:
+                    if x['long_name'] == signup_form.cleaned_data['city']:
+                        print("city is ok")
+                        city_ok = True
+                    elif x['long_name'] == signup_form.cleaned_data['street']:
+                        print("street is ok")
+                        street_ok = True
+                    elif str(x['long_name']) == str(signup_form.cleaned_data['street_number']):
+                        print("street number is ok")
+                        street_nr_ok = True
+                
+                if not(city_ok and street_ok and street_nr_ok):
+                    print("got here")
+                    user.delete()
+                    usr_client.delete()
 
-                invalid_address = 2
-                context_dict = {'user_form': user_form,
-                    'signup_form': signup_form,
-                    'registered': False,
-                    'invalid_username': invalid_username,
-                    'invalid_address': invalid_address,
-                    'titlemessage': "Sign up for a Restaurant Rater account!",
-                    'users': [usr.username for usr in User.objects.all()],}
-                return render(request, 'RestaurantRaterApp/signup.html', context_dict)
+                    invalid_address = 1
+                    context_dict = {'user_form': user_form,
+                        'signup_form': signup_form,
+                        'registered': False,
+                        'invalid_username': invalid_username,
+                        'invalid_address': invalid_address,
+                        'titlemessage': "Sign up for a Restaurant Rater account!",
+                        'users': [usr.username for usr in User.objects.all()],}
+                    return render(request, 'RestaurantRaterApp/signup.html', context_dict)
+
             
             #If there are no restaurants on the server then updating the distances matrix will cause error.
             if len(Restaurant.objects.all()) > 0:

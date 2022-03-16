@@ -55,7 +55,6 @@ class TestViews(TestCase):
         self.assertEqual(2, len(response.context["restaurants_list"]))
         self.assertEqual(0, len(response.context["favourites"]))
 
-
     def test_home_login(self):
         self.client.login(username="Mark.E", password="Mark123")
         response = self.client.get(self.home)
@@ -65,7 +64,6 @@ class TestViews(TestCase):
         self.assertContains(response, "Check out the Restaurant Rater top ten!")
         self.assertEqual(2, len(response.context["restaurants_list"]))
         self.assertNotEqual(0, len(response.context["favourites"]))
-
 
     # Tests restaurant page no user
     def test_show_restaurant_logout(self):
@@ -193,8 +191,6 @@ class TestViews(TestCase):
 
         self.assertEqual(response.status_code, 302)
 
-
-    # Can't complete test
     def test_add_review_login(self):
         self.client.login(username="Nicola.H", password="Nicola123")
         response = self.client.get(self.review)
@@ -247,7 +243,6 @@ class TestViews(TestCase):
         self.assertTemplateUsed(response, "RestaurantRaterApp/profile.html")
         self.assertTemplateUsed(response, "RestaurantRaterApp/arrow_or_heart.html")
 
-
     def test_signup_good(self):
         response = self.client.get(self.signup)
 
@@ -279,7 +274,6 @@ class TestViews(TestCase):
         self.assertTemplateUsed(response, "RestaurantRaterApp/base.html")
         self.assertTrue(self.client.login(username='testuser', password='test123'))
 
-
     def test_user_login(self):
         user_obj = user_client.objects.get(name="Nicola")
 
@@ -298,7 +292,6 @@ class TestViews(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, self.home)
         self.assertTrue('_auth_user_id' not in self.client.session)
-
 
     def test_reverse_favourite_status_remove(self):
         user_obj = user_client.objects.get(name="Nicola")

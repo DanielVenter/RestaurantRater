@@ -82,6 +82,9 @@ def rates(user: str, restaurant: str):
     user_obj.rates.add(restaurant_obj)
     # Appends rating to ratings list which overall rating calculated from
     restaurant_obj.ratings.append(user_obj.rated_restaurants[restaurant_obj.restaurant_id])
+    if user_obj.user.username not in restaurant_obj.comments.keys() and restaurant_obj.restaurant_id in user_obj.rated_restaurants.keys():
+        restaurant_obj.comments[user_obj.user.username] = ""
+
     restaurant_obj.save()
 
 

@@ -108,6 +108,7 @@ def sort_by(list, sort, user):
 
 @login_required(login_url='RestaurantRaterApp:login')
 def add_review(request, restaurant_id):
+    this_user = request.user
     try:
         restaurant = Restaurant.objects.get(restaurant_id=restaurant_id)
     except Restaurant.DoesNotExist:
@@ -119,10 +120,10 @@ def add_review(request, restaurant_id):
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         if form.is_valid():
-            if restaurant:
-                form.save(commit=False)
-
-                return redirect(reverse('RestaurantRaterApp:show_restaurant', kwargs={'restaurant_id': restaurant_id}))
+            data = form.cleaned_data.get("review")
+            restaurant.comments[str(this_user)] = str(data)
+            form.save(commit=False)
+            return redirect(reverse('RestaurantRaterApp:show_restaurant', kwargs={'restaurant_id': restaurant_id}))
     else:
         print(form.errors)
     context_dict = {'form': form, 'restaurant': restaurant}

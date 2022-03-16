@@ -2,6 +2,8 @@ import os
 from django import forms
 from django.db import models
 from django.core.exceptions import ValidationError
+
+from RestaurantRater import settings
 from RestaurantRaterApp.models import Restaurant, user_client
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
@@ -80,9 +82,9 @@ class RestaurantForm(forms.ModelForm):
     city = forms.CharField(required=True)
     description = forms.CharField(required=True)
     restaurant_id = forms.IntegerField(widget=forms.HiddenInput(), required=False)
-    img1 = models.ImageField(upload_to=f"{name}", blank=True)
-    img2 = models.ImageField(upload_to=f"{name}", blank=True)
-    img3 = models.ImageField(upload_to=f"{name}", blank=True)
+    img1 = models.ImageField(upload_to=f"{settings.MEDIA_DIR}\\{name}", blank=True)
+    img2 = models.ImageField(upload_to=f"{settings.MEDIA_DIR}\\{name}", blank=True)
+    img3 = models.ImageField(upload_to=f"{settings.MEDIA_DIR}\\{name}", blank=True)
     comments = forms.CharField(widget=forms.HiddenInput(), required=False)
     ratings = forms.CharField(widget=forms.HiddenInput(), required=False)
 

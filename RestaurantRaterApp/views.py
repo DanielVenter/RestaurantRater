@@ -306,17 +306,13 @@ def signup(request):
                 city_ok = street_ok = street_nr_ok = False
                 for x in g[0]['address_components']:
                     if x['long_name'] == signup_form.cleaned_data['city']:
-                        print("city is ok")
                         city_ok = True
                     elif x['long_name'] == signup_form.cleaned_data['street']:
-                        print("street is ok")
                         street_ok = True
                     elif str(x['long_name']) == str(signup_form.cleaned_data['street_number']):
-                        print("street number is ok")
                         street_nr_ok = True
                 
                 if not(city_ok and street_ok and street_nr_ok):
-                    print("got here")
                     user.delete()
                     usr_client.delete()
 

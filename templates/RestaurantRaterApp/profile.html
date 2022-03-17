@@ -80,29 +80,7 @@
             <div class="overflow-auto mh-100">
 
                 <!--- table of users reviews --->
-                <div class="row mw-100 nospace" >
-                    {% if comments %}
-                        <table class="table table-secondary table-hover">
-                            <thead>
-                                <tr>
-                                    <th scope="col"></th>
-                                    <th scope="col">Reviews</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for commenter, review in comments.items %}
-                                    <!-- alternate cyan and yellow rows -->
-                                    <tr class="{% get_row_colour forloop.counter %}">
-                                        <td>{{ commenter }}</td>
-                                        <td>{{ review }}</td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    {% else %}
-                        <strong>You haven't commented on any restaurants yet!</strong><br />
-                    {% endif %}
-                </div>
+                {% include 'RestaurantRaterApp/review_table.html' with dict=comments no_msg="You haven't commented on any restaurants yet!" %}
 
             </div>
         </div>

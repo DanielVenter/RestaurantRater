@@ -25,9 +25,9 @@ class UserForm(forms.ModelForm):
         model = User
 
         widgets = {
-            'username': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2", 'id':'id_username'}),
-            'password': forms.PasswordInput(attrs={'class': "form-control form-control-sm mb-2 ", 'id':'id_password'}),
-            'email': forms.EmailInput(attrs={'class': "form-control form-control-sm mb-2 ", 'id':'id_email'}),
+            'username': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2", 'id': 'id_username'}),
+            'password': forms.PasswordInput(attrs={'class': "form-control form-control-sm mb-2 ", 'id': 'id_password'}),
+            'email': forms.EmailInput(attrs={'class': "form-control form-control-sm mb-2 ", 'id': 'id_email'}),
         }
 
         fields = ('username', 'password', 'email',)
@@ -39,14 +39,15 @@ class SignUpForm(forms.ModelForm):
         model = user_client
 
         widgets = {
-            'name': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2", 'id':'id_name'}),
-            'surname': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 ", 'id':'id_surname'}),
-            'city': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 ", 'id':'id_city'}),
+            'name': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2", 'id': 'id_name'}),
+            'surname': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 ", 'id': 'id_surname'}),
+            'city': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 ", 'id': 'id_city'}),
             'street': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 "}),
             'street_number': forms.NumberInput(attrs={'class': "form-control form-control-sm mb-2 "}),
         }
 
         fields = ('name', 'surname', 'city', 'street', 'street_number')
+
 
 # Edits the user model in user_client
 class EditUserForm(forms.ModelForm):
@@ -78,34 +79,38 @@ class EditSignUpForm(forms.ModelForm):
 
 
 class RestaurantForm(forms.ModelForm):
-    fs = FileSystemStorage(location=settings.MEDIA_DIR)
     name = forms.CharField(required=True)
     street_number = forms.IntegerField(required=True)
     street = forms.CharField(required=True)
     city = forms.CharField(required=True)
     description = forms.CharField(required=True)
     restaurant_id = forms.IntegerField(widget=forms.HiddenInput(), required=False)
+    fs = FileSystemStorage(location=settings.MEDIA_DIR)
     img1 = ResizedImageField(size=[225, 225], quality=100, crop=["middle", "center"],
-                             storage=fs, force_format='jpeg')
+                             storage=fs, force_format='jpeg', blank=True)
     img2 = ResizedImageField(size=[225, 225], quality=100, crop=["middle", "center"],
-                             storage=fs, force_format='jpeg')
+                             storage=fs, force_format='jpeg', blank=True)
     img3 = ResizedImageField(size=[225, 225], quality=100, crop=["middle", "center"],
-                             storage=fs, force_format='jpeg')
+                             storage=fs, force_format='jpeg', blank=True)
     comments = forms.CharField(widget=forms.HiddenInput(), required=False)
     ratings = forms.CharField(widget=forms.HiddenInput(), required=False)
 
     class Meta:
         model = Restaurant
         fields = (
-        'name', 'street_number', 'street', 'city', 'ratings', 'description', 'img1', 'img2', 'img3', 'restaurant_id',
-        'comments')
+            'name', 'street_number', 'street', 'city', 'ratings', 'description', 'img1', 'img2', 'img3',
+            'restaurant_id',
+            'comments')
 
 
 class ReviewForm(forms.ModelForm):
-    STAR_CHOICES = [(0.5, '0.5 stars'), (1, '1 star'), (1.5, '1.5 stars'), (2, '2 stars'), (2.5, '2.5 stars'), (3, '3 stars'),
+    STAR_CHOICES = [(0.5, '0.5 stars'), (1, '1 star'), (1.5, '1.5 stars'), (2, '2 stars'), (2.5, '2.5 stars'),
+                    (3, '3 stars'),
                     (3.5, '3.5 stars'), (4, '4 stars'), (4.5, '4.5 stars'), (5, '5 stars')]
-    rating = forms.CharField(label="Star Rating", widget=forms.Select(choices=STAR_CHOICES, attrs={'class': "form-control form-control-sm mb-2"}))
-    review = forms.CharField(required=True, widget=forms.Textarea(attrs={'class': "form-control form-control-sm mb-2", 'rows':5, 'cols':5}))
+    rating = forms.CharField(label="Star Rating", widget=forms.Select(choices=STAR_CHOICES, attrs={
+        'class': "form-control form-control-sm mb-2"}))
+    review = forms.CharField(required=True, widget=forms.Textarea(
+        attrs={'class': "form-control form-control-sm mb-2", 'rows': 5, 'cols': 5}))
 
     class Meta:
         model = Restaurant

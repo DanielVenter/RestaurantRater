@@ -12,12 +12,7 @@
                     <h5>Username already exists, please try again.</h5>
             {% endif %}
             <form id="edit_form" method="post" action="{% url 'RestaurantRaterApp:edit_profile' %}" enctype="multipart/form-data">
-                {% csrf_token %}
-                {% include 'RestaurantRaterApp/form_col.html' with form=edit_user_form %}
-                {% include 'RestaurantRaterApp/form_col.html' with form=edit_signup_form %}
-                <div class="form-group d-grid gap-2 d-md-flex justify-content-md-around mt-4">
-                    <input type="submit" class="btn btn-warning" name="submit" value="Update" />
-                </div>
+                {% include 'RestaurantRaterApp/form_inner.html' with f1=edit_user_form f2=edit_signup_form submit_text="Update" %}
             </form>
         </div>
 {% endblock %}

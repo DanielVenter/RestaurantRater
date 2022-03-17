@@ -7,10 +7,10 @@ from RestaurantRater import settings
 from django.core.files.storage import FileSystemStorage
 from django.template.defaultfilters import slugify
 
-
 API_KEY = "AIzaSyAxJa_f1f5FhqyY_JhZ42JBijy4dXNgGQA"
 
 fs = FileSystemStorage(location=settings.MEDIA_DIR)
+
 
 class Restaurant(models.Model):
     name = models.CharField(max_length=128)
@@ -112,7 +112,7 @@ class user_client(models.Model):
         data = eval(response.text)
         distances = (data["rows"][0]["elements"])
         for i, distance in enumerate(distances):
-            distances_matrix[restaurants[i]] = float(distance["distance"]["text"].split(" ")[0].replace(",",""))
+            distances_matrix[restaurants[i]] = float(distance["distance"]["text"].split(" ")[0].replace(",", ""))
         user.distances_dict = distances_matrix
         user.save()
 

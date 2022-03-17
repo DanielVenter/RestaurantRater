@@ -301,7 +301,7 @@ def signup(request):
                                 'users': [usr.username for usr in User.objects.all()], }
                 return render(request, 'RestaurantRaterApp/signup.html', context_dict)
 
-            # If we reached this place, now we check that all of the fields (street, city and street number) are correct
+            # If we reached this place, now we check that all the fields (street, city and street number) are correct
             # If not, then we don't submit the form.
             else:
                 city_ok = street_ok = street_nr_ok = False

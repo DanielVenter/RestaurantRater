@@ -20,13 +20,15 @@ const passChecker = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})')
 //Array of fields
 const fieldsArray = [username, password, email, street_number, _name, surname, city, street];
 
+console.log(addressState.innerText);
+
 //Checks if username already exists
 if(usernameExists.innerText === "Username already exists."){
     checkInputs();
     setErrorFor(username, "Username already exists.");
 }
 
-if(addressState.innerText === "Invalid address."){
+if(addressState.innerText === "1"){
     checkInputs();
     setErrorFor(city, "Invalid address.");
     setErrorFor(street, "Invalid address.");
@@ -97,8 +99,6 @@ function checkInputs(){
 registerBtn.addEventListener("click", e => {
     if(checkInputs() === false)
         e.preventDefault();
-    
-    console.log(addressState.innerText);
   });
 
 

@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
+import googlemaps
 from django.contrib.auth.forms import PasswordChangeForm
 
 
@@ -109,6 +110,7 @@ def sort_by(list, sort, user):
 @login_required(login_url='RestaurantRaterApp:login')
 def add_review(request, restaurant_id):
     this_user = request.user
+    this_user_client = this_user.user_client
     try:
         restaurant = Restaurant.objects.get(restaurant_id=restaurant_id)
     except Restaurant.DoesNotExist:
@@ -116,13 +118,20 @@ def add_review(request, restaurant_id):
 
     if restaurant is None:
         return redirect('/RestaurantRaterApp/')
+
+    if restaurant.restaurant_id in this_user_client.rated_restaurants.keys() or restaurant in this_user_client.owned_restaurants.all():
+        return redirect(reverse('RestaurantRaterApp:show_restaurant', kwargs={'restaurant_id': restaurant_id}))
+
     form = ReviewForm()
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         if form.is_valid():
-            data = form.cleaned_data.get("review")
-            restaurant.comments[str(this_user)] = str(data)
-            form.save(commit=False)
+            restaurant.comments[this_user.username] = form.cleaned_data['review']
+            restaurant.ratings.append(float(form.cleaned_data["rating"]))
+            restaurant.save()
+            this_user_client.rated_restaurants[restaurant_id] = float(form.cleaned_data["rating"])
+            this_user_client.rates.add(restaurant)
+            this_user_client.save()
             return redirect(reverse('RestaurantRaterApp:show_restaurant', kwargs={'restaurant_id': restaurant_id}))
     else:
         print(form.errors)
@@ -237,8 +246,11 @@ def change_password(request):
 
 def signup(request):
     registered = False
+    
+    #Flags for username authenticity and address validation.
     invalid_username = False
-    invalid_address = False
+    invalid_address = 0
+
     if request.method == 'POST':
         user_form = UserForm(request.POST)
         signup_form = SignUpForm(request.POST)
@@ -250,15 +262,34 @@ def signup(request):
 
             usr_client.user = user
             usr_client.save()
-            try:
-                usr_client.update_distances_dict()
-            except Exception as e:
-                print(e)
 
+            #Using google maps geocode API. 
+            gmaps_key = googlemaps.Client(key="AIzaSyA5dcV3e9Oe4ZED0UkRRH4P1f4sMG3LSrw")
+            
+            #Geocodes the address. 
+            g = gmaps_key.geocode(str(signup_form.cleaned_data["street_number"]) + " " + signup_form.cleaned_data["street"] + ", " + signup_form.cleaned_data["city"])
+
+            #If length is 0 then no address has been matched.
+            if len(g[0]) == 0:
                 user.delete()
                 usr_client.delete()
 
-                invalid_address = True
+                invalid_address = 1
+                context_dict = {'user_form': user_form,
+                    'signup_form': signup_form,
+                    'registered': True,
+                    'invalid_username': invalid_username,
+                    'invalid_address': invalid_address,
+                    'titlemessage': "Sign up for a Restaurant Rater account!",
+                    'users': [usr.username for usr in User.objects.all()],}
+                return render(request, 'RestaurantRaterApp/signup.html', context_dict)
+            
+            #If length is greater than 1, then two address-related fields are different valid locations.
+            elif len(g) > 1:
+                user.delete()
+                usr_client.delete()
+
+                invalid_address = 1
                 context_dict = {'user_form': user_form,
                     'signup_form': signup_form,
                     'registered': False,
@@ -267,6 +298,37 @@ def signup(request):
                     'titlemessage': "Sign up for a Restaurant Rater account!",
                     'users': [usr.username for usr in User.objects.all()],}
                 return render(request, 'RestaurantRaterApp/signup.html', context_dict)
+            
+            #If we reached this place, now we check that all of the fields (street, city and street number) are correct
+            #If not, then we don't submit the form.
+            else:
+                city_ok = street_ok = street_nr_ok = False
+                for x in g[0]['address_components']:
+                    if signup_form.cleaned_data['city'].lower() in x['long_name'].lower():
+                        city_ok = True
+                    elif signup_form.cleaned_data['street'].lower() in x['long_name'].lower():
+                        street_ok = True
+                    elif str(x['long_name']) == str(signup_form.cleaned_data['street_number']):
+                        street_nr_ok = True
+                
+                if not(city_ok and street_ok and street_nr_ok):
+                    user.delete()
+                    usr_client.delete()
+
+                    invalid_address = 1
+                    context_dict = {'user_form': user_form,
+                        'signup_form': signup_form,
+                        'registered': False,
+                        'invalid_username': invalid_username,
+                        'invalid_address': invalid_address,
+                        'titlemessage': "Sign up for a Restaurant Rater account!",
+                        'users': [usr.username for usr in User.objects.all()],}
+                    return render(request, 'RestaurantRaterApp/signup.html', context_dict)
+
+            
+            #If there are no restaurants on the server then updating the distances matrix will cause error.
+            if len(Restaurant.objects.all()) > 0:
+                usr_client.update_distances_dict()
 
             registered = True
         else:

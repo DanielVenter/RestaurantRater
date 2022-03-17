@@ -98,11 +98,13 @@
                             </thead>
                             <tbody>
                                 {% for commenter, review in restaurant.comments.items %}
-                                    <!-- alternate cyan and yellow rows -->
-                                    <tr class="{% get_row_colour forloop.counter %}">
-                                        <td>{{ commenter }}</td>
-                                        <td>{{ review }}</td>
-                                    </tr>
+                                    {% if not review == "" %}
+                                        <!-- alternate cyan and yellow rows -->
+                                        <tr class="{% get_row_colour forloop.counter %}">
+                                            <td>{{ commenter }}</td>
+                                            <td>{{ review }}</td>
+                                        </tr>
+                                    {% endif %}
                                 {% endfor %}
                             </tbody>
                         </table>

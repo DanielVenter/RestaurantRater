@@ -1,4 +1,9 @@
 # RestaurantRater
+
+Team 15C
+COMPSCI 2021 Web Application Development 2 - 2021-2022
+
+
 This aplication represents a restaurant rating website. 
 
 The website allows the user to search amongst available restaurants, view their details and even add ratings and reviews themselves. 

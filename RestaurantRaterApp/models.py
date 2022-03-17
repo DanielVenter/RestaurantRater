@@ -112,7 +112,7 @@ class user_client(models.Model):
         data = eval(response.text)
         distances = (data["rows"][0]["elements"])
         for i, distance in enumerate(distances):
-            distances_matrix[restaurants[i]] = float(distance["distance"]["text"].replace(',', '').split(" ")[0])
+            distances_matrix[restaurants[i]] = float(distance["distance"]["text"].split(" ")[0].replace(",",""))
         user.distances_dict = distances_matrix
         user.save()
 

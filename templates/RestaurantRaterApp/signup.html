@@ -27,12 +27,7 @@
             <small id="invalid_address" style="display:none">{{ invalid_address }}</small>
 
             <form id="user_form" method="post" action="{% url 'RestaurantRaterApp:signup' %}" enctype="multipart/form-data">
-                {% csrf_token %}
-                {% include 'RestaurantRaterApp/form_col.html' with form=user_form %}
-                {% include 'RestaurantRaterApp/form_col.html' with form=signup_form %}
-                <div class="form-group d-grid gap-2 d-md-flex justify-content-md-around mt-4">
-                    <input type="submit" class="btn btn-warning" name="submit" value="Sign Up" id="id_submit" />
-                </div>
+                {% include 'RestaurantRaterApp/form_inner.html' with f1=user_form f2=signup_form submit_text="Sign Up" %}
             </form>
         </div>
         <script src="https://kit.fontawesome.com/368c407229.js" crossorigin="anonymous"></script>

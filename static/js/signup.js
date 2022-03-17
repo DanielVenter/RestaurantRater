@@ -25,11 +25,13 @@ console.log(addressState.innerText);
 //Checks if username already exists
 if(usernameExists.innerText === "Username already exists."){
     checkInputs();
+    setSuccessFor(password, "Your password was correct - Can't be autofilled");
     setErrorFor(username, "Username already exists.");
 }
 
 if(addressState.innerText === "1"){
     checkInputs();
+    setSuccessFor(password, "Your password was correct - Can't be autofilled");
     setErrorFor(city, "Invalid address.");
     setErrorFor(street, "Invalid address.");
     setErrorFor(street_number, "Invalid address.");

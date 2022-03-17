@@ -7,7 +7,8 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-from datetime import datetime
+import os
+from RestaurantRater import settings
 import googlemaps
 from django.contrib.auth.forms import PasswordChangeForm
 
@@ -145,7 +146,7 @@ def add_restaurant(request):
     if request.method == 'POST':
         form = RestaurantForm(request.POST, request.FILES)
         if form.is_valid():
-            restaurant = form.save(commit=True)
+            restaurant = form.save()
             print(restaurant, restaurant.restaurant_id)
             request.user.owner_status = True
             this_user = request.user

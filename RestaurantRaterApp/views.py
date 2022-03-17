@@ -268,7 +268,6 @@ def signup(request):
             
             #Geocodes the address. 
             g = gmaps_key.geocode(str(signup_form.cleaned_data["street_number"]) + " " + signup_form.cleaned_data["street"] + ", " + signup_form.cleaned_data["city"])
-            print(len(g))
 
             #If length is 0 then no address has been matched.
             if len(g[0]) == 0:
@@ -305,9 +304,9 @@ def signup(request):
             else:
                 city_ok = street_ok = street_nr_ok = False
                 for x in g[0]['address_components']:
-                    if x['long_name'] == signup_form.cleaned_data['city']:
+                    if signup_form.cleaned_data['city'].lower() in x['long_name'].lower():
                         city_ok = True
-                    elif x['long_name'] == signup_form.cleaned_data['street']:
+                    elif signup_form.cleaned_data['street'].lower() in x['long_name'].lower():
                         street_ok = True
                     elif str(x['long_name']) == str(signup_form.cleaned_data['street_number']):
                         street_nr_ok = True

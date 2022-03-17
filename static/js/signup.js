@@ -34,12 +34,6 @@ if(addressState.innerText === "1"){
     setErrorFor(street, "Invalid address.");
     setErrorFor(street_number, "Invalid address.");
 }
-else if(addressState.innerText === "2"){
-    console.log("got here");
-    checkInputs();
-    setErrorFor(street, "Invalid address.");
-    setErrorFor(street_number, "Invalid address.");
-}
 
 function checkInputs(){
     //Email checking

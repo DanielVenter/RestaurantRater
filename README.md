@@ -14,4 +14,5 @@ Among the log in restricted functionalities are the favorite page, the rate and 
 distance to home option.
 However, even unsigned in users can access the home page, the basic explore page and its sort alphabetically and sort by rating functions.
 Additionally,each restaurant page can be viewed in its entirety by all users.
+Finally,a user can chose to delete their profile and their personal data as well as their contribution to the website get removed.
 

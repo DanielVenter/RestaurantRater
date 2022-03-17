@@ -3,11 +3,9 @@ from django.urls import reverse
 
 from RestaurantRaterApp.models import user_client, Restaurant
 from populate_database import populate_test
-import os
 
 from RestaurantRaterApp.forms import UserForm, SignUpForm, EditUserForm, RestaurantForm
 
-current_dir = os.getcwd()
 
 class FormTests(TestCase):
     def setUp(self):
@@ -57,7 +55,6 @@ class FormTests(TestCase):
 
         self.assertContains(response, "Address invalid")
 
-
     def test_EditUserForm_good(self):
         form = EditUserForm(data={"username": "Dan.V", "email": "dan@gmail.com"})
 
@@ -75,4 +72,3 @@ class FormTests(TestCase):
                   'description': "Some basic text here"})
         # Image error and integer error
         self.assertFalse(form.is_valid())
-

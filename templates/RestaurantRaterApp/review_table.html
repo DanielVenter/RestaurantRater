@@ -1,0 +1,29 @@
+{% load static %}
+{% load restaurant_rater_tags %}
+
+<!--- table of reviews --->
+<div class="row mw-100 nospace" >
+    {% if dict %}
+        <table class="table table-secondary table-hover">
+            <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">Reviews</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for commenter, review in dict.items %}
+                {% if not review == "" %}
+                    <!-- alternate cyan and yellow rows -->
+                    <tr class="{% get_row_colour forloop.counter %}">
+                        <td>{{ commenter }}</td>
+                        <td>{{ review }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <strong>{{ no_msg }}</strong><br />
+    {% endif %}
+</div>

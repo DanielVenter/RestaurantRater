@@ -87,31 +87,7 @@
             <div class="overflow-auto" style="max-height:650px">
 
                 <!--- table of reviews --->
-                <div class="row mw-100 nospace" >
-                    {% if restaurant.comments %}
-                        <table class="table table-secondary table-hover">
-                            <thead>
-                                <tr>
-                                    <th scope="col"></th>
-                                    <th scope="col">Reviews</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for commenter, review in restaurant.comments.items %}
-                                    {% if not review == "" %}
-                                        <!-- alternate cyan and yellow rows -->
-                                        <tr class="{% get_row_colour forloop.counter %}">
-                                            <td>{{ commenter }}</td>
-                                            <td>{{ review }}</td>
-                                        </tr>
-                                    {% endif %}
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    {% else %}
-                        <strong>Our records currently don't contain any reviews!</strong><br />
-                    {% endif %}
-                </div>
+                {% include 'RestaurantRaterApp/review_table.html' with dict=restaurant.comments no_msg="Our records currently don't contain any reviews!" %}
 
             </div>
             <div style="max-height:100px">

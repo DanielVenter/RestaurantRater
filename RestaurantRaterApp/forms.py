@@ -115,13 +115,3 @@ class ReviewForm(forms.ModelForm):
     class Meta:
         model = Restaurant
         fields = ('review',)
-
-def PasswordChangeFormExtended(PasswordChangeForm):
-    class Meta:
-        model = User
-        widgets = {
-            'old_password': forms.PasswordInput(attrs={'class': "form-control form-control-sm mb-2 ", 'id': 'id_password'}),
-            'new_password1': forms.PasswordInput(attrs={'class': "form-control form-control-sm mb-2 ", 'id': 'id_password1'}),
-            'new_password2': forms.PasswordInput(attrs={'class': "form-control form-control-sm mb-2 ", 'id': 'id_password2'}),
-        }
-        fields = ('old_password', 'new_password1', 'new_password2')

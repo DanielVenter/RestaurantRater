@@ -55,8 +55,8 @@ class EditUserForm(forms.ModelForm):
         model = User
 
         widgets = {
-            'username': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 "}),
-            'email': forms.EmailInput(attrs={'class': "form-control form-control-sm mb-2 "}),
+            'username': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 ",'id': 'id_username'}),
+            'email': forms.EmailInput(attrs={'class': "form-control form-control-sm mb-2 ",'id': 'id_email'}),
         }
 
         fields = ('username', 'email',)
@@ -68,11 +68,11 @@ class EditSignUpForm(forms.ModelForm):
         model = user_client
 
         widgets = {
-            'name': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2"}),
-            'surname': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 "}),
-            'city': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 "}),
-            'street': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 "}),
-            'street_number': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 "}),
+            'name': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2",'id': 'id_name'}),
+            'surname': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 ",'id': 'id_surname'}),
+            'city': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 ",'id': 'id_city'}),
+            'street': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 ",'id': 'id_street'}),
+            'street_number': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 ",'id': 'id_st_number'}),
         }
 
         fields = ('name', 'surname', 'city', 'street', 'street_number')

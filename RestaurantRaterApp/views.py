@@ -187,7 +187,10 @@ def profile(request):
 
 @login_required(login_url='RestaurantRaterApp:login')
 def edit_profile(request):
-    invalid = False
+    updated = False
+    # Flags for username authenticity and address validation.
+    invalid_username = False
+    invalid_address = 0
     if request.method == 'POST':
         edit_user_form = EditUserForm(request.POST, instance=request.user)
         edit_signup_form = EditSignUpForm(request.POST)
@@ -207,21 +210,82 @@ def edit_profile(request):
             request.user.user_client.save()
             new_address = request.user.user_client.city + request.user.user_client.street + str(
                 request.user.user_client.street_number)
+            # Using google maps geocode API.
+            gmaps_key = googlemaps.Client(key="AIzaSyA5dcV3e9Oe4ZED0UkRRH4P1f4sMG3LSrw")
 
+            # Geocodes the address.
+            g = gmaps_key.geocode(
+                str(edit_signup_form.cleaned_data["street_number"]) + " " + edit_signup_form.cleaned_data["street"] + ", " +
+                edit_signup_form.cleaned_data["city"])
+            # If length is 0 then no address has been matched.
+            if len(g) == 0:
+                invalid_address = 1
+                context_dict = {'edit_user_form': edit_user_form,
+                                'edit_signup_form': edit_signup_form,
+                                'updated': False,
+                                'invalid_username': invalid_username,
+                                'invalid_address': invalid_address,
+                                'titlemessage': "Update your Restaurant Rater account details!",
+                                'users': [usr.username for usr in User.objects.all()], }
+                return render(request, 'RestaurantRaterApp/edit_profile.html', context_dict)
+
+            # If length is greater than 1, then two address-related fields are different valid locations.
+            elif len(g) > 1:
+                invalid_address = 1
+                context_dict = {'edit_user_form': edit_user_form,
+                                'edit_signup_form': edit_signup_form,
+                                'updated': False,
+                                'invalid_username': invalid_username,
+                                'invalid_address': invalid_address,
+                                'titlemessage': "Update your Restaurant Rater account details!",
+                                'users': [usr.username for usr in User.objects.all()], }
+                return render(request, 'RestaurantRaterApp/edit_profile.html', context_dict)
+
+            # If we reached this place, now we check that all the fields (street, city and street number) are correct
+            # If not, then we don't submit the form.
+            else:
+                city_ok = street_ok = street_nr_ok = False
+                for x in g[0]['address_components']:
+                    if edit_signup_form.cleaned_data['city'].lower() in x['long_name'].lower():
+                        city_ok = True
+                    elif edit_signup_form.cleaned_data['street'].lower() in x['long_name'].lower():
+                        street_ok = True
+                    elif str(x['long_name']) == str(edit_signup_form.cleaned_data['street_number']):
+                        street_nr_ok = True
+
+                if not (city_ok and street_ok and street_nr_ok):
+                    invalid_address = 1
+                    context_dict = {'edit_user_form': edit_user_form,
+                                    'edit_signup_form': edit_signup_form,
+                                    'updated': False,
+                                    'invalid_username': invalid_username,
+                                    'invalid_address': invalid_address,
+                                    'titlemessage': "Update your Restaurant Rater account details!",
+                                    'users': [usr.username for usr in User.objects.all()], }
+                    return render(request, 'RestaurantRaterApp/edit_profile.html', context_dict)
+
+            # If there are no restaurants on the server then updating the distances matrix will cause error.
+            if len(Restaurant.objects.all()) > 0:
+                request.user.user_client.update_distances_dict(new_address=True)
+
+            registered = True
             print(f"Old Address: {old_address} New Address: {new_address}")
             if not (old_address == new_address):
                 request.user.user_client.update_distances_dict(new_address=True)
 
             return redirect(reverse('RestaurantRaterApp:profile'))
         else:
-            invalid = True
+            updated = True
     else:
         edit_user_form = EditUserForm(instance=request.user)
         edit_signup_form = EditSignUpForm(instance=request.user.user_client)
 
-    context_dict = {'edit_user_form': edit_user_form, 'edit_signup_form': edit_signup_form,
+    context_dict = {'edit_user_form': edit_user_form,
+                    'edit_signup_form': edit_signup_form,
                     'titlemessage': "Update your Restaurant Rater account details!",
-                    'invalid': invalid}
+                    'updated': updated,
+                    'invalid_username': invalid_username,
+                    'invalid_address': invalid_address,}
     return render(request, 'RestaurantRaterApp/edit_profile.html', context_dict)
 
 

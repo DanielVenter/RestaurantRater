@@ -21,6 +21,7 @@ function setSuccessFor(input){
     inputSmall = inputDiv.querySelector("small");
     inputSmall.style.display = "none";
 
+    exclamationIcon = input.parentElement.parentElement.childNodes[5].childNodes[3];
     checkIcon = input.parentElement.parentElement.childNodes[5].childNodes[1];
     checkIcon.style.display = "block";
     exclamationIcon.style.display = "none";

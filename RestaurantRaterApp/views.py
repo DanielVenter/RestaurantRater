@@ -327,69 +327,20 @@ def signup(request):
             usr_client.user = user
             usr_client.save()
 
-            # Using google maps geocode API.
-            gmaps_key = googlemaps.Client(key="AIzaSyA5dcV3e9Oe4ZED0UkRRH4P1f4sMG3LSrw")
-
-            # Geocodes the address.
-            g = gmaps_key.geocode(
-                str(signup_form.cleaned_data["street_number"]) + " " + signup_form.cleaned_data["street"] + ", " +
-                signup_form.cleaned_data["city"])
-
-            # If length is 0 then no address has been matched.
-            if len(g) == 0:
+            #If address is not valid, do not submit the form.
+            if not validate_address(signup_form.cleaned_data["street"], signup_form.cleaned_data["street_number"], signup_form.cleaned_data["city"]):
+                invalid_address = 1
                 user.delete()
                 usr_client.delete()
 
-                invalid_address = 1
                 context_dict = {'user_form': user_form,
-                                'signup_form': signup_form,
-                                'registered': False,
-                                'invalid_username': invalid_username,
-                                'invalid_address': invalid_address,
-                                'titlemessage': "Sign up for a Restaurant Rater account!",
-                                'users': [usr.username for usr in User.objects.all()], }
+                    'signup_form': signup_form,
+                    'registered': False,
+                    'invalid_username': invalid_username,
+                    'invalid_address': invalid_address,
+                    'titlemessage': "Sign up for a Restaurant Rater account!",
+                    'users': [usr.username for usr in User.objects.all()], }
                 return render(request, 'RestaurantRaterApp/signup.html', context_dict)
-
-            # If length is greater than 1, then two address-related fields are different valid locations.
-            elif len(g) > 1:
-                user.delete()
-                usr_client.delete()
-
-                invalid_address = 1
-                context_dict = {'user_form': user_form,
-                                'signup_form': signup_form,
-                                'registered': False,
-                                'invalid_username': invalid_username,
-                                'invalid_address': invalid_address,
-                                'titlemessage': "Sign up for a Restaurant Rater account!",
-                                'users': [usr.username for usr in User.objects.all()], }
-                return render(request, 'RestaurantRaterApp/signup.html', context_dict)
-
-            # If we reached this place, now we check that all the fields (street, city and street number) are correct
-            # If not, then we don't submit the form.
-            else:
-                city_ok = street_ok = street_nr_ok = False
-                for x in g[0]['address_components']:
-                    if signup_form.cleaned_data['city'].lower() in x['long_name'].lower():
-                        city_ok = True
-                    elif signup_form.cleaned_data['street'].lower() in x['long_name'].lower():
-                        street_ok = True
-                    elif str(x['long_name']) == str(signup_form.cleaned_data['street_number']):
-                        street_nr_ok = True
-
-                if not (city_ok and street_ok and street_nr_ok):
-                    user.delete()
-                    usr_client.delete()
-
-                    invalid_address = 1
-                    context_dict = {'user_form': user_form,
-                                    'signup_form': signup_form,
-                                    'registered': False,
-                                    'invalid_username': invalid_username,
-                                    'invalid_address': invalid_address,
-                                    'titlemessage': "Sign up for a Restaurant Rater account!",
-                                    'users': [usr.username for usr in User.objects.all()], }
-                    return render(request, 'RestaurantRaterApp/signup.html', context_dict)
 
             # If there are no restaurants on the server then updating the distances matrix will cause error.
             if len(Restaurant.objects.all()) > 0:
@@ -461,3 +412,42 @@ def del_user(request):
     u.delete()
 
     return redirect(reverse('RestaurantRaterApp:home'))
+
+#Method to check address.
+def validate_address(street, street_number, city):
+     # Using google maps geocode API.
+            gmaps_key = googlemaps.Client(key="AIzaSyA5dcV3e9Oe4ZED0UkRRH4P1f4sMG3LSrw")
+
+            # Geocodes the address.
+            g = gmaps_key.geocode(
+                str(street_number) + " " + street + ", " +
+                city)
+
+            print(g)
+
+            # If length is 0 then no address has been matched.
+            if len(g) == 0:
+                return False
+
+            # If length is greater than 1, then two address-related fields are different valid locations.
+            elif len(g) > 1:
+                return False
+
+            # If we reached this place, now we check that all the fields (street, city and street number) are correct
+            # If not, then we don't submit the form.
+            else:
+                city_ok = street_ok = street_nr_ok = False
+                for x in g[0]['address_components']:
+                    if city.lower() in x['long_name'].lower():
+                        print("city ok")
+                        city_ok = True
+                    elif street.lower() in x['long_name'].lower() or street.lower() in x['short_name'].lower():
+                        print("street ok")
+                        street_ok = True
+                    elif str(street_number) == str(x['long_name']):
+                        street_nr_ok = True
+
+                if not (city_ok and street_ok and street_nr_ok):
+                    return False
+            
+            return True

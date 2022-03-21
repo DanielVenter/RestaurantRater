@@ -22,9 +22,6 @@
         {% for hidden in form.hidden_fields %}
             {{ hidden }}
         {% endfor %}
-        {% include 'RestaurantRaterApp/form_col.html' with form=form.visible_fields %}
-        <div class="form-group d-grid gap-2 d-md-flex justify-content-md-around mt-4">
-            <input type="submit" class="btn btn-warning" name="submit" value="Add Restaurant" id="id_submit" />
-        </div>
+        {% include 'RestaurantRaterApp/form_inner.html' with f1=form.visible_fields submit_text="Add Restaurant" %}
     </form>
 {% endblock %}

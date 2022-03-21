@@ -11,10 +11,7 @@
 
     <form id="form" method="post" action="{% url 'RestaurantRaterApp:review' restaurant_id=restaurant %}" enctype="multipart/form-data">
         {% csrf_token %}
-        {% include 'RestaurantRaterApp/form_col.html' with form=form %}
-        <div class="form-group d-grid gap-2 d-md-flex justify-content-md-around mt-4">
-            <input type="submit" class="btn btn-warning" name="Leave Review" value="Leave Review" />
-        </div>
+        {% include 'RestaurantRaterApp/form_inner.html' with f1=form submit_text="Leave Review" %}
         <div class="form-group d-grid gap-2 d-md-flex justify-content-md-around mt-5">
             or
         </div>

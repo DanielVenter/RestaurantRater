@@ -1,4 +1,5 @@
 import os
+from tokenize import blank_re
 from django import forms
 from django.db import models
 from django.core.exceptions import ValidationError
@@ -79,12 +80,6 @@ class EditSignUpForm(forms.ModelForm):
 
 
 class RestaurantForm(forms.ModelForm):
-    name = forms.CharField(required=True)
-    street_number = forms.IntegerField(required=True)
-    street = forms.CharField(required=True)
-    city = forms.CharField(required=True)
-    description = forms.CharField(required=True)
-    restaurant_id = forms.IntegerField(widget=forms.HiddenInput(), required=False)
     fs = FileSystemStorage(location=settings.MEDIA_DIR)
     img1 = ResizedImageField(size=[225, 225], quality=100, crop=["middle", "center"],
                              storage=fs, force_format='jpeg', blank=True)
@@ -92,15 +87,31 @@ class RestaurantForm(forms.ModelForm):
                              storage=fs, force_format='jpeg', blank=True)
     img3 = ResizedImageField(size=[225, 225], quality=100, crop=["middle", "center"],
                              storage=fs, force_format='jpeg', blank=True)
-    comments = forms.CharField(widget=forms.HiddenInput(), required=False)
-    ratings = forms.CharField(widget=forms.HiddenInput(), required=False)
 
     class Meta:
         model = Restaurant
+
+        widgets = {
+            'name': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2",'id': 'id_name'}),
+            'description': forms.Textarea(attrs={'class': "form-control form-control-sm mb-2 ",'id': 'id_surname', 'rows':5, 'cols':5}),
+            'city': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 ",'id': 'id_city'}),
+            'street': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 ",'id': 'id_street'}),
+            'street_number': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 ",'id': 'id_st_number'}),
+        }
+
+        labels = {
+            'name': 'Restaurant Name',
+            'description': 'Description',
+            'city': 'City',
+            'street': 'Street Name',
+            'street_number': 'Street Number',
+            'img1': 'Images',
+            "img2": blank_re,
+            'img3': blank_re,
+        }
+
         fields = (
-            'name', 'street_number', 'street', 'city', 'ratings', 'description', 'img1', 'img2', 'img3',
-            'restaurant_id',
-            'comments')
+            'name', 'description', 'img1', 'img2', 'img3', 'street_number', 'street', 'city')
 
 
 class ReviewForm(forms.ModelForm):

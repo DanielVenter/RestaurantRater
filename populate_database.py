@@ -622,7 +622,7 @@ def populate():
         # Colin McNair - Owner
         {"username": "Colin",
          "street_number": 1,
-         "street": "Cathcard Rd",
+         "street": "Cathcart Rd",
          "city": "Glasgow",
          "liked_restaurants": ["patrick-duck-club", "glorisa"],
          "rated_restaurants": {"patrick-duck-club": 3, "number-16": 3, "spanish-butcher": 3, "beat-6": 4, "glorisa": 5,

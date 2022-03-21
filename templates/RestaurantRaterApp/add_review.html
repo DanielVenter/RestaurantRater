@@ -12,14 +12,10 @@
     <form id="form" method="post" action="{% url 'RestaurantRaterApp:review' restaurant_id=restaurant %}" enctype="multipart/form-data">
         {% csrf_token %}
         {% include 'RestaurantRaterApp/form_inner.html' with f1=form submit_text="Leave Review" %}
-        <div class="form-group d-grid gap-2 d-md-flex justify-content-md-around mt-5">
-            or
-        </div>
-        <div class="form-group d-grid gap-2 d-md-flex justify-content-md-around mt-5">
-            Change your mind?
-        </div>
-        <div class="form-group d-grid gap-2 d-md-flex justify-content-md-around mt-4">
-            <input type="button" class="btn btn-warning" value="Cancel Review" onclick=history.back()></input>
+        <div class="form-group row d-flex justify-content-center align-items-center flex-column mt-3">
+            <p class="text-center">or</p>
+            <p class="text-center">Change your mind?</p>
+            <input type="button" class="btn btn-warning w-25" value="Cancel Review" onclick=history.back()></input>
         </div>
     </form>
 {% endblock %}

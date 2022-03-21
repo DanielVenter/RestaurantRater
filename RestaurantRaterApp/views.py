@@ -141,23 +141,31 @@ def add_review(request, restaurant_id):
 
 @login_required(login_url='RestaurantRaterApp:login')
 def add_restaurant(request):
+    invalid_name = False
+    invalid_address = 0
     form = RestaurantForm()
     if request.method == 'POST':
         form = RestaurantForm(request.POST, request.FILES)
         if form.is_valid():
+
+            if not validate_address(form.cleaned_data["street"], form.cleaned_data["street_number"], form.cleaned_data["city"]):
+                invalid_address = 1
+                return render(request, 'RestaurantRaterApp/add_restaurant.html', {'form': form, 'invalid_name':invalid_name, 'invalid_address':invalid_address})
+
             restaurant = form.save()
             save_images(restaurant.name)
-            print(restaurant, restaurant.restaurant_id)
-            request.user.owner_status = True
-            this_user = request.user
-            this_user = user_client.objects.get(user=this_user)
-            this_user.update_distances_dict()
-            this_user.owned_restaurants.add(restaurant)
+            request.user.user_client.owner_status = True
+            for usr_client in user_client.objects.all():
+                usr_client.update_distances_dict()
+            request.user.user_client.owned_restaurants.add(restaurant)
             return redirect('RestaurantRaterApp:profile')
         else:
-            print(form.errors)
+            invalid_name = True
+            if not validate_address(form.cleaned_data["street"], form.cleaned_data["street_number"], form.cleaned_data["city"]):
+                invalid_address = 1
+                return render(request, 'RestaurantRaterApp/add_restaurant.html', {'form': form, 'invalid_name':invalid_name, 'invalid_address':invalid_address})
 
-    return render(request, 'RestaurantRaterApp/add_restaurant.html', {'form': form})
+    return render(request, 'RestaurantRaterApp/add_restaurant.html', {'form': form, 'invalid_name':invalid_name, 'invalid_address':invalid_address})
 
 
 @login_required(login_url='RestaurantRaterApp:login')

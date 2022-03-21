@@ -7,10 +7,20 @@
 }
 
 .form-group input {
-    border: 2px solid !important;
+    border: 2px solid;
 }
 
+#id_img1 {
+    border: 0px !important;
+}
 
+#id_img2 {
+    border: 0px !important;
+}
+
+#id_img3 {
+    border: 0px !important;
+}
 
 i.fa-solid.fa-circle-check {
     color: green !important;
@@ -37,4 +47,16 @@ input.success {
 
 .form-group i {
     float: left !important;
+}
+
+textarea.error {
+    border-color: red !important;
+}
+
+textarea.success {
+    border-color: green !important;
+}
+
+.form-group textarea {
+    border: 2px solid;
 }

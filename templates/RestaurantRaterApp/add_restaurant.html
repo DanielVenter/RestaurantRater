@@ -7,6 +7,16 @@
 {% endblock %}
 
 {% block body_block %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/signup.css' %}">
+    <script defer src="{% static 'js/add_rest.js' %}"></script>
+    {% if invalid_name %}
+        <small id="invalid_name" style="display:none">Restaurant already exists.</small>
+    {% else %}
+        <small id="invalid_name" style="display:none">Restaurant does not exist.</small>
+    {% endif %}
+
+    <small id="invalid_address" style="display:none">{{ invalid_address }}</small>
+
     <form id="restaurant_form" method="post" action="{% url 'RestaurantRaterApp:add_restaurant' %}" enctype="multipart/form-data">
         {% csrf_token %}
         {% for hidden in form.hidden_fields %}

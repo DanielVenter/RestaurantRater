@@ -9,6 +9,7 @@ from RestaurantRaterApp.models import Restaurant, user_client
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import PasswordChangeForm
+from django.utils.text import slugify
 from django_resized import ResizedImageField
 from django.core.files.storage import FileSystemStorage
 
@@ -73,7 +74,7 @@ class EditSignUpForm(forms.ModelForm):
             'surname': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 ",'id': 'id_surname'}),
             'city': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 ",'id': 'id_city'}),
             'street': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 ",'id': 'id_street'}),
-            'street_number': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 ",'id': 'id_st_number'}),
+            'street_number': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 ",'id': 'id_street_number'}),
         }
 
         fields = ('name', 'surname', 'city', 'street', 'street_number')
@@ -88,15 +89,23 @@ class RestaurantForm(forms.ModelForm):
     img3 = ResizedImageField(size=[225, 225], quality=100, crop=["middle", "center"],
                              storage=fs, force_format='jpeg', blank=True)
 
+    def clean_name(self):
+        name = self.cleaned_data['name']
+
+        if slugify(name) in [rest.restaurant_id for rest in Restaurant.objects.all()]:
+            raise ValidationError("Restaurant already exists!")
+        
+        return name
+
     class Meta:
         model = Restaurant
 
         widgets = {
             'name': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2",'id': 'id_name'}),
-            'description': forms.Textarea(attrs={'class': "form-control form-control-sm mb-2 ",'id': 'id_surname', 'rows':5, 'cols':5}),
+            'description': forms.Textarea(attrs={'class': "form-control form-control-sm mb-2 ",'id': 'id_description', 'rows':5, 'cols':5}),
             'city': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 ",'id': 'id_city'}),
             'street': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 ",'id': 'id_street'}),
-            'street_number': forms.TextInput(attrs={'class': "form-control form-control-sm mb-2 ",'id': 'id_st_number'}),
+            'street_number': forms.NumberInput(attrs={'class': "form-control form-control-sm mb-2 ",'id': 'id_street_number'}),
         }
 
         labels = {

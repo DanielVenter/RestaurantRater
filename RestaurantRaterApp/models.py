@@ -97,6 +97,7 @@ class user_client(models.Model):
         else:
             for restaurant in Restaurant.objects.all():
                 if f"{restaurant}" not in user.distances_dict:
+                    print(restaurant.restaurant_id)
                     end.append(f"{restaurant.street_number} {restaurant.street} {restaurant.city}")
                     restaurants.append(f"{restaurant}")
 

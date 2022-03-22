@@ -23,18 +23,25 @@ const fieldsArray = [username, password, email, street_number, _name, surname, c
 console.log(addressState.innerText);
 
 //Checks if username already exists
-if(usernameExists.innerText === "Username already exists."){
+if(usernameExists.innerText === "Username already exists." && addressState.innerText === "1"){
     checkInputs();
-    setSuccessFor(password, "Your password was correct - Can't be autofilled");
+    setErrorFor(password, "Password has been reset due to privacy reasons.");
     setErrorFor(username, "Username already exists.");
-}
-
-if(addressState.innerText === "1"){
-    checkInputs();
-    setSuccessFor(password, "Your password was correct - Can't be autofilled");
     setErrorFor(city, "Invalid address.");
     setErrorFor(street, "Invalid address.");
     setErrorFor(street_number, "Invalid address.");
+}
+else if(addressState.innerText === "1"){
+    checkInputs();
+    setErrorFor(password, "Password has been reset due to privacy reasons.");
+    setErrorFor(city, "Invalid address.");
+    setErrorFor(street, "Invalid address.");
+    setErrorFor(street_number, "Invalid address.");
+}
+else if(usernameExists.innerText === "Username already exists."){
+    checkInputs();
+    setErrorFor(password, "Password has been reset due to privacy reasons.");
+    setErrorFor(username, "Username already exists.");
 }
 
 function checkInputs(){

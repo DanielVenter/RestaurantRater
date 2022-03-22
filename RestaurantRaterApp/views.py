@@ -357,6 +357,11 @@ def signup(request):
             registered = True
         else:
             invalid_username = True
+            #Need this extra if because signup_form won't have cleaned_data dictionary.
+            if signup_form.is_valid():
+                print(signup_form.cleaned_data)
+                if not validate_address(signup_form.cleaned_data["street"], signup_form.cleaned_data["street_number"], signup_form.cleaned_data["city"]):
+                       invalid_address = 1
     else:
         user_form = UserForm()
         signup_form = SignUpForm()

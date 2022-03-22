@@ -20,8 +20,6 @@ const passChecker = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})')
 //Array of fields
 const fieldsArray = [username, password, email, street_number, _name, surname, city, street];
 
-console.log(addressState.innerText);
-
 //Checks if username already exists
 if(usernameExists.innerText === "Username already exists." && addressState.innerText === "1"){
     checkInputs();

@@ -16,8 +16,6 @@ var invalidAddress = false;
 //Array of fields
 const fieldsArray = [username, email, street_number, _name, surname, city, street, street_number];
 
-console.log(addressState.innerText);
-
 //Checks if username already exists
 if(usernameExists.innerText === "Username already exists."){
     checkInputs();

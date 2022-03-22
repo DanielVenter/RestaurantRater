@@ -277,7 +277,6 @@ def edit_profile(request):
                 request.user.user_client.update_distances_dict(new_address=True)
 
             registered = True
-            print(f"Old Address: {old_address} New Address: {new_address}")
             if not (old_address == new_address):
                 request.user.user_client.update_distances_dict(new_address=True)
 
@@ -359,7 +358,6 @@ def signup(request):
             invalid_username = True
             #Need this extra if because signup_form won't have cleaned_data dictionary.
             if signup_form.is_valid():
-                print(signup_form.cleaned_data)
                 if not validate_address(signup_form.cleaned_data["street"], signup_form.cleaned_data["street_number"], signup_form.cleaned_data["city"]):
                        invalid_address = 1
     else:
@@ -436,8 +434,6 @@ def validate_address(street, street_number, city):
                 str(street_number) + " " + street + ", " +
                 city)
 
-            print(g)
-
             # If length is 0 then no address has been matched.
             if len(g) == 0:
                 return False
@@ -452,10 +448,8 @@ def validate_address(street, street_number, city):
                 city_ok = street_ok = street_nr_ok = False
                 for x in g[0]['address_components']:
                     if city.lower() in x['long_name'].lower():
-                        print("city ok")
                         city_ok = True
                     elif street.lower() in x['long_name'].lower() or street.lower() in x['short_name'].lower():
-                        print("street ok")
                         street_ok = True
                     elif str(street_number) == str(x['long_name']):
                         street_nr_ok = True

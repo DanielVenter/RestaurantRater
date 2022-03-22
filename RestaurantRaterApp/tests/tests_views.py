@@ -4,9 +4,8 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from populate_database import populate_test
 from RestaurantRaterApp.models import Restaurant, user_client
-from RestaurantRaterApp.forms import UserForm, SignUpForm
 from django.contrib.auth.models import User
-from RestaurantRaterApp.forms import UserForm, SignUpForm, EditUserForm, RestaurantForm, ReviewForm, EditSignUpForm
+from RestaurantRaterApp.forms import UserForm, SignUpForm
 
 
 class TestViews(TestCase):

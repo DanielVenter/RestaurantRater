@@ -1,7 +1,7 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 
-from RestaurantRaterApp.models import user_client, Restaurant
+from RestaurantRaterApp.models import user_client
 from populate_database import populate_test
 
 from RestaurantRaterApp.forms import UserForm, SignUpForm, EditUserForm, RestaurantForm

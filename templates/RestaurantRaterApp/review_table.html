@@ -17,7 +17,7 @@
                     <!-- alternate cyan and yellow rows -->
                     <tr class="{% get_row_colour forloop.counter %}">
                         <td>{{ commenter }}</td>
-                        <td>{{ review }}</td>
+                        <td class="text-break">{{ review }}</td>
                     </tr>
                 {% endif %}
             {% endfor %}

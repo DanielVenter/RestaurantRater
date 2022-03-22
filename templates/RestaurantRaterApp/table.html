@@ -28,8 +28,8 @@
                         </a>
                     </td>
 
-                    <td><a href="{% url 'RestaurantRaterApp:show_restaurant' restaurant.restaurant_id %}" class="text-decoration-none text-body">{{ restaurant.name }}</a></td>
-                    <td><a href="{% url 'RestaurantRaterApp:show_restaurant' restaurant.restaurant_id %}" class="text-decoration-none text-body">{{ restaurant.description }}</a></td>
+                    <td><a href="{% url 'RestaurantRaterApp:show_restaurant' restaurant.restaurant_id %}" class="text-decoration-none text-body text-break">{{ restaurant.name }}</a></td>
+                    <td><a href="{% url 'RestaurantRaterApp:show_restaurant' restaurant.restaurant_id %}" class="text-decoration-none text-body text-break">{{ restaurant.description }}</a></td>
                     {% if user.is_authenticated %}
                         <td><a href="{% url 'RestaurantRaterApp:show_restaurant' restaurant.restaurant_id %}" class="text-decoration-none text-body">{{ dists|get_value:restaurant.restaurant_id }}km</a></td>
                     {% endif %}

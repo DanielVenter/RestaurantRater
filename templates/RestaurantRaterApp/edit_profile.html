@@ -23,14 +23,13 @@
                 {% else %}
                     <small id="invalid_username" style="display:none">Username does not exist.</small>
                 {% endif %}
+                <small id="invalid_address" style="display:none">{{ invalid_address }}</small>
 
-            <small id="invalid_address" style="display:none">{{ invalid_address }}</small>
-
-        <div class="row p-3 text-center nospace">
-            <form id="edit_form" method="post" action="{% url 'RestaurantRaterApp:edit_profile' %}" enctype="multipart/form-data">
-                {% include 'RestaurantRaterApp/form_inner.html' with f1=edit_user_form f2=edit_signup_form submit_text="Update" %}
-            </form>
-        </div>
+                <div class="row p-3 text-center nospace">
+                    <form id="edit_form" method="post" action="{% url 'RestaurantRaterApp:edit_profile' %}" enctype="multipart/form-data">
+                        {% include 'RestaurantRaterApp/form_inner.html' with f1=edit_user_form f2=edit_signup_form submit_text="Update" %}
+                    </form>
+                </div>
             </div>
             <script src="https://kit.fontawesome.com/368c407229.js" crossorigin="anonymous"></script>
         {% endif %}

@@ -3,8 +3,12 @@
 
 <!-- display forms and submit button -->
 {% csrf_token %}
-{% include 'RestaurantRaterApp/form_col.html' with form=f1 %}
-{% include 'RestaurantRaterApp/form_col.html' with form=f2 %}
+{% if f1 %}
+    {% include 'RestaurantRaterApp/form_col.html' with form=f1 %}
+{% endif %}
+{% if f2 %}
+    {% include 'RestaurantRaterApp/form_col.html' with form=f2 %}
+{% endif %}
 <div class="form-group row d-flex justify-content-center align-items-center flex-column mt-3">
     <input type="submit" class="btn btn-warning w-25" name="submit" value="{{ submit_text }}" id="id_submit"/>
 </div>

@@ -295,26 +295,6 @@ def edit_profile(request):
                     'invalid_address': invalid_address,}
     return render(request, 'RestaurantRaterApp/edit_profile.html', context_dict)
 
-
-@login_required(login_url='RestaurantRaterApp:login')
-def change_password(request):
-    invalid = False
-    if request.method == 'POST':
-        password_form = PasswordChangeForm(request.user, request.POST)
-        if password_form.is_valid():
-            user = password_form.save()
-            update_session_auth_hash(request, user)
-            return redirect(reverse('RestaurantRaterApp:profile'))
-
-        else:
-            invalid = True
-    else:
-        password_form = PasswordChangeForm(request.user)
-
-    context_dict = {'password_form': password_form}
-    return render(request, 'RestaurantRaterApp/change_password.html', context_dict)
-
-
 def signup(request):
     registered = False
 

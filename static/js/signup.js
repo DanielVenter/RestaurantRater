@@ -98,6 +98,7 @@ function checkInputs(){
     
 }
 
+//If inputs are invalid, prevent form from submitting.
 registerBtn.addEventListener("click", e => {
     if(checkInputs() === false)
         e.preventDefault();

@@ -140,6 +140,7 @@ function checkInputs(){
 
 }
 
+//If inputs are invalid, prevent form from submitting.
 submitBtn.addEventListener("click", e => {
     if(checkInputs() === false)
         e.preventDefault();

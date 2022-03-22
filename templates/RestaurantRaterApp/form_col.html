@@ -5,13 +5,13 @@
 {% for field in form %}
     <div class="form-group row justify-content-center m-3">
         <label class="col-3 col-form-label" for="{{ field.auto_id }}">{{ field.label|add:":" }}</label>
-        <div class="col-sm-5">
+        <div class="col-5">
             {{ field }}
             <small class="custom-align-left" style="display:none" ></small>
         </div>
         <div class="col-2">
             <i class="fa-solid fa-circle-check"></i>
-            <i class="fa-solid fa-circle-exclamation green"></i>
+            <i class="fa-solid fa-circle-exclamation"></i>
         </div>
     </div>
 {% endfor %}

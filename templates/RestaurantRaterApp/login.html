@@ -6,11 +6,15 @@
 {% endblock %}
 
 {% block body_block %}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/signup.css' %}">
+        <script defer src="{% static 'js/login.js' %}"></script>
+        {% if invalid %}
+            <small id="invalid_account" style="display:none">Invalid account</small>
+        {% else %}
+            <small id="invalid_account" style="display:none">Correct account</small>
+        {% endif %}
         <form id="login_form" method="post" action="{% url 'RestaurantRaterApp:login' %}">
             {% csrf_token %}
-            {% if invalid %}
-                <h5 class="text-center p-2 mt-2">Invalid login details, please try again.</h5>
-            {% endif %}
             {% include 'RestaurantRaterApp/login_row.html' with text="Username:" field="username" type="text" invalid=invalid %}
             {% include 'RestaurantRaterApp/login_row.html' with text="Password:" field="password" type="password" invalid=invalid %}
             <div class="form-group row d-flex justify-content-center align-items-center flex-column mt-3">

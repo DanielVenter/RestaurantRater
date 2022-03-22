@@ -50,6 +50,7 @@ class SignUpForm(forms.ModelForm):
 
 # Edits the user model in user_client
 class EditUserForm(forms.ModelForm):
+
     class Meta:
         model = User
 

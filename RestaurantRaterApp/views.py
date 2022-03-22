@@ -205,6 +205,19 @@ def edit_profile(request):
 
         if edit_user_form.is_valid() and edit_signup_form.is_valid():
 
+            #If address is not valid, do not submit the form.
+            if not validate_address(edit_signup_form.cleaned_data["street"], edit_signup_form.cleaned_data["street_number"], edit_signup_form.cleaned_data["city"]):
+                invalid_address = 1
+                context_dict = {'edit_user_form': edit_user_form,
+                    'edit_signup_form': edit_signup_form,
+                    'invalid_username': invalid_username,
+                    'invalid_address': invalid_address,
+                    'titlemessage': "Sign up for a Restaurant Rater account!",
+                    'users': [usr.username for usr in User.objects.all()], }
+                return render(request, 'RestaurantRaterApp/edit_profile.html', context_dict)
+
+            #If this point is reached, form was successful
+            #Therefore, udpate user profile
             old_address = request.user.user_client.city + request.user.user_client.street + str(
                 request.user.user_client.street_number)
             request.user.username = edit_user_form.cleaned_data['username']
@@ -218,72 +231,20 @@ def edit_profile(request):
             request.user.user_client.save()
             new_address = request.user.user_client.city + request.user.user_client.street + str(
                 request.user.user_client.street_number)
-            # Using google maps geocode API.
-            gmaps_key = googlemaps.Client(key="AIzaSyA5dcV3e9Oe4ZED0UkRRH4P1f4sMG3LSrw")
 
-            # Geocodes the address.
-            g = gmaps_key.geocode(
-                str(edit_signup_form.cleaned_data["street_number"]) + " " + edit_signup_form.cleaned_data["street"] + ", " +
-                edit_signup_form.cleaned_data["city"])
-            # If length is 0 then no address has been matched.
-            if len(g) == 0:
-                invalid_address = 1
-                context_dict = {'edit_user_form': edit_user_form,
-                                'edit_signup_form': edit_signup_form,
-                                'updated': False,
-                                'invalid_username': invalid_username,
-                                'invalid_address': invalid_address,
-                                'titlemessage': "Update your Restaurant Rater account details!",
-                                'users': [usr.username for usr in User.objects.all()], }
-                return render(request, 'RestaurantRaterApp/edit_profile.html', context_dict)
 
-            # If length is greater than 1, then two address-related fields are different valid locations.
-            elif len(g) > 1:
-                invalid_address = 1
-                context_dict = {'edit_user_form': edit_user_form,
-                                'edit_signup_form': edit_signup_form,
-                                'updated': False,
-                                'invalid_username': invalid_username,
-                                'invalid_address': invalid_address,
-                                'titlemessage': "Update your Restaurant Rater account details!",
-                                'users': [usr.username for usr in User.objects.all()], }
-                return render(request, 'RestaurantRaterApp/edit_profile.html', context_dict)
 
-            # If we reached this place, now we check that all the fields (street, city and street number) are correct
-            # If not, then we don't submit the form.
-            else:
-                city_ok = street_ok = street_nr_ok = False
-                for x in g[0]['address_components']:
-                    if edit_signup_form.cleaned_data['city'].lower() in x['long_name'].lower():
-                        city_ok = True
-                    elif edit_signup_form.cleaned_data['street'].lower() in x['long_name'].lower():
-                        street_ok = True
-                    elif str(x['long_name']) == str(edit_signup_form.cleaned_data['street_number']):
-                        street_nr_ok = True
-
-                if not (city_ok and street_ok and street_nr_ok):
-                    invalid_address = 1
-                    context_dict = {'edit_user_form': edit_user_form,
-                                    'edit_signup_form': edit_signup_form,
-                                    'updated': False,
-                                    'invalid_username': invalid_username,
-                                    'invalid_address': invalid_address,
-                                    'titlemessage': "Update your Restaurant Rater account details!",
-                                    'users': [usr.username for usr in User.objects.all()], }
-                    return render(request, 'RestaurantRaterApp/edit_profile.html', context_dict)
-
-            # If there are no restaurants on the server then updating the distances matrix will cause error.
-            if len(Restaurant.objects.all()) > 0:
-                request.user.user_client.update_distances_dict(new_address=True)
-
-            registered = True
-            print(f"Old Address: {old_address} New Address: {new_address}")
-            if not (old_address == new_address):
+            if not ( (old_address == new_address) and len(Restaurant.objects.all()) > 0):
                 request.user.user_client.update_distances_dict(new_address=True)
 
             return redirect(reverse('RestaurantRaterApp:profile'))
         else:
-            updated = True
+            invalid_username = True
+            #Need this extra if because edit_signup_form won't have cleaned_data dictionary.
+            if edit_signup_form.is_valid():
+                if not validate_address(edit_signup_form.cleaned_data["street"], edit_signup_form.cleaned_data["street_number"], edit_signup_form.cleaned_data["city"]):
+                       invalid_address = 1
+
     else:
         edit_user_form = EditUserForm(instance=request.user)
         edit_signup_form = EditSignUpForm(instance=request.user.user_client)
@@ -357,6 +318,10 @@ def signup(request):
             registered = True
         else:
             invalid_username = True
+            #Need this extra if because signup_form won't have cleaned_data dictionary.
+            if signup_form.is_valid():
+                if not validate_address(signup_form.cleaned_data["street"], signup_form.cleaned_data["street_number"], signup_form.cleaned_data["city"]):
+                       invalid_address = 1
     else:
         user_form = UserForm()
         signup_form = SignUpForm()
@@ -431,8 +396,6 @@ def validate_address(street, street_number, city):
                 str(street_number) + " " + street + ", " +
                 city)
 
-            print(g)
-
             # If length is 0 then no address has been matched.
             if len(g) == 0:
                 return False
@@ -447,10 +410,8 @@ def validate_address(street, street_number, city):
                 city_ok = street_ok = street_nr_ok = False
                 for x in g[0]['address_components']:
                     if city.lower() in x['long_name'].lower():
-                        print("city ok")
                         city_ok = True
                     elif street.lower() in x['long_name'].lower() or street.lower() in x['short_name'].lower():
-                        print("street ok")
                         street_ok = True
                     elif str(street_number) == str(x['long_name']):
                         street_nr_ok = True

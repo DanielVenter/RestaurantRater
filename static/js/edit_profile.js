@@ -8,7 +8,7 @@ const _name = document.getElementById("id_name");
 const surname = document.getElementById("id_surname");
 const city = document.getElementById("id_city");
 const street = document.getElementById("id_street");
-const street_number = document.getElementById("id_st_number");
+const street_number = document.getElementById("id_street_number");
 const usernameExists = document.getElementById("invalid_username");
 const addressState = document.getElementById("invalid_address");
 var invalidAddress = false;
@@ -16,19 +16,23 @@ var invalidAddress = false;
 //Array of fields
 const fieldsArray = [username, email, street_number, _name, surname, city, street, street_number];
 
-console.log(addressState.innerText);
-
 //Checks if username already exists
-if(usernameExists.innerText === "Username already exists."){
+if(usernameExists.innerText === "Username already exists." && addressState.innerText === "1"){
     checkInputs();
     setErrorFor(username, "Username already exists.");
+    setErrorFor(city, "Invalid address.");
+    setErrorFor(street, "Invalid address.");
+    setErrorFor(street_number, "Invalid address.");
 }
-
-if(addressState.innerText === "1"){
+else if(addressState.innerText === "1"){
     checkInputs();
     setErrorFor(city, "Invalid address.");
     setErrorFor(street, "Invalid address.");
     setErrorFor(street_number, "Invalid address.");
+}
+else if(usernameExists.innerText === "Username already exists."){
+    checkInputs();
+    setErrorFor(username, "Username already exists.");
 }
 
 function checkInputs(){

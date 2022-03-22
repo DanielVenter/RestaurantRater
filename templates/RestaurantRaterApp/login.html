@@ -9,12 +9,12 @@
         <form id="login_form" method="post" action="{% url 'RestaurantRaterApp:login' %}">
             {% csrf_token %}
             {% if invalid %}
-                <h5 class="text-center p-2">Invalid login details, please try again.</h5>
+                <h5 class="text-center p-2 mt-2">Invalid login details, please try again.</h5>
             {% endif %}
             {% include 'RestaurantRaterApp/login_row.html' with text="Username:" field="username" type="text" invalid=invalid %}
             {% include 'RestaurantRaterApp/login_row.html' with text="Password:" field="password" type="password" invalid=invalid %}
             <div class="form-group row d-flex justify-content-center align-items-center flex-column mt-3">
-                <input type="submit" class="btn btn-warning w-25" name="submit" value="Log In" id="id_submit"/>
+                <input type="submit" class="btn btn-warning w-25 border-dark border-2" name="submit" value="Log In" id="id_submit"/>
             </div>
         </form>
 {% endblock %}
